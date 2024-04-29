@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Users {
+  id       String   @id @default(cuid())
+  username String
+  password String
+  email    String   @unique
+  expenses Expenses[]
+  dailySummaries DailySummaries[]
+}
+
+model Expenses {
+  id         String   @id @default(cuid())
+  user       Users    @relation(fields: [userId], references: [id])
+  userId     String
+  date       DateTime
+  category   ExpenseCategories @relation(fields: [categoryId], references: [id])
+  categoryId String
+  description String
+  amount     Decimal
+  dailySummaries DailySummaries[]
+}
+
+model ExpenseCategories {
+  id   String   @id @default(cuid())
+  name String
+  expenses Expenses[]
+  dailySummaries DailySummaries[]
+}
+
+model DailySummaries {
+  id         String   @id @default(cuid())
+  user       Users    @relation(fields: [userId], references: [id])
+  userId     String
+  date       DateTime
+  expense    Expenses @relation(fields: [expenseId], references: [id])
+  expenseId  String
+  category   ExpenseCategories @relation(fields: [categoryId], references: [id])
+  categoryId String
+  totalExpense Decimal
+
+  @@index([date], name: "daily_summaries_date_index")
+  @@index([expenseId], name: "daily_summaries_expense_id_index")
+  @@index([categoryId], name: "daily_summaries_category_id_index")
+}
