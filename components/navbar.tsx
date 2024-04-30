@@ -17,10 +17,11 @@ export default function Navbar () {
       </Link>
       {user && (
         <div className='flex items-center'>
+           <Image src={user.picture} alt="Profile picture" width={48} height={48} className='rounded-full' />
           <span className='text-lg'>{user.name}</span>
           <a
             href='/api/auth/logout'
-            className='className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"'
+            className='bg-red-600 hover:bg-red-700 text-black font-bold py-2 px-4 rounded-2xl'
           >
             {' '}
             Logout
