@@ -17,7 +17,15 @@ export default function Navbar () {
       </Link>
       {user && (
         <div className='flex items-center'>
-           <Image src={user.picture} alt="Profile picture" width={48} height={48} className='rounded-full' />
+          {user && user.picture && (
+            <Image
+              src={user.picture}
+              alt='Profile picture'
+              width={48}
+              height={48}
+              className='rounded-full'
+            />
+          )}
           <span className='text-lg'>{user.name}</span>
           <a
             href='/api/auth/logout'
