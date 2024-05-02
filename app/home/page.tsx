@@ -1,7 +1,7 @@
 import Navbar from '../../components/navbar';
 import Expenses from '@/components/expenses';
 
- async function HomePage() {
+async function HomePage() {
   return (
     <>
       <main className="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
