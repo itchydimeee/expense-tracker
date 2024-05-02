@@ -12,7 +12,7 @@ export default function Home() {
 
   if (user) {
     console.log(user);
-    router.push('/Home'); // Navigate to homepage after login
+    router.push('/home'); // Navigate to homepage after login
     return null;
   }
 
