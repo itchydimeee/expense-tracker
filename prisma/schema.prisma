@@ -3,48 +3,48 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model Users {
-  id       String   @id @default(cuid())
-  username String
-  password String
-  email    String   @unique
-  expenses Expenses[]
+  id             String           @id @default(cuid())
+  auth0Id        String?          @unique
+  username       String
+  email          String           @unique
+  expenses       Expenses[]
   dailySummaries DailySummaries[]
 }
 
 model Expenses {
-  id         String   @id @default(cuid())
-  user       Users    @relation(fields: [userId], references: [id])
-  userId     String
-  date       DateTime
-  category   ExpenseCategories @relation(fields: [categoryId], references: [id])
-  categoryId String
-  description String
-  amount     Decimal
+  id             String            @id @default(cuid())
+  user           Users             @relation(fields: [userId], references: [id])
+  userId         String
+  date           DateTime
+  category       ExpenseCategories @relation(fields: [categoryId], references: [id])
+  categoryId     String
+  description    String
+  amount         Decimal
   dailySummaries DailySummaries[]
 }
 
 model ExpenseCategories {
-  id   String   @id @default(cuid())
-  name String
-  expenses Expenses[]
+  id             String           @id @default(cuid())
+  name           String
+  expenses       Expenses[]
   dailySummaries DailySummaries[]
 }
 
 model DailySummaries {
-  id         String   @id @default(cuid())
-  user       Users    @relation(fields: [userId], references: [id])
-  userId     String
-  date       DateTime
-  expense    Expenses @relation(fields: [expenseId], references: [id])
-  expenseId  String
-  category   ExpenseCategories @relation(fields: [categoryId], references: [id])
-  categoryId String
+  id           String            @id @default(cuid())
+  user         Users             @relation(fields: [userId], references: [id])
+  userId       String
+  date         DateTime
+  expense      Expenses          @relation(fields: [expenseId], references: [id])
+  expenseId    String
+  category     ExpenseCategories @relation(fields: [categoryId], references: [id])
+  categoryId   String
   totalExpense Decimal
 
   @@index([date], name: "daily_summaries_date_index")
