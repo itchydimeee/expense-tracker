@@ -59,9 +59,35 @@ function Expenses () {
     setShowForm(false)
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
-    throw new Error('Function not implemented.')
-  }
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
+  
+    try {
+      const response = await axios.post('/api/createExpenses', {
+        categoryId: newExpense.categoryId,
+        description: newExpense.description,
+        amount: newExpense.amount,
+      }, {
+        params: {
+          userId: user?.sub,
+        },
+      });
+  
+      if (response.data.error) {
+        console.error('Failed to create expense:', response.data.error);
+      } else {
+        setNewExpense({
+          name: '',
+          categoryId: '',
+          description: '',
+          amount: '',
+        });
+        setShowForm(false);
+      }
+    } catch (error) {
+      console.error('Error creating expense:', error);
+    }
+  };
 
   return (
     <div className='max-w-md mx-auto p-4 pt-6'>
@@ -75,16 +101,6 @@ function Expenses () {
         <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50'>
           <div className='bg-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
             <form onSubmit={handleSubmit}>
-              <label className='block mb-2'>
-                Name:
-                <input
-                  type='text'
-                  name='name'
-                  value={newExpense.name}
-                  onChange={handleInputChange}
-                  className='w-full p-2 pl-10 text-sm text-gray-700'
-                />
-              </label>
               <label className='block mb-2'>
                 Category ID:
                 <input
