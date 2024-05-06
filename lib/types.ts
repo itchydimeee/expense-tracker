@@ -39,6 +39,7 @@ export type DailySummaries = {
 };
 
 export interface Expense {
+  userId: any;
   name: string;
   categoryId: string;
   description: string;
