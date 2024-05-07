@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { Expense } from '@/lib/types';
+import { Expenses } from '@/lib/types';
 
 function FetchExpenses() {
   const [expenses, setExpenses] = useState([]);
@@ -74,10 +74,11 @@ function FetchExpenses() {
       )}
       <ul className="list-none mb-0">
         {Array.isArray(expenses) && expenses.length > 0 ? (
-          expenses.map((expense: Expense) => (
+          expenses.map((expense: Expenses) => (
             <li key={expense.userId} className="flex justify-between py-4 border-b border-gray-200">
-              <span className="text-lg">{expense.description}</span>
-              <span className="text-lg">{expense.amount}</span>
+              <span className="text-lg w-1/4">{expense.category.name}</span>
+              <span className="text-lg w-1/2">{`${expense.description.slice(0, 20)}${expense.description.length > 20 ? '...' : ''}`}</span>
+              <span className="text-lg w-1/4 text-right">{expense.amount}</span>
             </li>
           ))
         ) : (

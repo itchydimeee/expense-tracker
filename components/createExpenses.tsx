@@ -1,7 +1,9 @@
-'use client'
-import { useState, useEffect, FormEvent } from 'react'
+"use client"
+
+import { useState,useEffect, FormEvent } from 'react'
 import axios from 'axios'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import ExpenseCategory from './expenseCategories'
 
 import { Expense } from '@/lib/types'
 
@@ -39,6 +41,10 @@ function CreateExpenses () {
     setNewExpense({ ...newExpense, [event.target.name]: event.target.value })
   }
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setNewExpense({ ...newExpense, categoryId: event.target.value })
+  }
+
   const handleShowForm = () => {
     setShowForm(true)
   }
@@ -63,7 +69,7 @@ function CreateExpenses () {
         description: newExpense.description,
         amount: newExpense.amount,
         userId: newExpense.userId,
-        date: new Date().toISOString() // Add this line
+        date: new Date().toISOString()
       })
       console.log(response)
 
@@ -84,6 +90,7 @@ function CreateExpenses () {
       console.error('Error creating expense:', error)
     }
   }
+
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -101,14 +108,8 @@ function CreateExpenses () {
           <div className='bg-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
             <form onSubmit={handleSubmit}>
               <label className='block mb-2'>
-                Category ID:
-                <input
-                  type='number'
-                  name='categoryId'
-                  value={newExpense.categoryId}
-                  onChange={handleInputChange}
-                  className='w-full p-2 pl-10 text-sm text-gray-700'
-                />
+                Category:
+                <ExpenseCategory onChange={handleCategoryChange} />
               </label>
               <label className='block mb-2'>
                 Description:
