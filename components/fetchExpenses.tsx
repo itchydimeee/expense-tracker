@@ -6,9 +6,9 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { Expenses } from "@/lib/types";
 
 function FetchExpenses() {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState<Expenses[]>([]); // Specify the type of expenses as an array of Expenses
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null); // Specify the type of error as string or null
   const { user, isLoading } = useUser();
   const [editIndex, setEditIndex] = useState<number>(-1);
 
@@ -48,8 +48,9 @@ function FetchExpenses() {
   };
 
   const handleSave = (index: number, updatedExpense: Expenses) => {
-    const updatedExpenses = [...expenses];
-    updatedExpenses[index] = updatedExpense;
+    const updatedExpenses: Expenses[] = expenses.map((expense, i) =>
+      i === index ? updatedExpense : expense
+    );
     setExpenses(updatedExpenses);
     setEditIndex(-1);
   };
