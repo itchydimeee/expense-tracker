@@ -16,6 +16,9 @@ export async function GET(req: NextRequest) {
         user: true,
         category: true,
       },
+      orderBy: {
+        date: 'desc'
+      }
     });
     return NextResponse.json(expenses);
   } catch (err) {

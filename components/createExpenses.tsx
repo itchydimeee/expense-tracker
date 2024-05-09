@@ -16,6 +16,7 @@ function CreateExpenses () {
     userId: '',
   })
   const [showForm, setShowForm] = useState(false)
+  const [selectedCategoryId, setSelectedCategoryId] = useState('') // Add this state
   const { user, isLoading } = useUser()
 
   useEffect(() => {
@@ -42,7 +43,9 @@ function CreateExpenses () {
   }
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setNewExpense({ ...newExpense, categoryId: event.target.value })
+    const categoryId = event.target.value
+    setNewExpense({ ...newExpense, categoryId })
+    setSelectedCategoryId(categoryId) // Update the selectedCategoryId state
   }
 
   const handleShowForm = () => {
@@ -109,7 +112,7 @@ function CreateExpenses () {
             <form onSubmit={handleSubmit}>
               <label className='block mb-2'>
                 Category:
-                <ExpenseCategory onChange={handleCategoryChange} />
+                <ExpenseCategory onChange={handleCategoryChange} value={selectedCategoryId} /> 
               </label>
               <label className='block mb-2'>
                 Description:
