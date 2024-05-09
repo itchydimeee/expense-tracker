@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import type { ExpenseCategories } from '@/lib/types';
+import type { IncomeCategories } from '@/lib/types';
 
-interface ExpenseCategoryProps {
+interface IncomeCategoryProps {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   value: string;
 }
 
-const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({ onChange, value }) => {
-  const [categories, setCategories] = useState<ExpenseCategories[]>([]);
+const IncomeCategory: React.FC<IncomeCategoryProps> = ({ onChange, value }) => {
+  const [categories, setCategories] = useState<IncomeCategories[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/api/fetchExpenseCategories');
+        const response = await axios.get('/api/fetchIncomeCategories');
         setCategories(response.data);
       } catch (error) {
         console.error(error);
@@ -34,4 +34,4 @@ const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({ onChange, value }) =>
   );
 };
 
-export default ExpenseCategory;
+export default IncomeCategory;

@@ -18,8 +18,25 @@ export type Expenses = {
   amount: number;
   dailySummaries: DailySummaries[];
 };
+export type Incomes = {
+  id?: string;
+  user: Users;
+  userId: string;
+  date: Date;
+  category: ExpenseCategories;
+  categoryId: string;
+  description: string;
+  amount: number;
+  dailySummaries: DailySummaries[];
+};
 
 export type ExpenseCategories = {
+  id?: string;
+  name: string;
+  expenses: Expenses[];
+  dailySummaries: DailySummaries[];
+};
+export type IncomeCategories = {
   id?: string;
   name: string;
   expenses: Expenses[];
@@ -39,6 +56,13 @@ export type DailySummaries = {
 };
 
 export interface Expense {
+  userId: any;
+  name: string;
+  categoryId: string;
+  description: string;
+  amount: string;
+}
+export interface Income {
   userId: any;
   name: string;
   categoryId: string;

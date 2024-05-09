@@ -2,6 +2,7 @@ import Navbar from '@/components/navbar'
 import CreateExpenses from '@/components/createExpenses'
 import FetchExpenses from '@/components/fetchExpenses'
 import CreateUser from '@/components/createUser'
+import CreateIncomes from '@/components/createIncomes'
 
 async function HomePage () {
   return (
@@ -19,6 +20,7 @@ async function HomePage () {
           <div>
             <CreateUser />
             <CreateExpenses />
+            <CreateIncomes/>
             <FetchExpenses />
           </div>
         </div>
