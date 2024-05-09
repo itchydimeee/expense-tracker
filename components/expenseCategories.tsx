@@ -4,9 +4,10 @@ import type { ExpenseCategories } from '@/lib/types';
 
 interface ExpenseCategoryProps {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  value: string;
 }
 
-const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({ onChange }) => {
+const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({ onChange, value }) => {
   const [categories, setCategories] = useState<ExpenseCategories[]>([]);
 
   useEffect(() => {
@@ -22,7 +23,8 @@ const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({ onChange }) => {
   }, []);
 
   return (
-    <select onChange={onChange}>
+    <select value={value} onChange={onChange}>
+      <option value="">Select a category</option>
       {categories.map((category) => (
         <option key={category.id} value={category.id}>
           {category.name}

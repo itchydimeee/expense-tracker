@@ -45,3 +45,11 @@ export interface Expense {
   description: string;
   amount: string;
 }
+
+export interface UpdatedExpense {
+  id: string | undefined;
+  categoryId: string;
+  description: string;
+  amount: number;
+  userId: string;
+}
