@@ -23,7 +23,7 @@ const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({ onChange, value }) =>
   }, []);
 
   return (
-    <select value={value} onChange={onChange}>
+    <select value={value} onChange={onChange} className='rounded-xl bg-gray-300 text-black px-2 py-1 ml-2'>
       <option value="">Select a category</option>
       {categories.map((category) => (
         <option key={category.id} value={category.id}>

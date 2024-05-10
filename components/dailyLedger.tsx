@@ -115,8 +115,8 @@ function DailyLedger () {
   }
 
   return (
-    <div className='max-w-md mx-auto p-4 pt-6 pb-8 bg-white rounded shadow-md'>
-      <h1 className='text-2xl font-bold mb-4'>Daily Ledger</h1>
+    <div className='max-w-md mx-auto p-4 pt-6 pb-8 rounded-3xl shadow-md bg-gray-700'>
+      <h1 className='text-2xl font-bold mb-4 text-white'>Daily Ledger</h1>
       {error && (
         <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
           <p>{error}</p>
@@ -126,7 +126,7 @@ function DailyLedger () {
         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
         .map(date => (
           <div key={date}>
-            <h2 className='text-lg font-bold mb-2'>{date}</h2>
+            <h2 className='text-lg text-white font-bold mb-2'>{date}</h2>
             <ul className='list-none mb-0'>
               {(incomes[date] || []).map(income => (
                 <li
@@ -145,10 +145,10 @@ function DailyLedger () {
                           }
                         }}
                       >
-                        <span className='w-1/4 text-lg'>
+                        <span className='w-1/4 text-lg text-white'>
                           {income.category.name}
                         </span>
-                        <span className='w-1/2 text-lg truncate'>
+                        <span className='w-1/2 text-lg truncate text-white'>
                           {income.description.length > 20
                             ? `${income.description.substring(0, 20)}...`
                             : income.description}
@@ -180,10 +180,10 @@ function DailyLedger () {
                           }
                         }}
                       >
-                        <span className='w-1/4 text-lg'>
+                        <span className='w-1/4 text-lg text-white'>
                           {expense.category.name}
                         </span>
-                        <span className='w-1/2 text-lg truncate'>
+                        <span className='w-1/2 text-lg truncate text-white'>
                           {expense.description.length > 20
                             ? `${expense.description.substring(0, 20)}...`
                             : expense.description}

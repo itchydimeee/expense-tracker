@@ -1,23 +1,23 @@
-"use client"
+import { useState, useEffect, FormEvent } from 'react';
+import axios from 'axios';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import ExpenseCategory from './expenseCategories';
 
-import { useState,useEffect, FormEvent } from 'react'
-import axios from 'axios'
-import { useUser } from '@auth0/nextjs-auth0/client'
-import ExpenseCategory from './expenseCategories'
+import { Expense } from '@/lib/types';
+import IncomeCategory from './incomeCategories';
 
-import { Expense } from '@/lib/types'
-
-function CreateExpenses () {
+function CreateExpenses() {
+  const [activeCreationType, setActiveCreationType] = useState<'expenses' | 'incomes'>('expenses');
   const [newExpense, setNewExpense] = useState<Expense>({
     name: '',
     categoryId: '',
     description: '',
     amount: '',
     userId: '',
-  })
-  const [showForm, setShowForm] = useState(false)
-  const [selectedCategoryId, setSelectedCategoryId] = useState('') // Add this state
-  const { user, isLoading } = useUser()
+  });
+  const [showForm, setShowForm] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(''); // Add this state
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
     if (user) {
@@ -25,59 +25,57 @@ function CreateExpenses () {
         try {
           const response = await axios.get('/api/fetchUser', {
             params: {
-              email: user.email
-            }
-          })
-          const userId = response.data.id
-          setNewExpense({ ...newExpense, userId })
+              email: user.email,
+            },
+          });
+          const userId = response.data.id;
+          setNewExpense({ ...newExpense, userId });
         } catch (error) {
-          console.error(error)
+          console.error(error);
         }
-      }
-      fetchUserId()
+      };
+      fetchUserId();
     }
-  }, [user])
+  }, [user]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewExpense({ ...newExpense, [event.target.name]: event.target.value })
-  }
+    setNewExpense({ ...newExpense, [event.target.name]: event.target.value });
+  };
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const categoryId = event.target.value
-    setNewExpense({ ...newExpense, categoryId })
-    setSelectedCategoryId(categoryId) // Update the selectedCategoryId state
-  }
+    const categoryId = event.target.value;
+    setNewExpense({ ...newExpense, categoryId });
+    setSelectedCategoryId(categoryId); // Update the selectedCategoryId state
+  };
 
   const handleShowForm = () => {
-    setShowForm(true)
-  }
+    setShowForm(true);
+  };
 
   const handleHideForm = () => {
-    setShowForm(false)
-  }
+    setShowForm(false);
+  };
 
-  const handleSubmit = async (
-    event: FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault()
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
 
     if (!newExpense.userId) {
-      console.error('User ID is not available')
-      return
+      console.error('User ID is not available');
+      return;
     }
 
     try {
-      const response = await axios.post(`/api/createExpenses`, {
+      const response = await axios.post(`/api/create${activeCreationType}`, {
         categoryId: newExpense.categoryId,
         description: newExpense.description,
         amount: newExpense.amount,
         userId: newExpense.userId,
-        date: new Date().toISOString()
-      })
-      console.log(response)
+        date: new Date().toISOString(),
+      });
+      console.log(response);
 
       if (response.data.error) {
-        console.error('Failed to create expense:', response.data.error)
+        console.error(`Failed to create ${activeCreationType}:`, response.data.error);
       } else {
         setNewExpense({
           name: '',
@@ -85,73 +83,93 @@ function CreateExpenses () {
           description: '',
           amount: '',
           userId: '',
-        })
-        setShowForm(false)
+        });
+        setShowForm(false);
         window.location.reload();
       }
     } catch (error) {
-      console.error('Error creating expense:', error)
+      console.error(`Error creating ${activeCreationType}:`, error);
     }
-  }
+  };
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className='max-w-md mx-auto p-4 pt-6'>
+    <div className="max-w-md mx-auto p-4 pt-6">
       <button
-        className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded fixed bottom-4 right-4'
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
         onClick={handleShowForm}
       >
-        Create Expense
+        +
       </button>
       {showForm && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50'>
-          <div className='bg-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50">
+          <div className="bg-gray-700 rounded-2xl text-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3">
+            <div className="flex justify-end mb-2">
+              <button
+                className={`bg-gray-700 hover:bg-gray-300 text-white font-bold py-2 px-4 rounded mr-2 ${activeCreationType === 'expenses' ? 'bg-gray-300 text-black' : ''}`}
+                onClick={() => setActiveCreationType('expenses')}
+              >
+                Expense
+              </button>
+              <button
+                className={`bg-gray-700 hover:bg-gray-300 text-white font-bold py-2 px-4 rounded ${activeCreationType === 'incomes' ? 'bg-gray-300 text-black' : ''}`}
+                onClick={() => setActiveCreationType('incomes')}
+              >
+                Income
+              </button>
+            </div>
             <form onSubmit={handleSubmit}>
-              <label className='block mb-2'>
+              <label className="block mb-2">
                 Category:
-                <ExpenseCategory onChange={handleCategoryChange} value={selectedCategoryId} /> 
+                {activeCreationType === 'expenses' ? (
+                  <ExpenseCategory onChange={handleCategoryChange} value={selectedCategoryId} />
+                ) : (
+                  <IncomeCategory onChange={handleCategoryChange} value={selectedCategoryId} />
+                )}
               </label>
-              <label className='block mb-2'>
+              <label className="block mb-2">
                 Description:
                 <input
-                  type='text'
-                  name='description'
+                  type="text"
+                  name="description"
                   value={newExpense.description}
                   onChange={handleInputChange}
-                  className='w-full p-2 pl-10 text-sm text-gray-700'
+                  className="w-full p-2 pl-10 text-sm bg-gray-300 rounded-xl text-gray-700"
                 />
               </label>
-              <label className='block mb-2'>
+              <label className="block mb-2">
                 Amount:
                 <input
-                  type='number'
-                  name='amount'
+                  type="number"
+                  name="amount"
                   value={newExpense.amount}
                   onChange={handleInputChange}
-                  className='w-full p-2 pl-10 text-sm text-gray-700'
+                  className="w-full p-2 pl-10 text-sm rounded-xl bg-gray-300 text-gray-700"
                 />
               </label>
-              <button
-                type='submit'
-                className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
-              >
-                Create Expense
-              </button>
-              <button
-                className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
-                onClick={handleHideForm}
-              >
-                Cancel
-              </button>
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Create {activeCreationType === 'expenses' ? 'Expense' : 'Income'}
+                </button>
+                <button
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleHideForm}
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default CreateExpenses
+export default CreateExpenses;
