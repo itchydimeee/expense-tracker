@@ -1,11 +1,18 @@
-import { useState, FormEvent } from 'react'
-import axios from 'axios'
-import ExpenseCategory from './expenseCategories'
+import { useState, FormEvent } from "react";
+import axios from "axios";
+import ExpenseCategory from "./expenseCategories";
 
-import { Expenses } from '@/lib/types'
-import DailyLedger from './dailyLedger'
+import { Expenses } from "@/lib/types";
+import DailyLedger from "./dailyLedger";
+import DeleteExpense from "./deleteExpenses";
 
-function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit: () => void  }) {
+function UpdateExpense({
+  expense,
+  cancelEdit,
+}: {
+  expense: Expenses;
+  cancelEdit: () => void;
+}) {
   const [updatedExpense, setUpdatedExpense] = useState<Expenses>({
     id: expense.id,
     categoryId: expense.categoryId,
@@ -16,71 +23,83 @@ function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit:
     date: expense.date,
     category: expense.category,
     dailySummaries: expense.dailySummaries,
-    type: 'expenses'
-  })
- 
+    type: "expenses",
+  });
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatedExpense({ ...updatedExpense, [event.target.name]: event.target.value })
-  }
+    setUpdatedExpense({
+      ...updatedExpense,
+      [event.target.name]: event.target.value,
+    });
+  };
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setUpdatedExpense({ ...updatedExpense, categoryId: event.target.value })
-  }
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setUpdatedExpense({ ...updatedExpense, categoryId: event.target.value });
+  };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault()
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
 
     try {
-      const response = await axios.put('/api/updateExpenses', updatedExpense)
-      console.log(response)
+      const response = await axios.put("/api/updateExpenses", updatedExpense);
+      console.log(response);
 
       if (response.data.error) {
-        console.error('Failed to update expense:', response.data.error)
+        console.error("Failed to update expense:", response.data.error);
       } else {
         window.location.reload();
-        DailyLedger()
+        DailyLedger();
       }
     } catch (error) {
-      console.error('Error updating expense:', error)
+      console.error("Error updating expense:", error);
     }
-  }
+  };
 
   return (
-    <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50'>
-      <div className='bg-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50">
+      <div className="bg-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3">
         <form onSubmit={handleSubmit}>
-          <label className='block mb-2'>
+          <label className="block mb-2">
             Category:
-            <ExpenseCategory onChange={handleCategoryChange} value={updatedExpense.categoryId} />
-          </label>
-          <label className='block mb-2'>
-            Description:
-            <input
-              type='text'
-              name='description'
-              value={updatedExpense.description}
-              onChange={handleInputChange}
-              className='w-full p-2 pl-10 text-sm text-gray-700'
+            <ExpenseCategory
+              onChange={handleCategoryChange}
+              value={updatedExpense.categoryId}
             />
           </label>
-          <label className='block mb-2'>
+          <label className="block mb-2">
+            Description:
+            <input
+              type="text"
+              name="description"
+              value={updatedExpense.description}
+              onChange={handleInputChange}
+              className="w-full p-2 pl-10 text-sm text-gray-700"
+            />
+          </label>
+          <label className="block mb-2">
             Amount:
             <input
-              type='number'
-              name='amount'
+              type="number"
+              name="amount"
               value={updatedExpense.amount}
               onChange={handleInputChange}
-              className='w-full p-2 pl-10 text-sm text-gray-700'
+              className="w-full p-2 pl-10 text-sm text-gray-700"
             />
           </label>
           <button
-            type='submit'
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Update Expense
           </button>
+          <DeleteExpense expenseId={expense.id || ""} onDelete={cancelEdit} />
+
           <button
-            className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
             onClick={cancelEdit}
           >
             Cancel
@@ -88,7 +107,7 @@ function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit:
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default UpdateExpense
+export default UpdateExpense;
