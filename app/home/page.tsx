@@ -13,11 +13,9 @@ const HomePage = () => {
 
   return (
     <div className='flex flex-col min-h-screen bg-gray-800'>
-      <div className='flex-1 p-4 md:p-6 lg:p-12'>
-        <div className='mb-5 border-b'>
+      <div className='flex-1 p-4 md:p-6 lg:p-12 pt-10'>
           <Navbar />
-        </div>
-        <div className='mt-6 mb-20'>
+        <div className='mt-6 mb-10'>
           <DailyLedger />
         </div>
       </div>
