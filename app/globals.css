@@ -81,6 +81,8 @@
   align-items: center;
   width: 100%;
   padding: 10px;
+  background-color: var(--background); /* Set background color to grey */
+  border-radius: var(--radius); /* Apply rounded borders */
 }
 
 .amount {
