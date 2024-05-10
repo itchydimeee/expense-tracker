@@ -17,6 +17,7 @@ export type Expenses = {
   description: string;
   amount: number;
   dailySummaries: DailySummaries[];
+  type: 'expenses'
 };
 export type Incomes = {
   id?: string;
@@ -28,6 +29,7 @@ export type Incomes = {
   description: string;
   amount: number;
   dailySummaries: DailySummaries[];
+  type: 'income'
 };
 
 export type ExpenseCategories = {
@@ -76,4 +78,15 @@ export interface UpdatedExpense {
   description: string;
   amount: number;
   userId: string;
+}
+
+
+export interface Transaction {
+  id: string;
+  userId: string;
+  category: IncomeCategories | ExpenseCategories;
+  description: string;
+  amount: number;
+  date: Date;
+  type: 'income' | 'expense'; // Use a union type for the type property
 }
