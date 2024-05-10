@@ -46,8 +46,8 @@ function UpdateIncome({ income, cancelEdit }: { income: Incomes; cancelEdit: () 
   }
 
   return (
-    <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50'>
-      <div className='bg-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
+    <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50'>
+      <div className='bg-gray-700 rounded-2xl text-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
         <form onSubmit={handleSubmit}>
           <label className='block mb-2'>
             Category:
@@ -60,7 +60,7 @@ function UpdateIncome({ income, cancelEdit }: { income: Incomes; cancelEdit: () 
               name='description'
               value={updatedIncome.description}
               onChange={handleInputChange}
-              className='w-full p-2 pl-10 text-sm text-gray-700'
+              className='w-full p-2 pl-10 text-sm bg-gray-300 rounded-xl text-gray-700'
             />
           </label>
           <label className='block mb-2'>
@@ -70,25 +70,28 @@ function UpdateIncome({ income, cancelEdit }: { income: Incomes; cancelEdit: () 
               name='amount'
               value={updatedIncome.amount}
               onChange={handleInputChange}
-              className='w-full p-2 pl-10 text-sm text-gray-700'
+              className='w-full p-2 pl-10 text-sm rounded-xl bg-gray-300 text-gray-700'
             />
           </label>
-          <button
-            type='submit'
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          >
-            Update Income
-          </button>
-          <button
-            className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
-            onClick={cancelEdit}
-          >
-            Cancel
-          </button>
+          <div className='flex justify-between'>
+            <button
+              type='submit'
+              className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+            >
+              Update Income
+            </button>
+            <button
+              className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
+              onClick={cancelEdit}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
   )
+
 }
 
 export default UpdateIncome

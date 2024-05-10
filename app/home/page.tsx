@@ -1,31 +1,28 @@
-import Navbar from '@/components/navbar'
-import CreateExpenses from '@/components/createExpenses'
-import CreateUser from '@/components/createUser'
-import CreateIncomes from '@/components/createIncomes'
-import DailyLedger from '@/components/dailyLedger'
+"use client"
 
-async function HomePage () {
+import DailyLedger from '@/components/dailyLedger'
+import Navbar from '@/components/navbar'
+import Footer from '@/components/footer' 
+import { useUser } from '@auth0/nextjs-auth0/client'
+
+const HomePage = () => {
+  const {error, isLoading } = useUser()
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>{error.message}</div>
+
   return (
-    <>
-      <main className='container mx-auto p-4 pt-6 md:p-6 lg:p-12'>
-        <div>
-          <div className='mb-5 border-b border-gray-300'>
-            <Navbar />
-          </div>
-          <div>
-            <h1 className='text-3xl text-center font-bold'>
-              Welcome to FlexiSpend
-            </h1>
-          </div>
-          <div>
-            <CreateUser />
-            <CreateExpenses />
-            <CreateIncomes/>
-            <DailyLedger />
-          </div>
+    <div className='flex flex-col min-h-screen bg-gray-800'>
+      <div className='flex-1 p-4 md:p-6 lg:p-12 pt-10'>
+          <Navbar />
+        <div className='mt-6 mb-10'>
+          <DailyLedger />
         </div>
-      </main>
-    </>
+      </div>
+      <div></div>
+      <Footer /> 
+    </div>
   )
 }
+
 export default HomePage
