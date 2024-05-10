@@ -1,47 +1,47 @@
 import { useState, FormEvent } from 'react'
 import axios from 'axios'
-import ExpenseCategory from './expenseCategories'
+import IncomeCategory from './incomeCategories'
 
-import { Expenses } from '@/lib/types'
+import { Incomes } from '@/lib/types'
 import DailyLedger from './dailyLedger'
 
-function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit: () => void  }) {
-  const [updatedExpense, setUpdatedExpense] = useState<Expenses>({
-    id: expense.id,
-    categoryId: expense.categoryId,
-    description: expense.description,
-    amount: expense.amount,
-    userId: expense.userId,
-    user: expense.user,
-    date: expense.date,
-    category: expense.category,
-    dailySummaries: expense.dailySummaries,
-    type: 'expenses'
+function UpdateIncome({ income, cancelEdit }: { income: Incomes; cancelEdit: () => void  }) {
+  const [updatedIncome, setUpdatedIncome] = useState<Incomes>({
+    id: income.id,
+    categoryId: income.categoryId,
+    description: income.description,
+    amount: income.amount,
+    userId: income.userId,
+    user: income.user,
+    date: income.date,
+    category: income.category,
+    dailySummaries: income.dailySummaries,
+    type: 'income'
   })
  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatedExpense({ ...updatedExpense, [event.target.name]: event.target.value })
+    setUpdatedIncome({ ...updatedIncome, [event.target.name]: event.target.value })
   }
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setUpdatedExpense({ ...updatedExpense, categoryId: event.target.value })
+    setUpdatedIncome({ ...updatedIncome, categoryId: event.target.value })
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
 
     try {
-      const response = await axios.put('/api/updateExpenses', updatedExpense)
+      const response = await axios.put('/api/updateIncomes', updatedIncome)
       console.log(response)
 
       if (response.data.error) {
-        console.error('Failed to update expense:', response.data.error)
+        console.error('Failed to update income:', response.data.error)
       } else {
         window.location.reload();
         DailyLedger()
       }
     } catch (error) {
-      console.error('Error updating expense:', error)
+      console.error('Error updating income:', error)
     }
   }
 
@@ -51,14 +51,14 @@ function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit:
         <form onSubmit={handleSubmit}>
           <label className='block mb-2'>
             Category:
-            <ExpenseCategory onChange={handleCategoryChange} value={updatedExpense.categoryId} />
+            <IncomeCategory onChange={handleCategoryChange} value={updatedIncome.categoryId} />
           </label>
           <label className='block mb-2'>
             Description:
             <input
               type='text'
               name='description'
-              value={updatedExpense.description}
+              value={updatedIncome.description}
               onChange={handleInputChange}
               className='w-full p-2 pl-10 text-sm text-gray-700'
             />
@@ -68,7 +68,7 @@ function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit:
             <input
               type='number'
               name='amount'
-              value={updatedExpense.amount}
+              value={updatedIncome.amount}
               onChange={handleInputChange}
               className='w-full p-2 pl-10 text-sm text-gray-700'
             />
@@ -77,7 +77,7 @@ function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit:
             type='submit'
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
           >
-            Update Expense
+            Update Income
           </button>
           <button
             className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'
@@ -91,4 +91,4 @@ function UpdateExpense({ expense, cancelEdit }: { expense: Expenses; cancelEdit:
   )
 }
 
-export default UpdateExpense
+export default UpdateIncome
