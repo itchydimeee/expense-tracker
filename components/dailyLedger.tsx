@@ -143,7 +143,12 @@ function DailyLedger () {
         <button
           className='ml-2 text-gray-600 hover:text-gray-900'
           onClick={() => {
-            setCurrentMonth(currentMonth - 1)
+            if (currentMonth === 0) {
+              setCurrentMonth(11)
+              setCurrentYear(currentYear - 1)
+            } else {
+              setCurrentMonth(currentMonth - 1)
+            }
           }}
         >
           {'<'}
@@ -151,7 +156,12 @@ function DailyLedger () {
         <button
           className='ml-2 text-gray-600 hover:text-gray-900'
           onClick={() => {
-            setCurrentMonth(currentMonth + 1)
+            if (currentMonth === 11) {
+              setCurrentMonth(0)
+              setCurrentYear(currentYear + 1)
+            } else {
+              setCurrentMonth(currentMonth + 1)
+            }
           }}
         >
           {'>'}
