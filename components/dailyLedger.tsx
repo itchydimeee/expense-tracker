@@ -5,6 +5,7 @@ import { useUser } from '@auth0/nextjs-auth0/client'
 import { Incomes, Expenses, monthsArray } from '@/lib/types'
 import UpdateExpense from './updateExpense'
 import UpdateIncome from './updateIncome'
+import { combineTransactions, calculateTotals } from '@/lib/transactions'
 
 function DailyLedger () {
   const [incomes, setIncomes] = useState<{ [date: string]: Incomes[] }>({})
@@ -68,29 +69,13 @@ function DailyLedger () {
     }
   }
 
-  const combineTransactions = (incomes: Incomes[], expenses: Expenses[]) => {
-    const combinedTransactions: {
-      incomes: { [date: string]: Incomes[] }
-      expenses: { [date: string]: Expenses[] }
-    } = { incomes: {}, expenses: {} }
-    incomes.forEach((income: Incomes) => {
-      const date = new Date(income.date)
-      const dateString = date.toLocaleDateString()
-      if (!combinedTransactions.incomes[dateString]) {
-        combinedTransactions.incomes[dateString] = []
-      }
-      combinedTransactions.incomes[dateString].push(income)
-    })
-    expenses.forEach((expense: Expenses) => {
-      const date = new Date(expense.date)
-      const dateString = date.toLocaleDateString()
-      if (!combinedTransactions.expenses[dateString]) {
-        combinedTransactions.expenses[dateString] = []
-      }
-      combinedTransactions.expenses[dateString].push(expense)
-    })
-    return combinedTransactions
-  }
+  const {
+    incomeTotals,
+    expenseTotals
+  }: {
+    incomeTotals: { [date: string]: number }
+    expenseTotals: { [date: string]: number }
+  } = calculateTotals(incomes, expenses)
 
   if (isLoading) {
     return (
@@ -120,15 +105,9 @@ function DailyLedger () {
     )
   }
 
-  const filteredIncomes = Object.keys(incomes).filter(date => {
-    const dateObject = new Date(date)
-    return (
-      dateObject.getMonth() === currentMonth &&
-      dateObject.getFullYear() === currentYear
-    )
-  })
+  const combinedTransactions = { ...incomes, ...expenses }
 
-  const filteredExpenses = Object.keys(expenses).filter(date => {
+  const filteredDates = Object.keys(combinedTransactions).filter(date => {
     const dateObject = new Date(date)
     return (
       dateObject.getMonth() === currentMonth &&
@@ -143,7 +122,12 @@ function DailyLedger () {
         <button
           className='ml-2 text-gray-600 hover:text-gray-900'
           onClick={() => {
-            setCurrentMonth(currentMonth - 1)
+            if (currentMonth === 0) {
+              setCurrentMonth(11)
+              setCurrentYear(currentYear - 1)
+            } else {
+              setCurrentMonth(currentMonth - 1)
+            }
           }}
         >
           {'<'}
@@ -151,7 +135,12 @@ function DailyLedger () {
         <button
           className='ml-2 text-gray-600 hover:text-gray-900'
           onClick={() => {
-            setCurrentMonth(currentMonth + 1)
+            if (currentMonth === 11) {
+              setCurrentMonth(0)
+              setCurrentYear(currentYear + 1)
+            } else {
+              setCurrentMonth(currentMonth + 1)
+            }
           }}
         >
           {'>'}
@@ -163,7 +152,7 @@ function DailyLedger () {
           <p>{error}</p>
         </div>
       )}
-      {[...filteredIncomes, ...filteredExpenses]
+      {filteredDates
         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
         .map(date => {
           const dateObject = new Date(date)
@@ -174,9 +163,17 @@ function DailyLedger () {
           const formattedDate = `${dayOfMonth} ${dayOfWeek}`
           return (
             <div key={date} className='mb-4 bg-gray-700 rounded-3xl p-2'>
-              <h2 className='text-sm text-white font-bold border-b border-gray-900 px-2 py-1'>
-                {formattedDate}
-              </h2>
+              <div className='flex justify-between border-b border-gray-900 '>
+                <h2 className='text-sm text-white font-bold px-2 py-1'>
+                  {formattedDate}
+                </h2>
+                <span className='text-sm text-blue-500'>
+                  {(incomeTotals[date] || 0).toFixed(2)}
+                </span>
+                <span className='text-sm text-red-500'>
+                  {(expenseTotals[date] || 0).toFixed(2)}
+                </span>
+              </div>
               <div className='p-4 rounded'>
                 <ul className='list-none mb-0'>
                   {(incomes[date] || []).map(income => (
