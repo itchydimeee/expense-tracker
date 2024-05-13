@@ -1,12 +1,27 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import headerImg from '@/assets/headerImg.png';
+
 export default function Navbar() {
   const { user, error, isLoading } = useUser();
   const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target && !target.closest('.relative')) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [setShowMenu]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
@@ -17,51 +32,27 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-10 flex justify-between items-center py-4 px-4 md:px-0 bg-gray-800">
-        <Link href="/" className="text-2xl font-bold md:text-3xl text-white">
-          Flexi$pend
+      <nav className='fixed top-0 left-0 w-full z-10 flex justify-between items-center py-4 px-4 md:px-0'>
+        <Link href='/' className=' '>
+          <Image src={headerImg} alt='logoImg' className='w-[140px]' />
         </Link>
         {user && (
-          <div className="flex items-center">
-            {user && user.picture && (
-              <div className="pr-1">
-                <Image
-                  src={user.picture}
-                  alt="Profile picture"
-                  width={48}
-                  height={48}
-                  className="rounded-full"
-                />
-              </div>
-            )}
-            <span className="text-lg pr-3 hidden md:inline-block">
-              {user.name}
-            </span>
-            <div className="relative">
-              <button
+          <div className='flex items-center'>
+            <div className='relative'>
+              <Image
+                src={user.picture ?? ''}
+                alt='Profile picture'
+                width={50}
+                height={50}
+                className='rounded-full cursor-pointer'
                 onClick={toggleMenu}
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 focus:outline-none"
-              >
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
+                onBlur={() => setShowMenu(false)}
+              />
               {showMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg">
+                <div className='absolute right-0 mt-2 w-20 bg-[#4d4d4d] rounded-md shadow-lg'>
                   <a
-                    href="/api/auth/logout"
-                    className="block px-4 py-2 text-white hover:bg-gray-700"
+                    href='/api/auth/logout'
+                    className='flex justify-center px-4 py-2 text-white hover:bg-background active:bg-background'
                   >
                     Logout
                   </a>
