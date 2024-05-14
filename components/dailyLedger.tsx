@@ -6,8 +6,9 @@ import { Incomes, Expenses, monthsArray } from '@/lib/types'
 import UpdateExpense from './updateExpense'
 import UpdateIncome from './updateIncome'
 import { combineTransactions, calculateTotals } from '@/lib/transactions'
+import MonthlySummaryCard from './monthlySummaryCard'
 
-function DailyLedger () {
+function DailyLedger() {
   const [incomes, setIncomes] = useState<{ [date: string]: Incomes[] }>({})
   const [expenses, setExpenses] = useState<{ [date: string]: Expenses[] }>({})
   const [loading, setLoading] = useState(false)
@@ -27,7 +28,7 @@ function DailyLedger () {
     }
   }, [user])
 
-  function cancelEdit () {
+  function cancelEdit() {
     setEditId(null)
   }
 
@@ -38,19 +39,19 @@ function DailyLedger () {
       try {
         const fetchUser = await axios.get('/api/fetchUser', {
           params: {
-            email: user.email
-          }
+            email: user.email,
+          },
         })
         const userId = fetchUser.data.id
         const incomeResponse = await axios.get(`/api/fetchIncomes`, {
           params: {
-            userId: userId
-          }
+            userId: userId,
+          },
         })
         const expenseResponse = await axios.get(`/api/fetchExpenses`, {
           params: {
-            userId: userId
-          }
+            userId: userId,
+          },
         })
         const incomeData = incomeResponse.data
         const expenseData = expenseResponse.data
@@ -71,7 +72,7 @@ function DailyLedger () {
 
   const {
     incomeTotals,
-    expenseTotals
+    expenseTotals,
   }: {
     incomeTotals: { [date: string]: number }
     expenseTotals: { [date: string]: number }
@@ -107,7 +108,7 @@ function DailyLedger () {
 
   const combinedTransactions = { ...incomes, ...expenses }
 
-  const filteredDates = Object.keys(combinedTransactions).filter(date => {
+  const filteredDates = Object.keys(combinedTransactions).filter((date) => {
     const dateObject = new Date(date)
     return (
       dateObject.getMonth() === currentMonth &&
@@ -117,7 +118,8 @@ function DailyLedger () {
 
   return (
     <div className='max-w-md mx-auto p-4 pt-6 pb-8'>
-      <h2 className='text-lg text-center text-white font-bold mb-4'>
+      <MonthlySummaryCard />
+      {/* <h2 className='text-lg text-center text-white font-bold mb-4'>
         {monthsArray[currentMonth]} {currentYear}
         <button
           className='ml-2 text-gray-600 hover:text-gray-900'
@@ -145,7 +147,7 @@ function DailyLedger () {
         >
           {'>'}
         </button>
-      </h2>
+      </h2> */}
       <h1 className='text-xl font-bold mb-4 text-white'>Daily Ledger</h1>
       {error && (
         <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
@@ -154,10 +156,10 @@ function DailyLedger () {
       )}
       {filteredDates
         .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
-        .map(date => {
+        .map((date) => {
           const dateObject = new Date(date)
           const dayOfWeek = dateObject.toLocaleDateString('en-US', {
-            weekday: 'long'
+            weekday: 'long',
           })
           const dayOfMonth = dateObject.getDate()
           const formattedDate = `${dayOfMonth} ${dayOfWeek}`
@@ -176,7 +178,7 @@ function DailyLedger () {
               </div>
               <div className='p-4 rounded'>
                 <ul className='list-none mb-0'>
-                  {(incomes[date] || []).map(income => (
+                  {(incomes[date] || []).map((income) => (
                     <li key={income.id} className='flex justify-between py-2'>
                       {editId === income.id ? (
                         <UpdateIncome income={income} cancelEdit={cancelEdit} />
@@ -206,7 +208,7 @@ function DailyLedger () {
                       )}
                     </li>
                   ))}
-                  {(expenses[date] || []).map(expense => (
+                  {(expenses[date] || []).map((expense) => (
                     <li key={expense.id} className='flex justify-between py-2'>
                       {editId === expense.id ? (
                         <UpdateExpense

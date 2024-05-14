@@ -3,6 +3,10 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/navigation';
 
+import Image from 'next/image';
+
+import logoImg from '@/assets/logoImg.png';
+
 export default function Home() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
@@ -18,17 +22,19 @@ export default function Home() {
 
   return (
     <main>
-      <div className="flex h-screen justify-center items-center">
-        <h1 className="text-3xl font-bold mb-4">
-          {' '}
+      <div className='flex flex-col h-screen justify-center items-center'>
+        <div>
+          <Image src={logoImg} alt='logo image' width={400} />{' '}
+        </div>
+        <div className='flex justify-center bg-button hover:bg-button-hover active:bg-button-hover w-[130px] h-[50px] my-6 rounded-full drop-shadow-lg'>
           <a
-            href="/api/auth/login"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            href='/api/auth/login'
+            className=' text-white text-2xl font-extrabold py-2'
           >
             {' '}
             Login
           </a>
-        </h1>
+        </div>
       </div>
     </main>
   );

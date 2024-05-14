@@ -1,94 +1,94 @@
 export type Users = {
-  id?: string;
-  auth0Id: string;
-  username: string;
-  email: string;
-  expenses: Expenses[];
-  dailySummaries: DailySummaries[];
-};
+  id?: string
+  auth0Id: string
+  username: string
+  email: string
+  expenses: Expenses[]
+  dailySummaries: DailySummaries[]
+}
 
 export type Expenses = {
-  id?: string;
-  user: Users;
-  userId: string;
-  date: Date;
-  category: ExpenseCategories;
-  categoryId: string;
-  description: string;
-  amount: number;
-  dailySummaries: DailySummaries[];
+  id?: string
+  user: Users
+  userId: string
+  date: Date
+  category: ExpenseCategories
+  categoryId: string
+  description: string
+  amount: number
+  dailySummaries: DailySummaries[]
   type: 'expenses'
-};
+}
 export type Incomes = {
-  id?: string;
-  user: Users;
-  userId: string;
-  date: Date;
-  category: ExpenseCategories;
-  categoryId: string;
-  description: string;
-  amount: number;
-  dailySummaries: DailySummaries[];
+  id?: string
+  user: Users
+  userId: string
+  date: Date
+  category: ExpenseCategories
+  categoryId: string
+  description: string
+  amount: number
+  dailySummaries: DailySummaries[]
   type: 'income'
-};
+}
 
 export type ExpenseCategories = {
-  id?: string;
-  name: string;
-  expenses: Expenses[];
-  dailySummaries: DailySummaries[];
-};
+  id?: string
+  name: string
+  expenses: Expenses[]
+  dailySummaries: DailySummaries[]
+}
+
 export type IncomeCategories = {
-  id?: string;
-  name: string;
-  expenses: Expenses[];
-  dailySummaries: DailySummaries[];
-};
+  id?: string
+  name: string
+  expenses: Expenses[]
+  dailySummaries: DailySummaries[]
+}
 
 export type DailySummaries = {
-  id: string;
-  user: Users;
-  userId: string;
-  date: Date;
-  expense: Expenses;
-  expenseId: string;
-  category: ExpenseCategories;
-  categoryId: string;
-  totalExpense: number;
-};
+  id: string
+  user: Users
+  userId: string
+  date: Date
+  expense: Expenses
+  expenseId: string
+  category: ExpenseCategories
+  categoryId: string
+  totalExpense: number
+}
 
 export interface Expense {
-  userId: any;
-  name: string;
-  categoryId: string;
-  description: string;
-  amount: string;
+  userId: any
+  name: string
+  categoryId: string
+  description: string
+  amount: string
 }
 export interface Income {
-  userId: any;
-  name: string;
-  categoryId: string;
-  description: string;
-  amount: string;
+  userId: any
+  name: string
+  categoryId: string
+  description: string
+  amount: string
 }
 
 export interface UpdatedExpense {
-  id: string | undefined;
-  categoryId: string;
-  description: string;
-  amount: number;
-  userId: string;
+  id: string | undefined
+  categoryId: string
+  description: string
+  amount: number
+  userId: string
 }
 
-
 export interface Transaction {
-  id: string;
-  userId: string;
-  category: IncomeCategories | ExpenseCategories;
-  description: string;
-  amount: number;
-  date: Date;
-  type: 'income' | 'expense'; // Use a union type for the type property
+  id: string
+  userId: string
+  category: IncomeCategories | ExpenseCategories
+  description: string
+  amount: number
+  date: Date
+  type: 'income' | 'expense' // Use a union type for the type property
 }
 
 export const monthsArray = [
@@ -103,5 +103,31 @@ export const monthsArray = [
   'Sep',
   'Oct',
   'Nov',
-  'Dec'
+  'Dec',
 ]
+
+export interface DailySummaryCardProps {
+  date: string
+  transactions: {
+    id: number
+    type: 'income' | 'expense'
+    category: string
+    description: string
+    amount: number
+    createdAt: string
+  }[]
+}
+
+export interface DailyLedgerProps {
+  dailyTransactions: {
+    date: string
+    transactions: {
+      id: number
+      type: 'income' | 'expense'
+      category: string
+      description: string
+      amount: number
+      createdAt: string
+    }[]
+  }[]
+}
