@@ -106,15 +106,9 @@ function DailyLedger() {
     )
   }
 
-  const filteredIncomes = Object.keys(incomes).filter((date) => {
-    const dateObject = new Date(date)
-    return (
-      dateObject.getMonth() === currentMonth &&
-      dateObject.getFullYear() === currentYear
-    )
-  })
+  const combinedTransactions = { ...incomes, ...expenses }
 
-  const filteredExpenses = Object.keys(expenses).filter((date) => {
+  const filteredDates = Object.keys(combinedTransactions).filter((date) => {
     const dateObject = new Date(date)
     return (
       dateObject.getMonth() === currentMonth &&
