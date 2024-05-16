@@ -118,8 +118,7 @@ function DailyLedger() {
 
   return (
     <div className='max-w-md mx-auto p-4 pt-6 pb-8'>
-      <MonthlySummaryCard />
-      {/* <h2 className='text-lg text-center text-white font-bold mb-4'>
+      <h2 className='text-lg text-center text-white font-bold mb-4'>
         {monthsArray[currentMonth]} {currentYear}
         <button
           className='ml-2 text-gray-600 hover:text-gray-900'
@@ -147,7 +146,7 @@ function DailyLedger() {
         >
           {'>'}
         </button>
-      </h2> */}
+      </h2>
       <h1 className='text-xl font-bold mb-4 text-white'>Daily Ledger</h1>
       {error && (
         <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
