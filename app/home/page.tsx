@@ -1,7 +1,7 @@
 'use client'
 
-// import DailyLedger from '@/components/dailyLedger'
-import DailyLedger from '@/components/newDailyLedger'
+import DailyLedger from '@/components/dailyLedger'
+// import DailyLedger from '@/components/newDailyLedger'
 import MonthlySummaryCard from '@/components/monthlySummaryCard'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
@@ -82,8 +82,7 @@ const HomePage = () => {
       <div className='flex-1 p-4 md:p-6 lg:p-12 pt-10'>
         <Navbar />
         <div className='mt-10 mb-10'>
-          <MonthlySummaryCard />
-          <DailyLedger dailyTransactions={transactions} />
+          <DailyLedger />
         </div>
       </div>
       <div></div>
