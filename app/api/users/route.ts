@@ -1,11 +1,10 @@
-// pages/api/users/[userId].js
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url)
-    const userId = url.searchParams.get('id')
+    const userId = url.searchParams.get('userId')
     const user = await prisma.users.findUnique({
       where: { auth0Id: userId ?? '' },
       include: { expenses: true, dailySummaries: true },
