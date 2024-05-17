@@ -2,7 +2,8 @@ import { useState, useEffect, FormEvent } from 'react'
 import axios from 'axios'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import ExpenseCategory from './expenseCategories'
-
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Expense } from '@/lib/types'
 import IncomeCategory from './incomeCategories'
 
@@ -106,12 +107,12 @@ function CreateExpenses () {
   }
 
   return (
-    <div className='max-w-md mx-auto p-4 pt-6'>
+    <div className='max-w-md mx-auto p-4 pt-4'>
       <button
         className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full'
         onClick={handleShowForm}
       >
-        +
+        <FontAwesomeIcon icon={faPlus} />
       </button>
       {showForm && (
         <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50'>
