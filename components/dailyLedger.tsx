@@ -6,6 +6,8 @@ import { Incomes, Expenses, monthsArray } from '@/lib/types'
 import UpdateExpense from './updateExpense'
 import UpdateIncome from './updateIncome'
 import { combineTransactions, calculateTotals } from '@/lib/transactions'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import MonthlySummaryCard from './monthlySummaryCard'
 
 function DailyLedger() {
@@ -119,9 +121,8 @@ function DailyLedger() {
   return (
     <div className='max-w-md mx-auto p-4 pt-6 pb-8'>
       <h2 className='text-lg text-center text-white font-bold mb-4'>
-        {monthsArray[currentMonth]} {currentYear}
         <button
-          className='ml-2 text-gray-600 hover:text-gray-900'
+          className='mr-4 text-gray-600 hover:text-gray-900'
           onClick={() => {
             if (currentMonth === 0) {
               setCurrentMonth(11)
@@ -131,10 +132,11 @@ function DailyLedger() {
             }
           }}
         >
-          {'<'}
+            <FontAwesomeIcon icon={faAngleLeft} />
         </button>
+        {monthsArray[currentMonth]} {currentYear}
         <button
-          className='ml-2 text-gray-600 hover:text-gray-900'
+          className='ml-4 text-gray-600 hover:text-gray-900'
           onClick={() => {
             if (currentMonth === 11) {
               setCurrentMonth(0)
@@ -144,7 +146,7 @@ function DailyLedger() {
             }
           }}
         >
-          {'>'}
+              <FontAwesomeIcon icon={faAngleRight} />
         </button>
       </h2>
       <h1 className='text-xl font-bold mb-4 text-white'>Daily Ledger</h1>
@@ -191,15 +193,15 @@ function DailyLedger() {
                               }
                             }}
                           >
-                            <span className='w-1/4 text-sm text-white'>
+                            <span className='text-sm text-white'>
                               {income.category.name}
                             </span>
-                            <span className='w-1/2 text-sm truncate text-white'>
+                            <span className='text-sm truncate text-white'>
                               {income.description.length > 20
                                 ? `${income.description.substring(0, 20)}...`
                                 : income.description}
                             </span>
-                            <span className='w-1/4 text-sm text-right text-blue-600'>
+                            <span className='text-sm text-right text-blue-600'>
                               {income.amount}
                             </span>
                           </div>
@@ -224,15 +226,15 @@ function DailyLedger() {
                               }
                             }}
                           >
-                            <span className='w-1/4 text-sm text-white'>
+                            <span className='text-sm text-white'>
                               {expense.category.name}
                             </span>
-                            <span className='w-1/2 text-sm truncate text-white'>
+                            <span className='text-sm truncate text-white'>
                               {expense.description.length > 20
                                 ? `${expense.description.substring(0, 20)}...`
                                 : expense.description}
                             </span>
-                            <span className='w-1/4 text-sm text-right text-red-600'>
+                            <span className='text-sm text-right text-red-600'>
                               {expense.amount}
                             </span>
                           </div>
