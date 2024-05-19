@@ -25,10 +25,19 @@ function DailyLedger() {
   )
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      setLoading(true)
-      setError(null)
-      if (!user) return
+    if (user) {
+      fetchTransactions()
+    }
+  }, [user])
+
+  function cancelEdit() {
+    setEditId(null)
+  }
+
+  const fetchTransactions = async () => {
+    setLoading(true)
+    setError(null)
+    if (user) {
       try {
         const fetchUser = await axios.get('/api/fetchUser', {
           params: {
@@ -61,11 +70,6 @@ function DailyLedger() {
         setLoading(false)
       }
     }
-    fetchTransactions()
-  }, [user])
-
-  function cancelEdit() {
-    setEditId(null)
   }
 
   const {
@@ -85,7 +89,7 @@ function DailyLedger() {
         >
           <span className='sr-only'>Loading...</span>
         </div>
-        <p className='text-lg text-gray-600'>Loading...</p>
+        <p className='text-lg text-gray-600 px-2'>Loading...</p>
       </div>
     )
   }
@@ -99,7 +103,7 @@ function DailyLedger() {
         >
           <span className='sr-only'>Loading transactions...</span>
         </div>
-        <p className='text-lg text-gray-600'>Loading transactions...</p>
+        <p className='text-lg text-gray-600 px-2'>Loading transactions...</p>
       </div>
     )
   }

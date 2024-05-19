@@ -23,22 +23,23 @@ function CreateExpenses() {
   const { user, isLoading } = useUser()
 
   useEffect(() => {
-    const fetchUserId = async () => {
-      if (!user) return
-      try {
-        const response = await axios.get('/api/fetchUser', {
-          params: {
-            email: user.email,
-          },
-        })
-        const userId = response.data.id
-        setNewExpense({ ...newExpense, userId })
-      } catch (error) {
-        console.error(error)
+    if (user) {
+      const fetchUserId = async () => {
+        try {
+          const response = await axios.get('/api/fetchUser', {
+            params: {
+              email: user.email,
+            },
+          })
+          const userId = response.data.id
+          setNewExpense({ ...newExpense, userId })
+        } catch (error) {
+          console.error(error)
+        }
       }
+      fetchUserId()
     }
-    fetchUserId()
-  }, [user, newExpense])
+  }, [user])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewExpense({ ...newExpense, [event.target.name]: event.target.value })

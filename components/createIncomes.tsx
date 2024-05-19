@@ -16,26 +16,27 @@ function CreateIncomes() {
     userId: '',
   })
   const [showForm, setShowForm] = useState(false)
-  const [selectedCategoryId, setSelectedCategoryId] = useState('') 
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const { user, isLoading } = useUser()
 
   useEffect(() => {
-    const fetchUserId = async () => {
-      if (!user) return
-      try {
-        const response = await axios.get('/api/fetchUser', {
-          params: {
-            email: user.email,
-          },
-        })
-        const userId = response.data.id
-        setNewIncome({ ...newIncome, userId })
-      } catch (error) {
-        console.error(error)
+    if (user) {
+      const fetchUserId = async () => {
+        try {
+          const response = await axios.get('/api/fetchUser', {
+            params: {
+              email: user.email,
+            },
+          })
+          const userId = response.data.id
+          setNewIncome({ ...newIncome, userId })
+        } catch (error) {
+          console.error(error)
+        }
       }
+      fetchUserId()
     }
-    fetchUserId()
-  }, [user, newIncome])
+  }, [user])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewIncome({ ...newIncome, [event.target.name]: event.target.value })
@@ -46,7 +47,7 @@ function CreateIncomes() {
   ) => {
     const categoryId = event.target.value
     setNewIncome({ ...newIncome, categoryId })
-    setSelectedCategoryId(categoryId) 
+    setSelectedCategoryId(categoryId)
   }
 
   const handleShowForm = () => {
