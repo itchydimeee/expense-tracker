@@ -1,14 +1,14 @@
 import { useState, FormEvent } from 'react'
 import axios from 'axios'
-import ExpenseCategory from './expenseCategories'
 
 import { Expenses } from '@/lib/types'
-import DailyLedger from './dailyLedger'
 import DeleteExpense from './deleteExpenses'
+import ExpenseCategory from './expenseCategories'
+import FinancialTracker from './financialTracker'
 
-function UpdateExpense ({
+function UpdateExpense({
   expense,
-  cancelEdit
+  cancelEdit,
 }: {
   expense: Expenses
   cancelEdit: () => void
@@ -22,14 +22,13 @@ function UpdateExpense ({
     user: expense.user,
     date: expense.date,
     category: expense.category,
-    dailySummaries: expense.dailySummaries,
-    type: 'expenses'
+    type: 'expenses',
   })
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedExpense({
       ...updatedExpense,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 
@@ -52,7 +51,7 @@ function UpdateExpense ({
         console.error('Failed to update expense:', response.data.error)
       } else {
         window.location.reload()
-        DailyLedger()
+        FinancialTracker()
       }
     } catch (error) {
       console.error('Error updating expense:', error)
@@ -61,7 +60,7 @@ function UpdateExpense ({
 
   return (
     <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50'>
-      <div className='bg-gray-700 rounded-2xl text-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
+      <div className='bg-gray-700 rounded-2xl text-white p-4 shadow-md w-full md:w-1/2 xl:w-1/3'>
         <form onSubmit={handleSubmit}>
           <label className='block mb-2'>
             Category:

@@ -1,20 +1,28 @@
 import { useState, FormEvent } from 'react'
 import axios from 'axios'
-import IncomeCategory from './incomeCategories'
 
-import { Income, IncomeCategories } from '@prisma/client'
-import DailyLedger from './dailyLedger'
+import { Incomes } from '@/lib/types'
 import DeleteIncome from './deleteIncome'
-import { UpdateIncomeProps } from '@/lib/types'
+import IncomeCategory from './incomeCategories'
+import FinancialTracker from './financialTracker'
 
-const UpdateIncome = ({ income, cancelEdit }: UpdateIncomeProps) => {
-  const [updatedIncome, setUpdatedIncome] = useState<Income>({
+const UpdateIncome = ({
+  income,
+  cancelEdit,
+}: {
+  income: Incomes
+  cancelEdit: () => void
+}) => {
+  const [updatedIncome, setUpdatedIncome] = useState<Incomes>({
     id: income.id,
     categoryId: income.categoryId,
     description: income.description,
     amount: income.amount,
     userId: income.userId,
+    user: income.user,
     date: income.date,
+    category: income.category,
+    type: 'income',
   })
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +51,7 @@ const UpdateIncome = ({ income, cancelEdit }: UpdateIncomeProps) => {
         console.error('Failed to update income:', response.data.error)
       } else {
         window.location.reload()
-        DailyLedger()
+        FinancialTracker()
       }
     } catch (error) {
       console.error('Error updating income:', error)
