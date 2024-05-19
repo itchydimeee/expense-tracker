@@ -4,18 +4,26 @@ import prisma from '@/lib/prisma'
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url)
-    const userId = url.searchParams.get('userId')
-    const user = await prisma.users.findUnique({
-      where: { auth0Id: userId ?? '' },
-      include: { expenses: true, dailySummaries: true },
-    })
-    if (!user) {
-      return NextResponse.json({ error: 'User not Found' })
+    const userId = url.searchParams.get('id')
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'user id is required' },
+        { status: 400 }
+      )
     }
-    return NextResponse.json({ id: user.id })
-  } catch (err) {
-    console.log('error', err)
-    return NextResponse.json({ error: 'Failed to fetch user' })
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+      include: { expenses: true, income: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not Found' }, { status: 404 })
+    }
+
+    return NextResponse.json(user)
+  } catch (error) {
+    console.log('Error fetching user: ', error)
+    return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 })
   }
 }
 
@@ -32,8 +40,8 @@ export async function POST(req: NextRequest) {
       data: { auth0Id, email, username },
     })
     return NextResponse.json(newUser)
-  } catch (err) {
-    console.log('error', err)
-    return NextResponse.json({ error: 'Failed to create user' })
+  } catch (error) {
+    console.log('Error creating user: ', error)
+    return NextResponse.json({ erroror: 'Failed to create user' })
   }
 }

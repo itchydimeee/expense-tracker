@@ -3,16 +3,40 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
-function MonthlySummaryCard() {
+import { monthsArray } from '@/lib/types'
+
+interface Props {
+  currentMonth: number
+  currentYear: number
+  incomeTotals: { [date: string]: number }
+  expenseTotals: { [date: string]: number }
+  onPreviousMonth: () => void
+  onNextMonth: () => void
+}
+
+function MonthlySummaryCard({
+  currentMonth,
+  currentYear,
+  incomeTotals,
+  expenseTotals,
+  onPreviousMonth,
+  onNextMonth,
+}: Props) {
   return (
     <Card className='bg-secondary border-none rounded-3xl drop-shadow-lg text-white mb-8'>
       <CardHeader className='flex flex-row justify-center py-1'>
         <CardTitle className='font-semibold text-xl'>
-          <button>
+          <button
+            className='ml-2 text-gray-600 hover:text-gray-900'
+            onClick={onPreviousMonth}
+          >
             <FontAwesomeIcon icon={faAngleLeft} />{' '}
           </button>{' '}
-          May 2024{' '}
-          <button>
+          {monthsArray[currentMonth]} {currentYear}{' '}
+          <button
+            className='ml-2 text-gray-600 hover:text-gray-900'
+            onClick={onNextMonth}
+          >
             <FontAwesomeIcon icon={faAngleRight} />
           </button>
         </CardTitle>

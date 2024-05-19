@@ -1,8 +1,8 @@
 // pages/api/expenses/[userId].js
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,12 +17,12 @@ export async function GET(req: NextRequest) {
         category: true,
       },
       orderBy: {
-        date: 'desc'
-      }
-    });
-    return NextResponse.json(expenses);
+        date: 'desc',
+      },
+    })
+    return NextResponse.json(expenses)
   } catch (err) {
-    console.log('error', err);
-    return NextResponse.json({ error: 'Failed to fetch expenses' });
+    console.log('Error: ', err)
+    return NextResponse.json({ error: 'Failed to fetch expenses' })
   }
 }

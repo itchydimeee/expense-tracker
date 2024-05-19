@@ -2,34 +2,25 @@ import { useState, FormEvent } from 'react'
 import axios from 'axios'
 import IncomeCategory from './incomeCategories'
 
-import { Incomes } from '@/lib/types'
+import { Income, IncomeCategories } from '@prisma/client'
 import DailyLedger from './dailyLedger'
 import DeleteIncome from './deleteIncome'
+import { UpdateIncomeProps } from '@/lib/types'
 
-function UpdateIncome ({
-  income,
-  cancelEdit
-}: {
-  income: Incomes
-  cancelEdit: () => void
-}) {
-  const [updatedIncome, setUpdatedIncome] = useState<Incomes>({
+const UpdateIncome = ({ income, cancelEdit }: UpdateIncomeProps) => {
+  const [updatedIncome, setUpdatedIncome] = useState<Income>({
     id: income.id,
     categoryId: income.categoryId,
     description: income.description,
     amount: income.amount,
     userId: income.userId,
-    user: income.user,
     date: income.date,
-    category: income.category,
-    dailySummaries: income.dailySummaries,
-    type: 'income'
   })
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedIncome({
       ...updatedIncome,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 

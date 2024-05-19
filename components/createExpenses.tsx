@@ -6,7 +6,7 @@ import ExpenseCategory from './expenseCategories'
 import { Expense } from '@/lib/types'
 import IncomeCategory from './incomeCategories'
 
-function CreateExpenses () {
+function CreateExpenses() {
   const [activeCreationType, setActiveCreationType] = useState<
     'Expenses' | 'Incomes'
   >('Expenses')
@@ -15,7 +15,7 @@ function CreateExpenses () {
     categoryId: '',
     description: '',
     amount: '',
-    userId: ''
+    userId: '',
   })
   const [showForm, setShowForm] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState('') // Add this state
@@ -27,8 +27,8 @@ function CreateExpenses () {
         try {
           const response = await axios.get('/api/fetchUser', {
             params: {
-              email: user.email
-            }
+              email: user.email,
+            },
           })
           const userId = response.data.id
           setNewExpense({ ...newExpense, userId })
@@ -76,7 +76,7 @@ function CreateExpenses () {
         description: newExpense.description,
         amount: newExpense.amount,
         userId: newExpense.userId,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       })
       console.log(response)
 
@@ -91,7 +91,7 @@ function CreateExpenses () {
           categoryId: '',
           description: '',
           amount: '',
-          userId: ''
+          userId: '',
         })
         setShowForm(false)
         window.location.reload()
@@ -114,8 +114,8 @@ function CreateExpenses () {
         +
       </button>
       {showForm && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50'>
-          <div className='bg-gray-700 rounded-2xl text-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-background bg-opacity-50'>
+          <div className='bg-secondary rounded-2xl text-white p-4 shadow-md w-full md:w-1/2 xl:w-1/3'>
             <div className='flex justify-end mb-2'>
               <button
                 className={`bg-gray-700 hover:bg-gray-300 text-white font-bold py-2 px-4 rounded mr-2 ${

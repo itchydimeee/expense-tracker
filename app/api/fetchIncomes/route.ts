@@ -1,14 +1,14 @@
 // pages/api/expenses/[userId].js
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url)
     const userId = url.searchParams.get('userId') ?? ''
-    const expenses = await prisma.income.findMany({
+    const incomes = await prisma.income.findMany({
       where: {
         userId: userId,
       },
@@ -17,12 +17,12 @@ export async function GET(req: NextRequest) {
         category: true,
       },
       orderBy: {
-        date: 'desc'
-      }
-    });
-    return NextResponse.json(expenses);
+        date: 'desc',
+      },
+    })
+    return NextResponse.json(incomes)
   } catch (err) {
-    console.log('error', err);
-    return NextResponse.json({ error: 'Failed to fetch expenses' });
+    console.log('Error: ', err)
+    return NextResponse.json({ error: 'Failed to fetch income' })
   }
 }

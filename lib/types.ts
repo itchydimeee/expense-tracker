@@ -109,7 +109,7 @@ export const monthsArray = [
 export interface DailySummaryCardProps {
   date: string
   transactions: {
-    id: number
+    id: string
     type: 'income' | 'expense'
     category: string
     description: string
@@ -122,7 +122,7 @@ export interface DailyLedgerProps {
   dailyTransactions: {
     date: string
     transactions: {
-      id: number
+      id: string
       type: 'income' | 'expense'
       category: string
       description: string
@@ -130,4 +130,8 @@ export interface DailyLedgerProps {
       createdAt: string
     }[]
   }[]
+}
+
+export interface LoadingIndicatorProps {
+  message: string
 }
