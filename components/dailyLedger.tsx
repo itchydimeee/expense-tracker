@@ -23,19 +23,10 @@ function DailyLedger() {
   )
 
   useEffect(() => {
-    if (user) {
-      fetchTransactions()
-    }
-  }, [user])
-
-  function cancelEdit() {
-    setEditId(null)
-  }
-
-  const fetchTransactions = async () => {
-    setLoading(true)
-    setError(null)
-    if (user) {
+    const fetchTransactions = async () => {
+      setLoading(true)
+      setError(null)
+      if (!user) return
       try {
         const fetchUser = await axios.get('/api/fetchUser', {
           params: {
@@ -68,6 +59,11 @@ function DailyLedger() {
         setLoading(false)
       }
     }
+    fetchTransactions()
+  }, [user])
+
+  function cancelEdit() {
+    setEditId(null)
   }
 
   const {
