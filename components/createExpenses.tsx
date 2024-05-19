@@ -115,11 +115,11 @@ function CreateExpenses () {
         <FontAwesomeIcon icon={faPlus} />
       </button>
       {showForm && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50'>
-          <div className='bg-gray-700 rounded-2xl text-white p-4 rounded shadow-md w-full md:w-1/2 xl:w-1/3'>
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-50'>
+          <div className='bg-secondary rounded-2xl text-white p-4 shadow-lg w-full md:w-1/2 xl:w-1/3'>
             <div className='flex justify-end mb-2'>
               <button
-                className={`bg-gray-700 hover:bg-gray-300 text-white font-bold py-2 px-4 rounded mr-2 ${
+                className={`bg-secondary hover:bg-gray-300 text-white font-bold py-2 px-4 rounded mr-2 ${
                   activeCreationType === 'Expenses'
                     ? 'bg-gray-300 text-black sm:bg-gray-300 sm:text-black md:bg-gray-300 md:text-black lg:bg-gray-300 lg:text-black'
                     : ''
@@ -130,7 +130,7 @@ function CreateExpenses () {
               </button>
 
               <button
-                className={`bg-gray-700 hover:bg-gray-300 text-white font-bold py-2 px-4 rounded ${
+                className={`bg-secondary hover:bg-gray-300 text-white font-bold py-2 px-4 rounded ${
                   activeCreationType === 'Incomes'
                     ? 'bg-gray-300 text-black sm:bg-gray-300 sm:text-black md:bg-gray-300 md:text-black lg:bg-gray-300 lg:text-black'
                     : ''

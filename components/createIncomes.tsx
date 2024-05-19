@@ -16,7 +16,7 @@ function CreateIncomes () {
     userId: '',
   })
   const [showForm, setShowForm] = useState(false)
-  const [selectedCategoryId, setSelectedCategoryId] = useState('') // Add this state
+  const [selectedCategoryId, setSelectedCategoryId] = useState('') 
   const { user, isLoading } = useUser()
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function CreateIncomes () {
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const categoryId = event.target.value
     setNewIncome({ ...newIncome, categoryId })
-    setSelectedCategoryId(categoryId) // Update the selectedCategoryId state
+    setSelectedCategoryId(categoryId) 
   }
 
   const handleShowForm = () => {
