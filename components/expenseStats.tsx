@@ -10,10 +10,9 @@ const ExpenseStats = () => {
     { title: string; value: number; color: string }[]
   >([])
   const { user } = useUser()
-  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    if (user && !isLoaded) {
+    if (user) {
       const fetchUserIdAndExpenses = async () => {
         const response = await axios.get('/api/fetchUser', {
           params: {
@@ -48,32 +47,34 @@ const ExpenseStats = () => {
           }
         )
 
-        const data = Array.from(expenseData, ([title, value]) => ({
+        const colors = [
+          '#00698F',
+          '#FFD700',
+          '#4169E1',
+          '#34C759',
+          '#FFC0CB',
+          '#6495ED',
+          '#FFA07A',
+          '#2F4F7F',
+          '#C7F464',
+          '#9400D3'
+        ]
+
+        for (let i = colors.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[colors[i], colors[j]] = [colors[j], colors[i]]
+        }
+
+        const data = Array.from(expenseData, ([title, value], index) => ({
           title,
           value: Number(value),
-          color: getRandomColor()
+          color: colors[index % colors.length]
         }))
         setData(data.sort((a, b) => b.value - a.value))
-        setIsLoaded(true)
       }
       fetchUserIdAndExpenses()
     }
-  }, [user, isLoaded])
-
-  const getRandomColor = () => {
-    const colors = [
-      '#FFC107',
-      '#2196F3',
-      '#9C27B0',
-      '#4CAF50',
-      '#FF69B4',
-      '#8BC34A',
-      '#03A9F4',
-      '#E91E63'
-    ]
-    const randomIndex = Math.floor(Math.random() * colors.length)
-    return colors[randomIndex]
-  }
+  }, [user])
 
   return (
     <div className='p-2'>

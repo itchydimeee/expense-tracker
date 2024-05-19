@@ -6,6 +6,8 @@ import { Incomes, Expenses, monthsArray } from '@/lib/types'
 import UpdateExpense from './updateExpense'
 import UpdateIncome from './updateIncome'
 import { combineTransactions, calculateTotals } from '@/lib/transactions'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import MonthlySummaryCard from './monthlySummaryCard'
 
 function DailyLedger() {
@@ -69,9 +71,9 @@ function DailyLedger() {
   const {
     incomeTotals,
     expenseTotals,
-  }: {
-    incomeTotals: { [date: string]: number }
-    expenseTotals: { [date: string]: number }
+    monthlyIncomeTotals,
+    monthlyExpenseTotals,
+    monthlyProfitTotals,
   } = calculateTotals(incomes, expenses)
 
   if (isLoading) {
@@ -113,35 +115,17 @@ function DailyLedger() {
   })
 
   return (
-    <div className='max-w-md mx-auto p-4 pt-6 pb-8'>
-      <h2 className='text-lg text-center text-white font-bold mb-4'>
-        {monthsArray[currentMonth]} {currentYear}
-        <button
-          className='ml-2 text-gray-600 hover:text-gray-900'
-          onClick={() => {
-            if (currentMonth === 0) {
-              setCurrentMonth(11)
-              setCurrentYear(currentYear - 1)
-            } else {
-              setCurrentMonth(currentMonth - 1)
-            }
-          }}
-        >
-          {'<'}
-        </button>
-        <button
-          className='ml-2 text-gray-600 hover:text-gray-900'
-          onClick={() => {
-            if (currentMonth === 11) {
-              setCurrentMonth(0)
-              setCurrentYear(currentYear + 1)
-            } else {
-              setCurrentMonth(currentMonth + 1)
-            }
-          }}
-        >
-          {'>'}
-        </button>
+    <div className='max-w-md mx-auto p-2 pt-6 pb-8'>
+      <h2 className='text-lg text-center text-white mb-2'>
+        <MonthlySummaryCard
+          currentMonth={currentMonth}
+          currentYear={currentYear}
+          monthlyIncomeTotals={monthlyIncomeTotals}
+          monthlyExpenseTotals={monthlyExpenseTotals}
+          monthlyProfitTotals={monthlyProfitTotals}
+          setCurrentMonth={setCurrentMonth}
+          setCurrentYear={setCurrentYear}
+        />
       </h2>
       <h1 className='text-xl font-bold mb-4 text-white'>Daily Ledger</h1>
       {error && (
@@ -154,27 +138,33 @@ function DailyLedger() {
         .map((date) => {
           const dateObject = new Date(date)
           const dayOfWeek = dateObject.toLocaleDateString('en-US', {
-            weekday: 'long',
+            weekday: 'short',
           })
           const dayOfMonth = dateObject.getDate()
-          const formattedDate = `${dayOfMonth} ${dayOfWeek}`
           return (
-            <div key={date} className='mb-4 bg-gray-700 rounded-3xl p-2'>
+            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2'>
               <div className='flex justify-between border-b border-gray-900 '>
-                <h2 className='text-sm text-white font-bold px-2 py-1'>
-                  {formattedDate}
-                </h2>
-                <span className='text-sm text-blue-500'>
-                  {(incomeTotals[date] || 0).toFixed(2)}
-                </span>
-                <span className='text-sm text-red-500'>
-                  {(expenseTotals[date] || 0).toFixed(2)}
-                </span>
+                <div className='flex px-1'>
+                  <h2 className='text-lg text-white font-bold px-1 '>
+                    {dayOfMonth}
+                  </h2>
+                  <h2 className='text-xs font-bold text-white px-1 py-1 bg-background rounded-md mb-1 mt-1'>
+                    {dayOfWeek}
+                  </h2>
+                </div>
+                <div className='flex justify-end'>
+                  <span className='text-sm text-blue-500 w-20 text-right'>
+                    {(incomeTotals[date] || 0).toFixed(2)}
+                  </span>
+                  <span className='text-sm text-red-500 w-20 text-right ml-2'>
+                    {(expenseTotals[date] || 0).toFixed(2)}
+                  </span>
+                </div>
               </div>
               <div className='p-4 rounded'>
-                <ul className='list-none mb-0'>
+                <ul className='list-none'>
                   {(incomes[date] || []).map((income) => (
-                    <li key={income.id} className='flex justify-between py-2'>
+                    <li key={income.id} className='flex justify-between'>
                       {editId === income.id ? (
                         <UpdateIncome income={income} cancelEdit={cancelEdit} />
                       ) : (
@@ -187,16 +177,16 @@ function DailyLedger() {
                               }
                             }}
                           >
-                            <span className='w-1/4 text-sm text-white'>
+                            <span className='text-sm text-white'>
                               {income.category.name}
                             </span>
-                            <span className='w-1/2 text-sm truncate text-white'>
+                            <span className='text-sm truncate text-white'>
                               {income.description.length > 20
                                 ? `${income.description.substring(0, 20)}...`
                                 : income.description}
                             </span>
-                            <span className='w-1/4 text-sm text-right text-blue-600'>
-                              {income.amount}
+                            <span className='text-sm text-right text-blue-600'>
+                              {Number(income.amount).toFixed(2)}
                             </span>
                           </div>
                         </>
@@ -220,16 +210,16 @@ function DailyLedger() {
                               }
                             }}
                           >
-                            <span className='w-1/4 text-sm text-white'>
+                            <span className='text-sm text-white'>
                               {expense.category.name}
                             </span>
-                            <span className='w-1/2 text-sm truncate text-white'>
+                            <span className='text-sm truncate text-white'>
                               {expense.description.length > 20
                                 ? `${expense.description.substring(0, 20)}...`
                                 : expense.description}
                             </span>
-                            <span className='w-1/4 text-sm text-right text-red-600'>
-                              {expense.amount}
+                            <span className='text-sm text-right text-red-500'>
+                              {Number(expense.amount).toFixed(2)}
                             </span>
                           </div>
                         </>
