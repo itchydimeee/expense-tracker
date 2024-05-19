@@ -127,7 +127,7 @@ function DailyLedger() {
           setCurrentYear={setCurrentYear}
         />
       </h2>
-      <h1 className='text-xl font-bold mb-4 text-white'>Daily Ledger</h1>
+      <h1 className='text-2xl font-bold mb-2 mt-6 text-white'>Daily Ledger</h1>
       {error && (
         <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
           <p>{error}</p>
@@ -143,7 +143,7 @@ function DailyLedger() {
           const dayOfMonth = dateObject.getDate()
           return (
             <div key={date} className='mb-4 bg-secondary rounded-3xl p-2'>
-              <div className='flex justify-between border-b border-gray-900 '>
+              <div className='flex justify-between '>
                 <div className='flex px-1'>
                   <h2 className='text-lg text-white font-bold px-1 '>
                     {dayOfMonth}
@@ -153,14 +153,15 @@ function DailyLedger() {
                   </h2>
                 </div>
                 <div className='flex justify-end'>
-                  <span className='text-sm text-blue-500 w-20 text-right'>
+                  <span className='text-sm text-[#578CF7] font-semibold w-20 text-right pt-1'>
                     {(incomeTotals[date] || 0).toFixed(2)}
                   </span>
-                  <span className='text-sm text-red-500 w-20 text-right ml-2'>
+                  <span className='text-sm text-[#991B1B] font-semibold w-20 text-right ml-2 pt-1'>
                     {(expenseTotals[date] || 0).toFixed(2)}
                   </span>
                 </div>
               </div>
+              <div className='border-t border-[#4D4D4D]'></div>
               <div className='p-4 rounded'>
                 <ul className='list-none'>
                   {(incomes[date] || []).map((income) => (
@@ -177,7 +178,7 @@ function DailyLedger() {
                               }
                             }}
                           >
-                            <span className='text-sm text-white'>
+                            <span className='text-sm text-[#A0A0A0]'>
                               {income.category.name}
                             </span>
                             <span className='text-sm truncate text-white'>
@@ -185,7 +186,7 @@ function DailyLedger() {
                                 ? `${income.description.substring(0, 20)}...`
                                 : income.description}
                             </span>
-                            <span className='text-sm text-right text-blue-600'>
+                            <span className='text-sm text-right text-[#578CF7]'>
                               {Number(income.amount).toFixed(2)}
                             </span>
                           </div>
@@ -210,7 +211,7 @@ function DailyLedger() {
                               }
                             }}
                           >
-                            <span className='text-sm text-white'>
+                            <span className='text-sm text-[#A0A0A0]'>
                               {expense.category.name}
                             </span>
                             <span className='text-sm truncate text-white'>
@@ -218,7 +219,7 @@ function DailyLedger() {
                                 ? `${expense.description.substring(0, 20)}...`
                                 : expense.description}
                             </span>
-                            <span className='text-sm text-right text-red-500'>
+                            <span className='text-sm text-right text-[#991B1B]'>
                               {Number(expense.amount).toFixed(2)}
                             </span>
                           </div>
