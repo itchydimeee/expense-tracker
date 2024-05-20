@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { useState,useEffect, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import axios from 'axios'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import IncomeCategory from './incomeCategories'
 
 import { Income } from '@/lib/types'
 
-function CreateIncomes () {
+function CreateIncomes() {
   const [newIncome, setNewIncome] = useState<Income>({
     name: '',
     categoryId: '',
@@ -16,7 +16,7 @@ function CreateIncomes () {
     userId: '',
   })
   const [showForm, setShowForm] = useState(false)
-  const [selectedCategoryId, setSelectedCategoryId] = useState('') 
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const { user, isLoading } = useUser()
 
   useEffect(() => {
@@ -25,8 +25,8 @@ function CreateIncomes () {
         try {
           const response = await axios.get('/api/fetchUser', {
             params: {
-              email: user.email
-            }
+              email: user.email,
+            },
           })
           const userId = response.data.id
           setNewIncome({ ...newIncome, userId })
@@ -42,10 +42,12 @@ function CreateIncomes () {
     setNewIncome({ ...newIncome, [event.target.name]: event.target.value })
   }
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const categoryId = event.target.value
     setNewIncome({ ...newIncome, categoryId })
-    setSelectedCategoryId(categoryId) 
+    setSelectedCategoryId(categoryId)
   }
 
   const handleShowForm = () => {
@@ -72,7 +74,7 @@ function CreateIncomes () {
         description: newIncome.description,
         amount: newIncome.amount,
         userId: newIncome.userId,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       })
       console.log(response)
 
@@ -87,7 +89,7 @@ function CreateIncomes () {
           userId: '',
         })
         setShowForm(false)
-        window.location.reload();
+        window.location.reload()
       }
     } catch (error) {
       console.error('Error creating income:', error)
@@ -112,7 +114,10 @@ function CreateIncomes () {
             <form onSubmit={handleSubmit}>
               <label className='block mb-2'>
                 Category:
-                <IncomeCategory onChange={handleCategoryChange} value={selectedCategoryId} /> 
+                <IncomeCategory
+                  onChange={handleCategoryChange}
+                  value={selectedCategoryId}
+                />
               </label>
               <label className='block mb-2'>
                 Description:

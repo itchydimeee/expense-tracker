@@ -18,27 +18,27 @@ const MonthlySummaryCard = ({
 
   const handlePreviousMonth = () => {
     if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear(currentYear - 1);
+      setCurrentMonth(11)
+      setCurrentYear(currentYear - 1)
     } else {
-      setCurrentMonth(currentMonth - 1);
+      setCurrentMonth(currentMonth - 1)
     }
-  };
+  }
 
   const handleNextMonth = () => {
     if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear(currentYear + 1);
+      setCurrentMonth(0)
+      setCurrentYear(currentYear + 1)
     } else {
-      setCurrentMonth(currentMonth + 1);
+      setCurrentMonth(currentMonth + 1)
     }
-  };
+  }
 
   return (
-    <div className="max-w-md p-2 rounded-3xl bg-secondary">
-      <div className="text-lg text-center text-white border-b border-gray-900 mb-2 font-bold">
+    <div className='max-w-md p-2 rounded-3xl bg-secondary'>
+      <div className='text-lg text-center text-white mb-1 font-bold'>
         <button
-          className="mr-4 text-white text-bold"
+          className='mr-4 text-white text-bold'
           onClick={handlePreviousMonth}
         >
           <FontAwesomeIcon icon={faAngleLeft} />
@@ -51,8 +51,9 @@ const MonthlySummaryCard = ({
           <FontAwesomeIcon icon={faAngleRight} />
         </button>
       </div>
-      <div className="flex justify-between mb-2">
-        <span className="text-sm text-blue-500">
+      <div className='border-t border-[#4D4D4D] mb-2'></div>
+      <div className='flex justify-between mb-2 px-4 font-semibold'>
+        <span className='text-sm text-[#578CF7]'>
           <h1 className='text-white text-sm'> Income</h1>
           {(monthlyIncomeTotals[key] || 0).toFixed(2)}
         </span>
@@ -66,7 +67,7 @@ const MonthlySummaryCard = ({
         </span>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MonthlySummaryCard;
+export default MonthlySummaryCard

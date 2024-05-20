@@ -7,7 +7,7 @@ import { combineTransactions, calculateTotals } from '@/lib/transactions'
 import MonthlySummaryCard from './monthlySummaryCard'
 import DailySummaryCard from './dailySummaryCard'
 
-function DailyLedger () {
+function DailyLedger() {
   const [incomes, setIncomes] = useState<{ [date: string]: Incomes[] }>({})
   const [expenses, setExpenses] = useState<{ [date: string]: Expenses[] }>({})
   const [loading, setLoading] = useState(false)
@@ -33,19 +33,19 @@ function DailyLedger () {
       try {
         const fetchUser = await axios.get('/api/fetchUser', {
           params: {
-            email: user.email
-          }
+            email: user.email,
+          },
         })
         const userId = fetchUser.data.id
         const incomeResponse = await axios.get(`/api/fetchIncomes`, {
           params: {
-            userId: userId
-          }
+            userId: userId,
+          },
         })
         const expenseResponse = await axios.get(`/api/fetchExpenses`, {
           params: {
-            userId: userId
-          }
+            userId: userId,
+          },
         })
         const incomeData = incomeResponse.data
         const expenseData = expenseResponse.data
@@ -69,7 +69,7 @@ function DailyLedger () {
     expenseTotals,
     monthlyIncomeTotals,
     monthlyExpenseTotals,
-    monthlyProfitTotals
+    monthlyProfitTotals,
   } = calculateTotals(incomes, expenses)
 
   if (loading) {
@@ -81,14 +81,14 @@ function DailyLedger () {
         >
           <span className='sr-only'>Loading transactions...</span>
         </div>
-        <p className='text-lg text-gray-600'>Loading transactions...</p>
+        <p className='text-lg text-gray-600 px-2'>Loading transactions...</p>
       </div>
     )
   }
 
   const combinedTransactions = { ...incomes, ...expenses }
 
-  const filteredDates = Object.keys(combinedTransactions).filter(date => {
+  const filteredDates = Object.keys(combinedTransactions).filter((date) => {
     const dateObject = new Date(date)
     return (
       dateObject.getMonth() === currentMonth &&
@@ -109,7 +109,7 @@ function DailyLedger () {
           setCurrentYear={setCurrentYear}
         />
       </h2>
-      <h1 className='text-xl font-bold mb-4 text-white'>Daily Ledger</h1>
+      <h1 className='text-2xl font-bold mb-2 mt-6 text-white'>Daily Ledger</h1>
       {error && (
         <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
           <p>{error}</p>
