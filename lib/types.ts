@@ -107,15 +107,21 @@ export const monthsArray = [
 ]
 
 export interface DailySummaryCardProps {
-  date: string
-  transactions: {
-    id: number
-    type: 'income' | 'expense'
-    category: string
-    description: string
-    amount: number
-    createdAt: string
-  }[]
+  filteredDates: string[];
+  incomes: { [date: string]: Incomes[] };
+  expenses: { [date: string]: Expenses[] };
+  incomeTotals: { [date: string]: number };
+  expenseTotals: { [date: string]: number };
+}
+
+export interface MonthlySummaryCardProps {
+  currentMonth: number;
+  currentYear: number;
+  monthlyIncomeTotals: { [date: string]: number };
+  monthlyExpenseTotals: { [date: string]: number };
+  monthlyProfitTotals: { [date: string]: number };
+  setCurrentMonth: (month: number) => void;
+  setCurrentYear: (year: number) => void;
 }
 
 export interface DailyLedgerProps {
