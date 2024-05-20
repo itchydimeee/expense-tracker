@@ -42,11 +42,14 @@ export const calculateTotals = (
     const totalIncome = incomeAmounts.reduce((acc, curr) => acc + curr, 0)
     incomeTotals[date] = totalIncome
 
-    const month = new Date(date).toLocaleDateString('en-US', { month: 'long' })
-    if (!monthlyIncomeTotals[month]) {
-      monthlyIncomeTotals[month] = 0
+    const dateObj = new Date(date)
+    const year = dateObj.getFullYear()
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+    const monthYear = `${year}-${month}`
+    if (!monthlyIncomeTotals[monthYear]) {
+      monthlyIncomeTotals[monthYear] = 0
     }
-    monthlyIncomeTotals[month] += totalIncome
+    monthlyIncomeTotals[monthYear] += totalIncome
   })
 
   Object.keys(expenses).forEach(date => {
@@ -54,15 +57,19 @@ export const calculateTotals = (
     const totalExpense = expenseAmounts.reduce((acc, curr) => acc + curr, 0)
     expenseTotals[date] = totalExpense
 
-    const month = new Date(date).toLocaleDateString('en-US', { month: 'long' })
-    if (!monthlyExpenseTotals[month]) {
-      monthlyExpenseTotals[month] = 0
+    const dateObj = new Date(date)
+    const year = dateObj.getFullYear()
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0')
+    const monthYear = `${year}-${month}`
+    if (!monthlyExpenseTotals[monthYear]) {
+      monthlyExpenseTotals[monthYear] = 0
     }
-    monthlyExpenseTotals[month] += totalExpense
+    monthlyExpenseTotals[monthYear] += totalExpense
   })
+
   const monthlyDates = [...Object.keys(monthlyIncomeTotals), ...Object.keys(monthlyExpenseTotals)]
-  monthlyDates.forEach(month => {
-    monthlyProfitTotals[month] = monthlyIncomeTotals[month] - monthlyExpenseTotals[month]
+  monthlyDates.forEach(monthYear => {
+    monthlyProfitTotals[monthYear] = (monthlyIncomeTotals[monthYear] || 0) - (monthlyExpenseTotals[monthYear] || 0)
   })
 
   return {
