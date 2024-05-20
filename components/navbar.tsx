@@ -32,7 +32,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className='fixed top-0 left-0 w-full z-10 flex justify-between items-center py-4 px-4'>
+      <nav className='fixed top-0 left-0 w-full z-10  bg-background flex justify-between items-center py-4 px-4'>
         <Link href='/' className=' '>
           <Image src={headerImg} alt='logoImg' className='w-[140px]' />
         </Link>
