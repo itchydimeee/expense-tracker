@@ -2,12 +2,12 @@ import { useState, useEffect, FormEvent } from 'react'
 import axios from 'axios'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import ExpenseCategory from './expenseCategories'
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Expense } from '@/lib/types'
 import IncomeCategory from './incomeCategories'
 
-function CreateExpenses () {
+function CreateExpenses() {
   const [activeCreationType, setActiveCreationType] = useState<
     'Expenses' | 'Incomes'
   >('Expenses')
@@ -16,7 +16,7 @@ function CreateExpenses () {
     categoryId: '',
     description: '',
     amount: '',
-    userId: ''
+    userId: '',
   })
   const [showForm, setShowForm] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState('') // Add this state
@@ -28,8 +28,8 @@ function CreateExpenses () {
         try {
           const response = await axios.get('/api/fetchUser', {
             params: {
-              email: user.email
-            }
+              email: user.email,
+            },
           })
           const userId = response.data.id
           setNewExpense({ ...newExpense, userId })
@@ -77,7 +77,7 @@ function CreateExpenses () {
         description: newExpense.description,
         amount: newExpense.amount,
         userId: newExpense.userId,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       })
       console.log(response)
 
@@ -92,7 +92,7 @@ function CreateExpenses () {
           categoryId: '',
           description: '',
           amount: '',
-          userId: ''
+          userId: '',
         })
         setShowForm(false)
         window.location.reload()
