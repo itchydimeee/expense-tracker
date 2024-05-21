@@ -19,7 +19,7 @@ function CreateExpenses() {
     userId: '',
   })
   const [showForm, setShowForm] = useState(false)
-  const [selectedCategoryId, setSelectedCategoryId] = useState('') // Add this state
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const { user, isLoading } = useUser()
 
   useEffect(() => {

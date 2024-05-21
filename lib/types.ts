@@ -59,15 +59,15 @@ export type DailySummaries = {
 }
 
 export interface Expense {
-  userId: any
-  name: string
+  userId: string
+  date: Date
   categoryId: string
   description: string
-  amount: string
+  amount: number
 }
 export interface Income {
-  userId: any
-  name: string
+  userId: string
+  date: Date
   categoryId: string
   description: string
   amount: string
@@ -91,6 +91,40 @@ export interface Transaction {
   type: 'income' | 'expense' // Use a union type for the type property
 }
 
+export interface DailySummaryCardProps {
+  filteredDates: string[]
+  incomes: { [date: string]: Incomes[] }
+  expenses: { [date: string]: Expenses[] }
+  incomeTotals: { [date: string]: number }
+  expenseTotals: { [date: string]: number }
+}
+
+export interface MonthlySummaryCardProps {
+  currentMonth: number
+  currentYear: number
+  monthlyIncomeTotals: { [date: string]: number }
+  monthlyExpenseTotals: { [date: string]: number }
+  monthlyProfitTotals: { [date: string]: number }
+  setCurrentMonth: (month: number) => void
+  setCurrentYear: (year: number) => void
+}
+
+export interface DailyLedgerProps {
+  userId: string | null
+}
+
+export interface CreateExpenseFormProps {
+  userId: string | null
+  onClose: () => void
+  onSubmit: (expense: Expense) => void
+}
+
+export interface FooterProps {
+  userId: string | null
+  onSubmitExpense: (expense: Expense) => void
+  onSubmitIncome: (income: Income) => void
+}
+
 export const monthsArray = [
   'Jan',
   'Feb',
@@ -106,34 +140,13 @@ export const monthsArray = [
   'Dec',
 ]
 
-export interface DailySummaryCardProps {
-  filteredDates: string[];
-  incomes: { [date: string]: Incomes[] };
-  expenses: { [date: string]: Expenses[] };
-  incomeTotals: { [date: string]: number };
-  expenseTotals: { [date: string]: number };
-}
-
-export interface MonthlySummaryCardProps {
-  currentMonth: number;
-  currentYear: number;
-  monthlyIncomeTotals: { [date: string]: number };
-  monthlyExpenseTotals: { [date: string]: number };
-  monthlyProfitTotals: { [date: string]: number };
-  setCurrentMonth: (month: number) => void;
-  setCurrentYear: (year: number) => void;
-}
-
-export interface DailyLedgerProps {
-  dailyTransactions: {
-    date: string
-    transactions: {
-      id: number
-      type: 'income' | 'expense'
-      category: string
-      description: string
-      amount: number
-      createdAt: string
-    }[]
-  }[]
+export const expenseCategoryMapping: { [key: string]: string } = {
+  Education: '1',
+  Transport: '2',
+  Food: '3',
+  Bills: '4',
+  Health: '5',
+  Clothing: '6',
+  SocialLife: '7',
+  Others: '8',
 }
