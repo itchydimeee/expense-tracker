@@ -119,7 +119,7 @@ export interface CreateExpenseFormProps {
   onSubmit: (expense: Expense) => void
 }
 
-export interface createTransactionCardProps {
+export interface FooterProps {
   userId: string | null
   onSubmitExpense: (expense: Expense) => void
   onSubmitIncome: (income: Income) => void

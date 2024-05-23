@@ -11,11 +11,11 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import { createTransactionCardProps } from '@/lib/types'
+import { FooterProps } from '@/lib/types'
 
 import { CreateExpenseForm } from './createExpenseForm'
 
-export const CreateTransactionCard: React.FC<createTransactionCardProps> = ({
+export const CreateTransactionCard: React.FC<FooterProps> = ({
   userId,
   onSubmitExpense,
   onSubmitIncome,
@@ -52,5 +52,3 @@ export const CreateTransactionCard: React.FC<createTransactionCardProps> = ({
     </>
   )
 }
-
-export default CreateTransactionCard

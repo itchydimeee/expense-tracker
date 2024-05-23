@@ -6,9 +6,9 @@ import { Incomes } from '@/lib/types'
 import DailyLedger from './dailyLedger'
 import DeleteIncome from './deleteIncome'
 
-function UpdateIncome({
+function UpdateIncome ({
   income,
-  cancelEdit,
+  cancelEdit
 }: {
   income: Incomes
   cancelEdit: () => void
@@ -23,13 +23,13 @@ function UpdateIncome({
     date: income.date,
     category: income.category,
     dailySummaries: income.dailySummaries,
-    type: 'income',
+    type: 'income'
   })
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedIncome({
       ...updatedIncome,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     })
   }
 
@@ -52,6 +52,7 @@ function UpdateIncome({
         console.error('Failed to update income:', response.data.error)
       } else {
         window.location.reload()
+        DailyLedger()
       }
     } catch (error) {
       console.error('Error updating income:', error)
