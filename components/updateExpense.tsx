@@ -52,7 +52,6 @@ function UpdateExpense({
         console.error('Failed to update expense:', response.data.error)
       } else {
         window.location.reload()
-        DailyLedger()
       }
     } catch (error) {
       console.error('Error updating expense:', error)
