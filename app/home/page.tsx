@@ -77,20 +77,22 @@ const HomePage = () => {
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>
-      <div className='flex-1 p-4 md:p-6 lg:p-12 pt-10'>
+      <div className='flex-1 md:p-6 lg:p-12 pt-10'>
         <Navbar />
-        <div className='mt-10 mb-10'>
+        <div className='mt-10 mb-10 px-4'>
           <DailyLedger userId={userId} />
         </div>
-        <div>
-          <CreateTransactionCard
-            userId={userId}
-            onSubmitExpense={handleCreateExpense}
-            onSubmitIncome={handleCreateIncome}
-          />
+        <div className='flex justify-center'>
+          <div className='fixed bottom-[15px] z-10 '>
+            <CreateTransactionCard
+              userId={userId}
+              onSubmitExpense={handleCreateExpense}
+              onSubmitIncome={handleCreateIncome}
+            />
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   )
 }
