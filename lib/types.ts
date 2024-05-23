@@ -159,3 +159,7 @@ export const incomeCategoryMapping: { [key: string]: string } = {
   Bonus: '4',
   Others: '5',
 }
+
+export type CategoryColorMap = {
+  [key in ExpenseCategories['name'] | IncomeCategories['name']]: string
+}
