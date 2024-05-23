@@ -3,7 +3,6 @@ import axios from 'axios'
 import IncomeCategory from './incomeCategories'
 
 import { Incomes } from '@/lib/types'
-import DailyLedger from './dailyLedger'
 import DeleteIncome from './deleteIncome'
 
 function UpdateIncome({
@@ -20,17 +19,20 @@ function UpdateIncome({
     amount: income.amount,
     userId: income.userId,
     user: income.user,
-    date: income.date,
+    date: new Date(income.date),
     category: income.category,
     dailySummaries: income.dailySummaries,
     type: 'income',
   })
+  const [error, setError] = useState<string | null>(null)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUpdatedIncome({
-      ...updatedIncome,
-      [event.target.name]: event.target.value,
-    })
+    const { name, value } = event.target
+    if (name === 'amount' && parseFloat(value) <= 0) {
+      setError('Invalid amount')
+      return
+    }
+    setUpdatedIncome({ ...updatedIncome, [name]: value })
   }
 
   const handleCategoryChange = (
@@ -39,14 +41,23 @@ function UpdateIncome({
     setUpdatedIncome({ ...updatedIncome, categoryId: event.target.value })
   }
 
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUpdatedIncome({ ...updatedIncome, date: new Date(event.target.value) })
+  }
+
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault()
 
+    if (!updatedIncome.amount) {
+      setError('Please fill in all necessary fields')
+      return
+    }
+
     try {
+      console.log('Updating income: ', updatedIncome)
       const response = await axios.put('/api/updateIncomes', updatedIncome)
-      console.log(response)
 
       if (response.data.error) {
         console.error('Failed to update income:', response.data.error)
@@ -59,40 +70,54 @@ function UpdateIncome({
   }
 
   return (
-    <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-700 bg-opacity-50'>
-      <div className='bg-gray-700 rounded-2xl text-white p-4  shadow-md w-full md:w-1/2 xl:w-1/3'>
-        <form onSubmit={handleSubmit}>
-          <label className='block mb-2'>
-            Category:
-            <IncomeCategory
-              onChange={handleCategoryChange}
-              value={updatedIncome.categoryId}
-            />
-          </label>
-          <label className='block mb-2'>
-            Description:
+    <div className='fixed z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-md w-[380px] min-h-fit px-6 pb-4 bg-gradient-to-br from-[#4D4D4D] to-[#666666] rounded-2xl shadow-lg border-none'>
+      <div className='flex items-center justify-center'>
+        <form
+          onSubmit={handleSubmit}
+          className='max-w-md w-full text-white font-semibold'
+        >
+          <label className='block mt-2'>Date</label>
+          <input
+            className='shadow appearance-none border rounded py-2 px-6 font-normal text-gray-800 leading-tight focus:outline-none focus:shadow-outline'
+            type='date'
+            pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}'
+            value={updatedIncome.date.toISOString().slice(0, 10)} // Update this line
+            onChange={handleDateChange}
+          />
+          <label className='block mt-2'>Category</label>
+          <IncomeCategory
+            onChange={handleCategoryChange}
+            value={updatedIncome.categoryId}
+          />
+          <label className='block mt-2'>
+            Description
             <input
               type='text'
               name='description'
               value={updatedIncome.description}
               onChange={handleInputChange}
-              className='w-full p-2 pl-10 text-sm bg-gray-300 rounded-xl text-gray-700'
+              className='w-full p-2 pl-4 text-sm rounded text-gray-700'
             />
           </label>
-          <label className='block mb-2'>
-            Amount:
+          <label className='block mt-2'>
+            Amount
             <input
               type='number'
               name='amount'
               value={updatedIncome.amount}
               onChange={handleInputChange}
-              className='w-full p-2 pl-10 text-sm rounded-xl bg-gray-300 text-gray-700'
+              className='w-full p-2 pl-4 text-sm rounded text-gray-700'
             />
           </label>
-          <div className='flex justify-between'>
+          {error && (
+            <div className='text-red-300 font-normal text-base mb-2 mt-2'>
+              {error}
+            </div>
+          )}
+          <div className='flex justify-between mt-4 text-sm pl-3'>
             <button
               type='submit'
-              className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded'
+              className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-3 rounded'
             >
               Update Income
             </button>

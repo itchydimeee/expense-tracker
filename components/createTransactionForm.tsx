@@ -75,7 +75,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
       >
         <label className='block mt-2'>Date</label>
         <input
-          className='shadow appearance-none border rounded-md py-2 px-6 font-regular text-gray-800 leading-tight focus:outline-none focus:shadow-outline'
+          className='shadow appearance-none border rounded-md py-2 px-6 font-normal text-gray-800 leading-tight focus:outline-none focus:shadow-outline'
           type='date'
           pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}'
           value={date.toISOString().slice(0, 10)} // Update this line

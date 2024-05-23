@@ -126,6 +126,14 @@ export interface CreateTransactionCardProps {
   onSubmitIncome: (income: Income) => void
 }
 
+export interface UpdateTransactionFormProps {
+  userId: string | null
+  transaction: Expenses | Incomes
+  onClose: () => void
+  onSubmit: (expense: Expenses) => void
+  transactionType: 'Expense' | 'Income'
+}
+
 export const monthsArray = [
   'Jan',
   'Feb',

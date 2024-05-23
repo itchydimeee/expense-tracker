@@ -33,7 +33,7 @@ const HomePage = () => {
     fetchUserId()
   }, [isLoggedIn, user])
 
-  console.log('UserID: ', userId)
+  // console.log('UserID: ', userId)
 
   const handleCreateExpense = async (expense: Expense) => {
     console.log('Creating Expense: ', expense)
