@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import axios from 'axios'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import { CategoryColorMap } from '@/lib/types'
 
 const ExpenseStats = () => {
   const [data, setData] = useState<
@@ -47,31 +48,27 @@ const ExpenseStats = () => {
           }
         )
 
-        const colors = [
-          '#00698F',
-          '#FFD700',
-          '#4169E1',
-          '#34C759',
-          '#FFC0CB',
-          '#6495ED',
-          '#FFA07A',
-          '#2F4F7F',
-          '#C7F464',
-          '#9400D3'
-        ]
+        const categoryColorMap: CategoryColorMap = {
+            Food: '#FFC107',
+            Transport: '#2196F3',
+            Bills: '#9C27B0',
+            Health: '#4CAF50',
+            Clothing: '#00698F',
+            Education: '#34C759',
+            'Social Life': '#9400D3',
+            Others: '#2F4F7F',
+        };
 
-        for (let i = colors.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1))
-          ;[colors[i], colors[j]] = [colors[j], colors[i]]
-        }
-
-        const data = Array.from(expenseData, ([title, value], index) => ({
-          title,
-          value: Number(value),
-          color: colors[index % colors.length]
-        }))
-        setData(data.sort((a, b) => b.value - a.value))
-      }
+        const data = Array.from(expenseData, ([title, value]) => {
+          const color = categoryColorMap[title] ?? '#CCCCCC';
+          return {
+            title,
+            value: Number(value),
+            color,
+          };
+        });
+        setData(data.sort((a, b) => b.value - a.value));
+      };
       fetchUserIdAndExpenses()
     }
   }, [user])

@@ -137,3 +137,9 @@ export interface DailyLedgerProps {
     }[]
   }[]
 }
+
+export type CategoryColorMap = {
+  [key in ExpenseCategories['name'] | IncomeCategories['name']]: string;
+};
+
+
