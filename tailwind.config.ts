@@ -1,6 +1,6 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss'
 
-const { fontFamily } = require('tailwindcss/defaultTheme');
+const { fontFamily } = require('tailwindcss/defaultTheme')
 
 const config = {
   darkMode: ['class'],
@@ -26,6 +26,8 @@ const config = {
         ring: 'hsl(var(--ring))',
         background: '#333333',
         foreground: 'hsl(var(--foreground))',
+        income: '#578CF7',
+        expense: '#991B1B',
         button: { DEFAULT: '#8BC34A', hover: '#5A8F2F' },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
@@ -84,6 +86,6 @@ const config = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+} satisfies Config
 
-export default config;
+export default config

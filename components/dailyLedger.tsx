@@ -1,18 +1,18 @@
 'use client'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useUser } from '@auth0/nextjs-auth0/client'
-import { Incomes, Expenses} from '@/lib/types'
+
+import { DailyLedgerProps, Incomes, Expenses, Expense } from '@/lib/types'
 import { combineTransactions, calculateTotals } from '@/lib/transactions'
+
 import MonthlySummaryCard from './monthlySummaryCard'
 import DailySummaryCard from './dailySummaryCard'
 
-function DailyLedger() {
+export const DailyLedger: React.FC<DailyLedgerProps> = ({ userId }) => {
   const [incomes, setIncomes] = useState<{ [date: string]: Incomes[] }>({})
   const [expenses, setExpenses] = useState<{ [date: string]: Expenses[] }>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { user, isLoading } = useUser()
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth()
   )
@@ -21,48 +21,40 @@ function DailyLedger() {
   )
 
   useEffect(() => {
-    if (user) {
-      fetchTransactions()
-    }
-  }, [user])
+    const fetchTransactions = async () => {
+      setLoading(true)
+      setError(null)
 
-  const fetchTransactions = async () => {
-    setLoading(true)
-    setError(null)
-    if (user) {
-      try {
-        const fetchUser = await axios.get('/api/fetchUser', {
-          params: {
-            email: user.email,
-          },
-        })
-        const userId = fetchUser.data.id
-        const incomeResponse = await axios.get(`/api/fetchIncomes`, {
-          params: {
-            userId: userId,
-          },
-        })
-        const expenseResponse = await axios.get(`/api/fetchExpenses`, {
-          params: {
-            userId: userId,
-          },
-        })
-        const incomeData = incomeResponse.data
-        const expenseData = expenseResponse.data
-        const combinedTransactions = combineTransactions(
-          incomeData,
-          expenseData
-        )
-        setIncomes(combinedTransactions.incomes)
-        setExpenses(combinedTransactions.expenses)
-      } catch (error) {
-        console.error(error)
-        setError('Failed to fetch transactions')
-      } finally {
-        setLoading(false)
+      if (userId) {
+        try {
+          const incomeResponse = await axios.get(`/api/fetchIncomes`, {
+            params: {
+              userId: userId,
+            },
+          })
+          const expenseResponse = await axios.get(`/api/fetchExpenses`, {
+            params: {
+              userId: userId,
+            },
+          })
+          const incomeData = incomeResponse.data
+          const expenseData = expenseResponse.data
+          const combinedTransactions = combineTransactions(
+            incomeData,
+            expenseData
+          )
+          setIncomes(combinedTransactions.incomes)
+          setExpenses(combinedTransactions.expenses)
+        } catch (error) {
+          console.error(error)
+          setError('Failed to fetch transactions')
+        } finally {
+          setLoading(false)
+        }
       }
     }
-  }
+    fetchTransactions()
+  }, [userId])
 
   const {
     incomeTotals,
@@ -71,20 +63,6 @@ function DailyLedger() {
     monthlyExpenseTotals,
     monthlyProfitTotals,
   } = calculateTotals(incomes, expenses)
-
-  if (loading) {
-    return (
-      <div className='flex justify-center items-center h-screen'>
-        <div
-          className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
-          role='status'
-        >
-          <span className='sr-only'>Loading transactions...</span>
-        </div>
-        <p className='text-lg text-gray-600 px-2'>Loading transactions...</p>
-      </div>
-    )
-  }
 
   const combinedTransactions = { ...incomes, ...expenses }
 
@@ -98,7 +76,18 @@ function DailyLedger() {
 
   return (
     <div className='max-w-md mx-auto p-2 pt-6 pb-8'>
-      <h2 className='text-lg text-center text-white mb-2'>
+      {loading && (
+        <div className='flex justify-center items-center h-screen'>
+          <div
+            className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
+            role='status'
+          >
+            <span className='sr-only'>Loading transactions...</span>
+          </div>
+          <p className='text-lg text-gray-600 px-2'>Loading transactions...</p>
+        </div>
+      )}
+      <h2 className=''>
         <MonthlySummaryCard
           currentMonth={currentMonth}
           currentYear={currentYear}
