@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 import { Expense, Income } from '@/lib/types'
 
-import DailyLedger from '@/components/dailyLedger'
 import Navbar from '@/components/navbar'
+import DailyLedger from '@/components/dailyLedger'
+import CreateTransactionCard from '@/components/createTransactionCard'
 import Footer from '@/components/footer'
-import { useUser } from '@auth0/nextjs-auth0/client'
 
 const HomePage = () => {
   const { user, error, isLoading } = useUser()
@@ -51,10 +52,27 @@ const HomePage = () => {
   }
 
   const handleCreateIncome = async (income: Income) => {
-    console.log('Test Create Income')
+    console.log('Creating Expense: ', income)
+    if (!income) {
+      console.error('No income data available')
+      return
+    }
+
+    try {
+      await axios.post('/api/createIncomes', income)
+      window.location.reload()
+    } catch (error: any) {
+      console.error(error.message)
+    }
+    console.log('Income successfully created: ', income)
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <div className='flex justify-center items-center h-screen text-white'>
+        Loading user details...
+      </div>
+    )
   if (error) return <div>{error.message}</div>
 
   return (
@@ -64,13 +82,15 @@ const HomePage = () => {
         <div className='mt-10 mb-10'>
           <DailyLedger userId={userId} />
         </div>
+        <div>
+          <CreateTransactionCard
+            userId={userId}
+            onSubmitExpense={handleCreateExpense}
+            onSubmitIncome={handleCreateIncome}
+          />
+        </div>
       </div>
-      <div></div>
-      <Footer
-        userId={userId}
-        onSubmitExpense={handleCreateExpense}
-        onSubmitIncome={handleCreateIncome}
-      />
+      <Footer />
     </div>
   )
 }
