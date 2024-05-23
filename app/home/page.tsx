@@ -52,7 +52,7 @@ const HomePage = () => {
   }
 
   const handleCreateIncome = async (income: Income) => {
-    console.log('Creating Expense: ', income)
+    console.log('Creating Income: ', income)
     if (!income) {
       console.error('No income data available')
       return
