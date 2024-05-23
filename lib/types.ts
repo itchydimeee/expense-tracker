@@ -150,3 +150,9 @@ export const expenseCategoryMapping: { [key: string]: string } = {
   SocialLife: '7',
   Others: '8',
 }
+
+export type CategoryColorMap = {
+  [key in ExpenseCategories['name'] | IncomeCategories['name']]: string;
+};
+
+
