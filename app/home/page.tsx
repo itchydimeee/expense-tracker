@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 import { Expense, Income } from '@/lib/types'
 
-import DailyLedger from '@/components/dailyLedger'
 import Navbar from '@/components/navbar'
+import DailyLedger from '@/components/dailyLedger'
+import CreateTransactionCard from '@/components/createTransactionCard'
 import Footer from '@/components/footer'
-import { useUser } from '@auth0/nextjs-auth0/client'
 
 const HomePage = () => {
   const { user, error, isLoading } = useUser()
@@ -51,26 +52,47 @@ const HomePage = () => {
   }
 
   const handleCreateIncome = async (income: Income) => {
-    console.log('Test Create Income')
+    console.log('Creating Expense: ', income)
+    if (!income) {
+      console.error('No income data available')
+      return
+    }
+
+    try {
+      await axios.post('/api/createIncomes', income)
+      window.location.reload()
+    } catch (error: any) {
+      console.error(error.message)
+    }
+    console.log('Income successfully created: ', income)
   }
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <div className='flex justify-center items-center h-screen text-white'>
+        Loading user details...
+      </div>
+    )
   if (error) return <div>{error.message}</div>
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>
-      <div className='flex-1 p-4 md:p-6 lg:p-12 pt-10'>
+      <div className='flex-1 md:p-6 lg:p-12 pt-10'>
         <Navbar />
-        <div className='mt-10 mb-10'>
+        <div className='mt-10 mb-10 px-4'>
           <DailyLedger userId={userId} />
         </div>
+        <div className='flex justify-center'>
+          <div className='fixed bottom-[15px] z-10 '>
+            <CreateTransactionCard
+              userId={userId}
+              onSubmitExpense={handleCreateExpense}
+              onSubmitIncome={handleCreateIncome}
+            />
+          </div>
+        </div>
+        <Footer />
       </div>
-      <div></div>
-      <Footer
-        userId={userId}
-        onSubmitExpense={handleCreateExpense}
-        onSubmitIncome={handleCreateIncome}
-      />
     </div>
   )
 }
