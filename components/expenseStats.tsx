@@ -53,7 +53,7 @@ const ExpenseStats = () => {
             Transport: '#2196F3',
             Bills: '#9C27B0',
             Health: '#4CAF50',
-            Clothing: '#00698F',
+            Clothing: '#EE4B2B',
             Education: '#34C759',
             'Social Life': '#9400D3',
             Others: '#2F4F7F',
