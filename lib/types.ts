@@ -70,7 +70,7 @@ export interface Income {
   date: Date
   categoryId: string
   description: string
-  amount: string
+  amount: number
 }
 
 export interface UpdatedExpense {
@@ -113,13 +113,14 @@ export interface DailyLedgerProps {
   userId: string | null
 }
 
-export interface CreateExpenseFormProps {
+export interface CreateTransactionFormProps {
   userId: string | null
   onClose: () => void
   onSubmit: (expense: Expense) => void
+  transactionType: 'Expense' | 'Income'
 }
 
-export interface createTransactionCardProps {
+export interface CreateTransactionCardProps {
   userId: string | null
   onSubmitExpense: (expense: Expense) => void
   onSubmitIncome: (income: Income) => void
@@ -149,4 +150,12 @@ export const expenseCategoryMapping: { [key: string]: string } = {
   Clothing: '6',
   SocialLife: '7',
   Others: '8',
+}
+
+export const incomeCategoryMapping: { [key: string]: string } = {
+  Allowance: '1',
+  Business: '2',
+  Salary: '3',
+  Bonus: '4',
+  Others: '5',
 }

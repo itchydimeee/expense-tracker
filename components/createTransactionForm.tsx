@@ -11,12 +11,17 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 
-import { CreateExpenseFormProps, expenseCategoryMapping } from '@/lib/types'
+import {
+  CreateTransactionFormProps,
+  expenseCategoryMapping,
+  incomeCategoryMapping,
+} from '@/lib/types'
 
-export const CreateExpenseForm: React.FC<CreateExpenseFormProps> = ({
+export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
   userId,
   onClose,
   onSubmit,
+  transactionType,
 }) => {
   const [category, setCategory] = useState('')
   const [date, setDate] = useState<Date>(new Date())
@@ -26,8 +31,8 @@ export const CreateExpenseForm: React.FC<CreateExpenseFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!category || !description || !amount) {
-      setError('Please fill in all fields')
+    if (!category || !amount) {
+      setError('Please fill in all necessary fields')
       return
     }
     if (!userId) {
@@ -35,15 +40,18 @@ export const CreateExpenseForm: React.FC<CreateExpenseFormProps> = ({
       return
     }
     try {
-      const categoryId = expenseCategoryMapping[category]
-      const expenseData = {
+      const categoryId =
+        transactionType === 'Expense'
+          ? expenseCategoryMapping[category]
+          : incomeCategoryMapping[category]
+      const transactionData = {
         userId,
         date,
         categoryId,
         description,
         amount,
       }
-      onSubmit(expenseData)
+      onSubmit(transactionData)
     } catch (error: any) {
       setError(error.message)
       console.error(error.message)
@@ -79,14 +87,26 @@ export const CreateExpenseForm: React.FC<CreateExpenseFormProps> = ({
             <SelectValue placeholder={category} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='Education'>Education</SelectItem>
-            <SelectItem value='Transport'>Transport</SelectItem>
-            <SelectItem value='Food'>Food</SelectItem>
-            <SelectItem value='Bills'>Bills</SelectItem>
-            <SelectItem value='Health'>Health</SelectItem>
-            <SelectItem value='Clothing'>Clothing</SelectItem>
-            <SelectItem value='SocialLife'>Social Life</SelectItem>
-            <SelectItem value='Others'>Others</SelectItem>
+            {transactionType === 'Expense' ? (
+              <>
+                <SelectItem value='Education'>Education</SelectItem>
+                <SelectItem value='Transport'>Transport</SelectItem>
+                <SelectItem value='Food'>Food</SelectItem>
+                <SelectItem value='Bills'>Bills</SelectItem>
+                <SelectItem value='Health'>Health</SelectItem>
+                <SelectItem value='Clothing'>Clothing</SelectItem>
+                <SelectItem value='SocialLife'>Social Life</SelectItem>
+                <SelectItem value='Others'>Others</SelectItem>
+              </>
+            ) : (
+              <>
+                <SelectItem value='Allowance'>Allowance</SelectItem>
+                <SelectItem value='Business'>Business</SelectItem>
+                <SelectItem value='Salary'>Salary</SelectItem>
+                <SelectItem value='Bonus'>Bonus</SelectItem>
+                <SelectItem value='Others'>Others</SelectItem>
+              </>
+            )}
           </SelectContent>
         </Select>
         <label className='block mt-2'>Description</label>
@@ -111,13 +131,13 @@ export const CreateExpenseForm: React.FC<CreateExpenseFormProps> = ({
         <div className='flex justify-end'>
           <Button
             type='submit'
-            className=' bg-transparent px-2 text-center text-base font-semibold border rounded-lg p-2 hover:bg-orange-400 active:bg-orange-400'
+            className=' bg-transparent px-2 py-2 text-center text-base font-semibold border rounded-lg hover:bg-orange-400 active:bg-orange-400'
           >
-            Create Expense
+            {transactionType === 'Expense' ? 'Create Expense' : 'Create Income'}
           </Button>
           <Button
             onClick={onClose}
-            className='bg-transparent px-2 ml-2 text-center text-base font-semibold border rounded-lg p-2 hover:bg-red-400 active:bg-red-400'
+            className='bg-transparent px-6 py-2 ml-2 text-center text-base font-semibold border rounded-lg hover:bg-red-400 active:bg-red-400'
           >
             Cancel
           </Button>
@@ -127,4 +147,4 @@ export const CreateExpenseForm: React.FC<CreateExpenseFormProps> = ({
   )
 }
 
-export default CreateExpenseForm
+export default CreateTransactionForm
