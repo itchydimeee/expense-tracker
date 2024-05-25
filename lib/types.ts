@@ -4,7 +4,6 @@ export type Users = {
   username: string
   email: string
   expenses: Expenses[]
-  dailySummaries: DailySummaries[]
 }
 
 export type Expenses = {
@@ -16,7 +15,6 @@ export type Expenses = {
   categoryId: string
   description: string
   amount: number
-  dailySummaries: DailySummaries[]
   type: 'expenses'
 }
 export type Incomes = {
@@ -28,7 +26,6 @@ export type Incomes = {
   categoryId: string
   description: string
   amount: number
-  dailySummaries: DailySummaries[]
   type: 'income'
 }
 
@@ -36,26 +33,12 @@ export type ExpenseCategories = {
   id?: string
   name: string
   expenses: Expenses[]
-  dailySummaries: DailySummaries[]
 }
 
 export type IncomeCategories = {
   id?: string
   name: string
   expenses: Expenses[]
-  dailySummaries: DailySummaries[]
-}
-
-export type DailySummaries = {
-  id: string
-  user: Users
-  userId: string
-  date: Date
-  expense: Expenses
-  expenseId: string
-  category: ExpenseCategories
-  categoryId: string
-  totalExpense: number
 }
 
 export interface Expense {
