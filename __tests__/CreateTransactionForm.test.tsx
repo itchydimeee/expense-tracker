@@ -1,0 +1,86 @@
+import React from 'react'
+import '@testing-library/jest-dom'
+import { render, fireEvent, waitFor } from '@testing-library/react'
+import CreateTransactionForm from '@/components/createTransactionForm'
+
+describe('CreateTransactionForm', () => {
+  const userId = '123'
+  const onClose = jest.fn()
+  const onSubmit = jest.fn()
+  const transactionType = 'Expense'
+
+  it('renders correctly', () => {
+    const { getByText } = render(
+      <CreateTransactionForm
+        userId={userId}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        transactionType={transactionType}
+      />
+    )
+
+    expect(getByText('Date')).toBeInTheDocument()
+    expect(getByText('Category')).toBeInTheDocument()
+    expect(getByText('Description')).toBeInTheDocument()
+    expect(getByText('Amount')).toBeInTheDocument()
+    expect(getByText('Create Expense')).toBeInTheDocument()
+    expect(getByText('Cancel')).toBeInTheDocument()
+  })
+
+  it('calls onSubmit with correct data when form is submitted', async () => {
+    const { getByText, getByLabelText, getByRole } = render(
+      <CreateTransactionForm
+        userId={userId}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        transactionType={transactionType}
+      />
+    )
+
+    const dateInput = getByLabelText('Date')
+    const categoryInput = getByRole('combobox', { name: 'Category' })
+    const descriptionInput = getByLabelText('Description')
+    const amountInput = getByLabelText('Amount')
+    const submitButton = getByText('Create Expense')
+
+    fireEvent.change(dateInput, { target: { value: '2024-05-25' } })
+    fireEvent.change(categoryInput, { target: { value: 'Education' } })
+    fireEvent.change(descriptionInput, {
+      target: { value: 'Test description' },
+    })
+    fireEvent.change(amountInput, { target: { value: '10.99' } })
+
+    fireEvent.click(submitButton)
+
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1))
+
+    expect(onSubmit).toHaveBeenCalledWith({
+      userId: '123',
+      date: new Date('2024-05-25'),
+      categoryId: '1',
+      description: 'Test description',
+      amount: 10.99,
+    })
+  })
+
+  it('displays error message when form is submitted with invalid data', async () => {
+    const { getByText } = render(
+      <CreateTransactionForm
+        userId={userId}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        transactionType={transactionType}
+      />
+    )
+
+    const submitButton = getByText('Create Expense')
+
+    fireEvent.click(submitButton)
+
+    await waitFor(() =>
+      expect(
+        getByText('Please fill in all necessary fields')
+      ).toBeInTheDocument()
+    )
+  })
+})

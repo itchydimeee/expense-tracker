@@ -29,8 +29,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
   const [amount, setAmount] = useState(0)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (!category || !amount) {
       setError('Please fill in all necessary fields')
       return
@@ -69,21 +68,27 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
 
   return (
     <div className='flex items-center justify-center'>
-      <form
-        onSubmit={handleSubmit}
-        className='max-w-md w-full text-white font-semibold'
-      >
-        <label className='block mt-2'>Date</label>
+      <div className='max-w-md w-full text-white font-semibold'>
+        <label htmlFor='date' className='block mt-2'>
+          Date
+        </label>
         <input
+          id='date'
           className='shadow appearance-none border rounded-md py-2 px-6 font-normal text-gray-800 leading-tight focus:outline-none focus:shadow-outline'
           type='date'
           pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}'
           value={date.toISOString().slice(0, 10)} // Update this line
           onChange={(e) => setDate(new Date(e.target.value))}
         />
-        <label className='block mt-2'>Category</label>
-        <Select value={category} onValueChange={(value) => setCategory(value)}>
-          <SelectTrigger className='bg-white text-black border border-gray-300 rounded-md'>
+        <label id='category' className='block mt-2'>
+          Category
+        </label>
+        <Select onValueChange={(value) => setCategory(value)}>
+          <SelectTrigger
+            aria-labelledby='category'
+            value={category}
+            className='bg-white text-black border border-gray-300 rounded-md'
+          >
             <SelectValue placeholder={category} />
           </SelectTrigger>
           <SelectContent>
@@ -109,28 +114,32 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
             )}
           </SelectContent>
         </Select>
-        <label className='block mt-2'>Description</label>
+        <label htmlFor='description' className='block mt-2'>
+          Description
+        </label>
         <textarea
+          id='description'
           className='shadow appearance-none border rounded-md w-full h-16 py-2 px-3 text-gray-800 font-regular text-sm leading-tight focus:outline-none focus:shadow-outline'
           rows={1}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <label className='block mb-4'>
-          Amount:
-          <input
-            className='shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:shadow-outline'
-            type='number'
-            value={amount}
-            onChange={handleAmountChange}
-          />
+        <label htmlFor='amount' className='block mt-2'>
+          Amount
         </label>
+        <input
+          id='amount'
+          className='shadow appearance-none border rounded-md w-full py-2 px-3 mb-4 text-gray-700 text-sm leading-tight focus:outline-none focus:shadow-outline'
+          type='number'
+          value={amount}
+          onChange={handleAmountChange}
+        />
         {error && (
           <div className='text-red-300 font-normal text-base mb-2'>{error}</div>
         )}
         <div className='flex justify-end'>
           <Button
-            type='submit'
+            onClick={handleSubmit}
             className=' bg-transparent px-2 py-2 text-center text-base font-semibold border rounded-lg hover:bg-orange-400 active:bg-orange-400'
           >
             {transactionType === 'Expense' ? 'Create Expense' : 'Create Income'}
@@ -142,7 +151,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
             Cancel
           </Button>
         </div>
-      </form>
+      </div>
     </div>
   )
 }
