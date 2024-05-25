@@ -11,11 +11,7 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 
-import {
-  CreateTransactionFormProps,
-  expenseCategoryMapping,
-  incomeCategoryMapping,
-} from '@/lib/types'
+import { CreateTransactionFormProps } from '@/lib/types'
 
 export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
   userId,
@@ -23,14 +19,14 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
   onSubmit,
   transactionType,
 }) => {
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
   const [date, setDate] = useState<Date>(new Date())
   const [description, setDescription] = useState('')
   const [amount, setAmount] = useState(0)
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async () => {
-    if (!category || !amount) {
+    if (!categoryId || !amount) {
       setError('Please fill in all necessary fields')
       return
     }
@@ -39,10 +35,6 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
       return
     }
     try {
-      const categoryId =
-        transactionType === 'Expense'
-          ? expenseCategoryMapping[category]
-          : incomeCategoryMapping[category]
       const transactionData = {
         userId,
         date,
@@ -83,33 +75,35 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         <label id='category' className='block mt-2'>
           Category
         </label>
-        <Select onValueChange={(value) => setCategory(value)}>
+        <Select
+          value={categoryId}
+          onValueChange={(value) => setCategoryId(value)}
+        >
           <SelectTrigger
             aria-labelledby='category'
-            value={category}
-            className='bg-white text-black border border-gray-300 rounded-md'
+            className='bg-white text-gray-800 font-normal border border-gray-300 rounded-md'
           >
-            <SelectValue placeholder={category} />
+            <SelectValue placeholder='Select category...' />
           </SelectTrigger>
           <SelectContent>
             {transactionType === 'Expense' ? (
               <>
-                <SelectItem value='Education'>Education</SelectItem>
-                <SelectItem value='Transport'>Transport</SelectItem>
-                <SelectItem value='Food'>Food</SelectItem>
-                <SelectItem value='Bills'>Bills</SelectItem>
-                <SelectItem value='Health'>Health</SelectItem>
-                <SelectItem value='Clothing'>Clothing</SelectItem>
-                <SelectItem value='SocialLife'>Social Life</SelectItem>
-                <SelectItem value='Others'>Others</SelectItem>
+                <SelectItem value='1'>Education</SelectItem>
+                <SelectItem value='2'>Transport</SelectItem>
+                <SelectItem value='3'>Food</SelectItem>
+                <SelectItem value='4'>Bills</SelectItem>
+                <SelectItem value='5'>Health</SelectItem>
+                <SelectItem value='6'>Clothing</SelectItem>
+                <SelectItem value='7'>Social Life</SelectItem>
+                <SelectItem value='8'>Others</SelectItem>
               </>
             ) : (
               <>
-                <SelectItem value='Allowance'>Allowance</SelectItem>
-                <SelectItem value='Business'>Business</SelectItem>
-                <SelectItem value='Salary'>Salary</SelectItem>
-                <SelectItem value='Bonus'>Bonus</SelectItem>
-                <SelectItem value='Others'>Others</SelectItem>
+                <SelectItem value='1'>Allowance</SelectItem>
+                <SelectItem value='2'>Business</SelectItem>
+                <SelectItem value='3'>Salary</SelectItem>
+                <SelectItem value='4'>Bonus</SelectItem>
+                <SelectItem value='5'>Others</SelectItem>
               </>
             )}
           </SelectContent>
@@ -119,7 +113,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         </label>
         <textarea
           id='description'
-          className='shadow appearance-none border rounded-md w-full h-16 py-2 px-3 text-gray-800 font-regular text-sm leading-tight focus:outline-none focus:shadow-outline'
+          className='shadow appearance-none border rounded-md w-full h-16 py-2 px-3 text-gray-800 font-normal text-sm leading-tight focus:outline-none focus:shadow-outline'
           rows={1}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -129,7 +123,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         </label>
         <input
           id='amount'
-          className='shadow appearance-none border rounded-md w-full py-2 px-3 mb-4 text-gray-700 text-sm leading-tight focus:outline-none focus:shadow-outline'
+          className='shadow appearance-none border rounded-md w-full py-2 px-3 mb-4 font-normal text-gray-700 text-sm leading-tight focus:outline-none focus:shadow-outline'
           type='number'
           value={amount}
           onChange={handleAmountChange}
