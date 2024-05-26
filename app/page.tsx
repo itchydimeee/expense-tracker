@@ -24,10 +24,11 @@ export default function Home() {
     <main>
       <div className='flex flex-col h-screen justify-center items-center'>
         <div>
-          <Image src={logoImg} alt='logo image' width={400} />{' '}
+          <Image id="logo-image" src={logoImg} alt='logo image' width={400} />{' '}
         </div>
         <div className='flex justify-center bg-button hover:bg-button-hover active:bg-button-hover w-[130px] h-[50px] my-6 rounded-full drop-shadow-lg'>
           <a
+            id="login-button"
             href='/api/auth/login'
             className=' text-white text-2xl font-extrabold py-2'
           >

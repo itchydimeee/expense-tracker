@@ -127,12 +127,13 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
           onChange={handleAmountChange}
         />
         {error && (
-          <div className='text-red-300 font-normal text-base mb-2'>{error}</div>
+          <div id="error-message" className='text-red-300 font-normal text-base mb-2'>{error}</div>
         )}
         <div className='flex justify-end'>
           <Button
+            id="create-transaction"
             onClick={handleSubmit}
-            className=' bg-transparent px-2 py-2 text-center text-base font-semibold border rounded-lg hover:bg-orange-400 active:bg-orange-400'
+            className='bg-transparent px-2 py-2 text-center text-base font-semibold border rounded-lg hover:bg-orange-400 active:bg-orange-400'
           >
             {transactionType === 'Expense' ? 'Create Expense' : 'Create Income'}
           </Button>
