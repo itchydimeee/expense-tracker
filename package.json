@@ -9,8 +9,19 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:createtransactionform": "jest --testPathPattern=CreateTransactionForm.test.tsx",
-    "test:selenium": "jest --testPathPattern=selenium.test.tsx"
+    "test:createTransactionForm": "jest --testPathPattern=CreateTransactionForm.test.tsx",
+    "test:selenium": "jest --testPathPattern=selenium.test.tsx",
+    "test:createTransactionCard": "jest --testPathPattern=CreateTransactionCard.test.tsx",
+    "test:createUser": "jest --testPathPattern=CreateUser.test.tsx",
+    "test:dailyLedger": "jest --testPathPattern=dailyLedger.test.tsx",
+    "test:deleteExpenses": "jest --testPathPattern=deleteExpenses.test.tsx",
+    "test:deleteIncome": "jest --testPathPattern=deleteIncome.test.tsx",
+    "test:updateExpenses": "jest --testPathPattern=updateExpenses.test.tsx",
+    "test:updateIncome": "jest --testPathPattern=updateIncome.test.tsx",
+    "test:navbar": "jest --testPathPattern=navbar.test.tsx",
+    "test:expenseStats": "jest --testPathPattern=expenseStats.test.tsx",
+    "test:footer": "jest --testPathPattern=footer.test.tsx",
+    "test:expenseCategories": "jest --testPathPattern=expenseCategories.test.tsx"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
@@ -49,6 +60,7 @@
     "@types/react-dom": "^18",
     "@types/selenium-webdriver": "^4.1.22",
     "chromedriver": "^125.0.2",
+    "@types/supertest": "^6.0.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "geckodriver": "^4.4.0",
@@ -57,8 +69,10 @@
     "postcss": "^8",
     "prisma": "^5.14.0",
     "selenium-webdriver": "^3.6.0",
+    "supertest": "^7.0.0",
     "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.1.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5.4.5"
   }
 }
