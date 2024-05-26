@@ -15,7 +15,6 @@ model Users {
   email          String           @unique
   expenses       Expenses[]
   income         Income[]
-  dailySummaries DailySummaries[]
 }
 
 model Expenses {
@@ -27,7 +26,6 @@ model Expenses {
   categoryId     String
   description    String
   amount         Decimal
-  dailySummaries DailySummaries[]
 }
 
 model Income {
@@ -39,40 +37,16 @@ model Income {
   categoryId     String
   description    String
   amount         Decimal
-  dailySummaries DailySummaries[]
 }
 
 model ExpenseCategories {
   id             String           @id @default(cuid())
   name           String
   expenses       Expenses[]
-  dailySummaries DailySummaries[]
 }
 
 model IncomeCategories {
   id             String           @id @default(cuid())
   name           String
   income         Income[]
-  dailySummaries DailySummaries[]
-}
-
-model DailySummaries {
-  id                String            @id @default(cuid())
-  user              Users             @relation(fields: [userId], references: [id])
-  userId            String
-  date              DateTime
-  expense           Expenses          @relation(fields: [expenseId], references: [id])
-  expenseId         String
-  income            Income            @relation(fields: [incomeId], references: [id])
-  incomeId          String
-  expenseCategory   ExpenseCategories @relation(fields: [expenseCategoryId], references: [id])
-  expenseCategoryId String
-  incomeCategory    IncomeCategories  @relation(fields: [incomeCategoryId], references: [id])
-  incomeCategoryId  String
-  totalExpense      Decimal
-
-  @@index([date], name: "daily_summaries_date_index")
-  @@index([expenseId], name: "daily_summaries_expense_id_index")
-  @@index([expenseCategoryId], name: "daily_summaries_expenseCategory_id_index")
-  @@index([incomeCategoryId], name: "daily_summaries_incomeCategory_id_index")
 }
