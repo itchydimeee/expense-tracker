@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:createtransactionform": "jest --testPathPattern=CreateTransactionForm.test.tsx"
+    "test:createtransactionform": "jest --testPathPattern=CreateTransactionForm.test.tsx",
+    "test:selenium": "jest --testPathPattern=selenium.test.tsx"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",

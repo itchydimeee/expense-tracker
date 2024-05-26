@@ -78,13 +78,14 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
           <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
+            className='text-black'
           >
             <option value=''>Select category...</option>
             {transactionType === 'Expense' ? (
               <>
                 <option value='1'>Education</option>
                 <option value='2'>Transport</option>
-                <option value='3'>Food</option>
+                <option id="Food" value='3'>Food</option>
                 <option value='4'>Bills</option>
                 <option value='5'>Health</option>
                 <option value='6'>Clothing</option>
@@ -127,8 +128,9 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         )}
         <div className='flex justify-end'>
           <Button
+            id="create-transaction"
             onClick={handleSubmit}
-            className=' bg-transparent px-2 py-2 text-center text-base font-semibold border rounded-lg hover:bg-orange-400 active:bg-orange-400'
+            className='bg-transparent px-2 py-2 text-center text-base font-semibold border rounded-lg hover:bg-orange-400 active:bg-orange-400'
           >
             {transactionType === 'Expense' ? 'Create Expense' : 'Create Income'}
           </Button>

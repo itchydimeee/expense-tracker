@@ -26,7 +26,7 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
           })
           const dayOfMonth = dateObject.getDate()
           return (
-            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2'>
+            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2 '>
               <div className='flex justify-between'>
                 <div className='flex px-2'>
                   <h2 className='text-lg text-white font-bold px-1 '>
@@ -45,7 +45,7 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                   </span>
                 </div>
               </div>
-              <div className='border-t border-[#4D4D4D]'></div>
+              <div  className='border-t border-[#4D4D4D]'></div>
               <div className='px-2 py-1 rounded'>
                 <ul className='list-none'>
                   {(incomes[date] || []).map((income) => (
@@ -95,15 +95,15 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                               }
                             }}
                           >
-                            <span className='w-1/3 text-sm text-[#A0A0A0]'>
+                            <span id="expense-category" className='w-1/3 text-sm text-[#A0A0A0]'>
                               {expense.category.name}
                             </span>
-                            <span className='w-1/3 text-sm truncate text-white text-center'>
+                            <span id="expense-decription" className='w-1/3 text-sm truncate text-white text-center'>
                               {expense.description.length > 20
                                 ? `${expense.description.substring(0, 20)}...`
                                 : expense.description}
                             </span>
-                            <span className='w-1/3 text-sm text-expense text-right'>
+                            <span id="expense-amoung" className='w-1/3 text-sm text-expense text-right'>
                               {Number(expense.amount).toFixed(2)}
                             </span>
                           </div>

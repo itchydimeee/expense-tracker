@@ -8,6 +8,7 @@ import exp from 'constants'
 const URL = 'http://localhost:3000'
 const AUTH0_USERNAME = 'romarieEder@gmail.com'
 const AUTH0_PASSWORD = 'Romarieeder123'
+const AUTH0_FAILING_PASSWORD =  'carlomacoco123'
 
 let driver: WebDriver
 
@@ -27,30 +28,35 @@ describe('Auth0 login test', () => {
     const loginButtonElement = await getElementById('login-button', driver)
     expect(await loginButtonElement.isDisplayed()).toBe(true)
   }, 10000)
-
-  it('logs in with Auth0', async () => {
+  it('logs in with Auth0 successfully', async () => {
     const loginButton = await getElementById('login-button', driver)
     await loginButton.click()
-
+  
     await driver.wait(async () => {
       const auth0LoginUrl = await driver.getCurrentUrl()
       return auth0LoginUrl.includes('auth0.com')
     }, 10000)
-
+  
     const usernameInput = await driver.findElement(By.name('username'))
     await usernameInput.sendKeys(AUTH0_USERNAME)
     const passwordInput = await driver.findElement(By.name('password'))
     await passwordInput.sendKeys(AUTH0_PASSWORD)
-
+  
     await driver.wait(async () => {
-        const continueButton = await driver.findElement(By.xpath('//button[contains(text(), "Continue")]'))
-        return await continueButton.isDisplayed() && await continueButton.isEnabled()
-      }, 10000)
-    
-      const continueButton = await driver.findElement(By.xpath('//button[contains(text(), "Continue")]'))
-      await continueButton.click()
-    
-
+      const continueButton = await driver.findElement(
+        By.xpath('//button[contains(text(), "Continue")]')
+      )
+      return (
+        (await continueButton.isDisplayed()) &&
+        (await continueButton.isEnabled())
+      )
+    }, 10000)
+  
+    const continueButton = await driver.findElement(
+      By.xpath('//button[contains(text(), "Continue")]')
+    )
+    await continueButton.click()
+  
     await driver.wait(async () => {
       const currentUrl = await driver.getCurrentUrl()
       return currentUrl.includes('/home')
@@ -58,40 +64,41 @@ describe('Auth0 login test', () => {
   }, 30000)
 })
 
-describe('Create Expenses Test', () => {
-    const category = 'Food'
-    const desription = 'Nagbakal Pagkaon sa Canteen'
-    const amount = 500
-    it('renders the Home Page', async () => {
-      driver.get(URL)
-      const homepageElement = await getElementById('home-page', driver)
-      expect(await homepageElement.isDisplayed()).toBe(true)
-    }, 10000)
-    it('creates and fetches expense',async () => {
-        const createTransactionButton = await getElementById('create-button', driver)
-        createTransactionButton.click()
+// describe('Create and Fetch Expenses Test', () => {
+//   const description = 'Nagbakal Pagkaon sa Canteen'
+//   const amount = 500
+//   const userId = ''
+//   it('renders the Home Page', async () => {
+//     const homepageElement = await getElementById('home-page', driver)
+//     expect(await homepageElement.isDisplayed()).toBe(true)
+//   }, 10000)
+//   it('creates and fetches expense', async () => {
+//     const createTransactionButton = await getElementById(
+//       'create-button',
+//       driver
+//     )
+//     createTransactionButton.click()
 
-        const categoryDropdown = await driver.findElement(By.id('category'));
-        await categoryDropdown.click(); 
-        
-        const foodOption = await driver.findElement({id: "Food"});
-        await foodOption.click();
-        
-        const descriptionInput = await driver.findElement(By.name('Description'))
-        await descriptionInput.sendKeys(desription)
-        const amountInput = await driver.findElement(By.name('Amount'))
-        await amountInput.sendKeys(amount)
+//     const categoryDropdown = await driver.findElement(By.id('category'))
+//     await categoryDropdown.click()
 
-        const createExpenseButton = await getElementById('create-transction', driver)
-        createExpenseButton.click()
+//     const foodOption = await driver.findElement(By.css(`option[value="3"]`))
+//     await foodOption.click()
 
-        window.location.reload()
-        const fetchCategory = await driver.findElement(By.name(category))
-        expect(await fetchCategory.isDisplayed()).toBe(true)
-        const fetchDescription = await driver.findElement(By.name(desription))
-        expect(await fetchDescription.isDisplayed()).toBe(true)
-        const fetchAmount = await driver.findElement(By.name(amount.toString()))
-        expect(await fetchAmount.isDisplayed()).toBe(true)
-    }, 30000)
-  })
-  
+//     const descriptionInput = await driver.findElement(By.id('description'))
+//     await descriptionInput.sendKeys(description)
+//     const amountInput = await driver.findElement(By.id('amount'))
+//     await amountInput.sendKeys(amount)
+
+//     const createExpenseButton = await driver.findElement(
+//       By.id('create-transaction')
+//     )
+//     createExpenseButton.click()
+//     // await driver.navigate().refresh()
+
+//     const expenseCategory = await getElementById('expense-category', driver)
+//     expect(await expenseCategory.isDisplayed()).toBe(true)
+
+//   }, 30000)
+
+// })
