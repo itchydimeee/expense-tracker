@@ -16,27 +16,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  //delete all records after test
-  await driver.get(URL)
-  await driver.wait(async () => {
-    const dailyLedgerElement = await getElementById('daily-ledger', driver)
-    return dailyLedgerElement.isDisplayed()
-  }, 10000)
-
-  const expenseItems = await driver.findElements(By.className('expense-item'))
-  for (const expenseItem of expenseItems) {
-    await expenseItem.click()
-    const deleteButton = await driver.findElement(By.id('delete-button'))
-    await deleteButton.click()
-  }
-
-  const incomeItems = await driver.findElements(By.className('income-item'))
-  for (const incomeItem of incomeItems) {
-    await incomeItem.click()
-    const deleteButton = await driver.findElement(By.id('delete-button'))
-    await deleteButton.click()
-  }
-
   driver.quit()
 })
 
@@ -227,9 +206,6 @@ describe('CRUD Expense Test and Expense Stats', () => {
     )
     expect(await expenseAmountElement.isDisplayed()).toBe(true)
   }, 30000)
-  it('', async() => {
-    
-  })
   it('create expenses without amount input', async () => {
     await driver.wait(async () => {
       const dailyLedgerElement = await getElementById('daily-ledger', driver)
