@@ -21,7 +21,6 @@ function UpdateExpense({
     user: expense.user,
     date: new Date(expense.date),
     category: expense.category,
-    dailySummaries: expense.dailySummaries,
     type: 'expenses',
   })
   const [error, setError] = useState<string | null>(null)
