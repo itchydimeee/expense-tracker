@@ -42,6 +42,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         description,
         amount,
       }
+      console.log('Submitting transaction data: ', transactionData)
       onSubmit(transactionData)
     } catch (error: any) {
       setError(error.message)
@@ -74,40 +75,33 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         />
         <label id='category' className='block mt-2'>
           Category
-        </label>
-        <Select
-          value={categoryId}
-          onValueChange={(value) => setCategoryId(value)}
-        >
-          <SelectTrigger
-            aria-labelledby='category'
-            className='bg-white text-gray-800 font-normal border border-gray-300 rounded-md'
+          <select
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
           >
-            <SelectValue placeholder='Select category...' />
-          </SelectTrigger>
-          <SelectContent>
+            <option value=''>Select category...</option>
             {transactionType === 'Expense' ? (
               <>
-                <SelectItem value='1'>Education</SelectItem>
-                <SelectItem value='2'>Transport</SelectItem>
-                <SelectItem value='3'>Food</SelectItem>
-                <SelectItem value='4'>Bills</SelectItem>
-                <SelectItem value='5'>Health</SelectItem>
-                <SelectItem value='6'>Clothing</SelectItem>
-                <SelectItem value='7'>Social Life</SelectItem>
-                <SelectItem value='8'>Others</SelectItem>
+                <option value='1'>Education</option>
+                <option value='2'>Transport</option>
+                <option value='3'>Food</option>
+                <option value='4'>Bills</option>
+                <option value='5'>Health</option>
+                <option value='6'>Clothing</option>
+                <option value='7'>Social Life</option>
+                <option value='8'>Others</option>
               </>
             ) : (
               <>
-                <SelectItem value='1'>Allowance</SelectItem>
-                <SelectItem value='2'>Business</SelectItem>
-                <SelectItem value='3'>Salary</SelectItem>
-                <SelectItem value='4'>Bonus</SelectItem>
-                <SelectItem value='5'>Others</SelectItem>
+                <option value='1'>Allowance</option>
+                <option value='2'>Business</option>
+                <option value='3'>Salary</option>
+                <option value='4'>Bonus</option>
+                <option value='5'>Others</option>
               </>
             )}
-          </SelectContent>
-        </Select>
+          </select>
+        </label>
         <label htmlFor='description' className='block mt-2'>
           Description
         </label>
