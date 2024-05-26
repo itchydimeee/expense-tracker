@@ -73,36 +73,39 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
           value={date.toISOString().slice(0, 10)} // Update this line
           onChange={(e) => setDate(new Date(e.target.value))}
         />
-        <label id='category' className='block mt-2'>
+        <label htmlFor='category' className='block mt-2'>
           Category
-          <select
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            className='text-black'
-          >
-            <option value=''>Select category...</option>
-            {transactionType === 'Expense' ? (
-              <>
-                <option value='1'>Education</option>
-                <option value='2'>Transport</option>
-                <option id="Food" value='3'>Food</option>
-                <option value='4'>Bills</option>
-                <option value='5'>Health</option>
-                <option value='6'>Clothing</option>
-                <option value='7'>Social Life</option>
-                <option value='8'>Others</option>
-              </>
-            ) : (
-              <>
-                <option value='1'>Allowance</option>
-                <option value='2'>Business</option>
-                <option value='3'>Salary</option>
-                <option value='4'>Bonus</option>
-                <option value='5'>Others</option>
-              </>
-            )}
-          </select>
         </label>
+        <select
+          className=' h-9 w-full rounded text-gray-800 font-normal px-2'
+          id='category'
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value='' disabled hidden>
+            Select category...
+          </option>
+          {transactionType === 'Expense' ? (
+            <>
+              <option value='1'>Education</option>
+              <option value='2'>Transport</option>
+              <option value='3'>Food</option>
+              <option value='4'>Bills</option>
+              <option value='5'>Health</option>
+              <option value='6'>Clothing</option>
+              <option value='7'>Social Life</option>
+              <option value='8'>Others</option>
+            </>
+          ) : (
+            <>
+              <option value='1'>Allowance</option>
+              <option value='2'>Business</option>
+              <option value='3'>Salary</option>
+              <option value='4'>Bonus</option>
+              <option value='5'>Others</option>
+            </>
+          )}
+        </select>
         <label htmlFor='description' className='block mt-2'>
           Description
         </label>
@@ -113,7 +116,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <label htmlFor='amount' className='block mt-2'>
+        <label htmlFor='amount' className='block mt-1'>
           Amount
         </label>
         <input

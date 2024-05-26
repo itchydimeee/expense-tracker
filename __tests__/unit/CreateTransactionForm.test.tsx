@@ -1,7 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, fireEvent, waitFor } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
 import CreateTransactionForm from '@/components/createTransactionForm'
 
 describe('CreateTransactionForm', () => {
@@ -73,8 +72,6 @@ describe('CreateTransactionForm', () => {
       target: { value: 'Test description' },
     })
     fireEvent.change(amountInput, { target: { value: '10.99' } })
-
-    console.log('Category ID value: ', categoryIdInput.getAttribute('value'))
 
     fireEvent.click(submitButton)
 
