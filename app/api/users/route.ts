@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const userId = url.searchParams.get('id')
     const user = await prisma.users.findUnique({
       where: { auth0Id: userId ?? '' },
-      include: { expenses: true, dailySummaries: true },
+      include: { expenses: true, income: true },
     })
     if (!user) {
       return NextResponse.json({ error: 'User not Found' })
