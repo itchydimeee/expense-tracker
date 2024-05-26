@@ -127,7 +127,7 @@ export const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
           onChange={handleAmountChange}
         />
         {error && (
-          <div className='text-red-300 font-normal text-base mb-2'>{error}</div>
+          <div id="error-message" className='text-red-300 font-normal text-base mb-2'>{error}</div>
         )}
         <div className='flex justify-end'>
           <Button

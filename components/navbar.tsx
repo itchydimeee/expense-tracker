@@ -40,6 +40,7 @@ export default function Navbar() {
           <div className='flex items-center'>
             <div className='relative'>
               <Image
+                id="profile-pic" 
                 src={user.picture ?? ''}
                 alt='Profile picture'
                 width={50}
@@ -51,6 +52,7 @@ export default function Navbar() {
               {showMenu && (
                 <div className='absolute right-0 mt-2 w-20 bg-[#4d4d4d] rounded-md shadow-lg'>
                   <a
+                    id="logout-button"
                     href='/api/auth/logout'
                     className='flex justify-center px-4 py-2 text-white hover:bg-background active:bg-background'
                   >

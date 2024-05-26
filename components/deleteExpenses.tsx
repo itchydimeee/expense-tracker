@@ -19,6 +19,7 @@ const DeleteExpense: React.FC<Props> = ({ expenseId, onDelete }) => {
 
   return (
     <button
+      id="delete-button"
       onClick={handleDelete}
       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2 mr-2"
     >

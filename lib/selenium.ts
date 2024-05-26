@@ -1,6 +1,6 @@
 import { until, By, WebDriver, WebElement } from 'selenium-webdriver';
 
-const waitTimeout= 5000;
+const waitTimeout= 20000;
 
 export async function getElementById(id: string, driver: WebDriver): Promise<WebElement> {
     return await driver.wait(

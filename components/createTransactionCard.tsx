@@ -54,6 +54,7 @@ export const CreateTransactionCard: React.FC<CreateTransactionCardProps> = ({
                 <div>Expense</div>
               </button>
               <button
+                id="set-create-income"
                 onClick={() => setCreateTransactionType('Income')}
                 className={`font-semibold py-2 px-8 rounded border border-white ${
                   createTransactionType === 'Income'
