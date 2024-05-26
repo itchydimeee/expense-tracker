@@ -76,7 +76,7 @@ const HomePage = () => {
   if (error) return <div>{error.message}</div>
 
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
+    <div id="home-page" className='flex flex-col min-h-screen bg-background'>
       <div className='flex-1 md:p-6 lg:p-12 pt-10'>
         <Navbar />
         <div className='mt-10 mb-10 px-4'>

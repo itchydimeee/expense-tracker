@@ -1,9 +1,8 @@
-import { Builder, By, WebDriver } from 'selenium-webdriver'
+import { Builder, By, WebDriver, until } from 'selenium-webdriver'
 import 'selenium-webdriver/chrome'
 import 'chromedriver'
 import { getElementById, getElementByXPath } from '@/lib/selenium'
-import { beforeAll, afterAll, expect } from '@jest/globals'
-import { describe, it } from 'node:test'
+import { beforeAll, afterAll, expect, describe, it } from '@jest/globals'
 import exp from 'constants'
 
 const URL = 'http://localhost:3000'
@@ -18,8 +17,6 @@ beforeAll(async () => {
 
 afterAll(() => {
   driver.quit()
-
-  // if there's a way to revert the database, do that here.
 })
 
 describe('Auth0 login test', () => {
@@ -29,7 +26,7 @@ describe('Auth0 login test', () => {
     expect(await logoImageElement.isDisplayed()).toBe(true)
     const loginButtonElement = await getElementById('login-button', driver)
     expect(await loginButtonElement.isDisplayed()).toBe(true)
-  })
+  }, 10000)
 
   it('logs in with Auth0', async () => {
     const loginButton = await getElementById('login-button', driver)
@@ -45,17 +42,56 @@ describe('Auth0 login test', () => {
     const passwordInput = await driver.findElement(By.name('password'))
     await passwordInput.sendKeys(AUTH0_PASSWORD)
 
-
-    const auth0LoginButton = await driver.findElement(By.name('Continue'))
-    await auth0LoginButton.click()
+    await driver.wait(async () => {
+        const continueButton = await driver.findElement(By.xpath('//button[contains(text(), "Continue")]'))
+        return await continueButton.isDisplayed() && await continueButton.isEnabled()
+      }, 10000)
+    
+      const continueButton = await driver.findElement(By.xpath('//button[contains(text(), "Continue")]'))
+      await continueButton.click()
+    
 
     await driver.wait(async () => {
       const currentUrl = await driver.getCurrentUrl()
       return currentUrl.includes('/home')
     }, 10000)
-
-    // Verify that we're logged in and redirected to the homepage
-    const homepageElement = await getElementById('homepage-element', driver)
-    expect(await homepageElement.isDisplayed()).toBe(true)
-  })
+  }, 30000)
 })
+
+describe('Create Expenses Test', () => {
+    const category = 'Food'
+    const desription = 'Nagbakal Pagkaon sa Canteen'
+    const amount = 500
+    it('renders the Home Page', async () => {
+      driver.get(URL)
+      const homepageElement = await getElementById('home-page', driver)
+      expect(await homepageElement.isDisplayed()).toBe(true)
+    }, 10000)
+    it('creates and fetches expense',async () => {
+        const createTransactionButton = await getElementById('create-button', driver)
+        createTransactionButton.click()
+
+        const categoryDropdown = await driver.findElement(By.id('category'));
+        await categoryDropdown.click(); 
+        
+        const foodOption = await driver.findElement({id: "Food"});
+        await foodOption.click();
+        
+        const descriptionInput = await driver.findElement(By.name('Description'))
+        await descriptionInput.sendKeys(desription)
+        const amountInput = await driver.findElement(By.name('Amount'))
+        await amountInput.sendKeys(amount)
+
+        const createExpenseButton = await getElementById('create-transction', driver)
+        createExpenseButton.click()
+
+        window.location.reload()
+        const fetchCategory = await driver.findElement(By.name(category))
+        expect(await fetchCategory.isDisplayed()).toBe(true)
+        const fetchDescription = await driver.findElement(By.name(desription))
+        expect(await fetchDescription.isDisplayed()).toBe(true)
+        const fetchAmount = await driver.findElement(By.name(amount.toString()))
+        expect(await fetchAmount.isDisplayed()).toBe(true)
+    }, 30000)
+  })
+  

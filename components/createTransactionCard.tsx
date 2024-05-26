@@ -33,6 +33,7 @@ export const CreateTransactionCard: React.FC<CreateTransactionCardProps> = ({
   return (
     <>
       <button
+        id="create-button"
         className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full'
         onClick={handleShowCard}
       >
