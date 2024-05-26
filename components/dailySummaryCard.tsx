@@ -26,7 +26,7 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
           })
           const dayOfMonth = dateObject.getDate()
           return (
-            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2'>
+            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2 '>
               <div className='flex justify-between'>
                 <div className='flex px-2'>
                   <h2 className='text-lg text-white font-bold px-1 '>
@@ -45,16 +45,17 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                   </span>
                 </div>
               </div>
-              <div className='border-t border-[#4D4D4D]'></div>
+              <div  className='border-t border-[#4D4D4D]' id="expense-item"></div>
               <div className='px-2 py-1 rounded'>
                 <ul className='list-none'>
                   {(incomes[date] || []).map((income) => (
-                    <li key={income.id} className='py-1'>
+                    <li key={income.id} className='py-1' id="income-list">
                       {editId === income.id ? (
                         <UpdateIncome income={income} cancelEdit={cancelEdit} />
                       ) : (
                         <>
                           <div
+                            id="list-item"
                             className='flex w-full cursor-pointer'
                             onClick={() => {
                               if (income.id) {
@@ -62,15 +63,15 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                               }
                             }}
                           >
-                            <span className='w-1/3 text-sm text-[#A0A0A0]'>
+                            <span id="income-category" className='w-1/3 text-sm text-[#A0A0A0]'>
                               {income.category.name}
                             </span>
-                            <span className='w-1/3 text-sm truncate text-white text-center'>
+                            <span id="income-description" className='w-1/3 text-sm truncate text-white text-center'>
                               {income.description.length > 20
                                 ? `${income.description.substring(0, 20)}...`
                                 : income.description}
                             </span>
-                            <span className='w-1/3 text-sm text-income text-right'>
+                            <span id="income-amount" className='w-1/3 text-sm text-income text-right'>
                               {Number(income.amount).toFixed(2)}
                             </span>
                           </div>
@@ -79,7 +80,7 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                     </li>
                   ))}
                   {(expenses[date] || []).map((expense) => (
-                    <li key={expense.id} className='py-1'>
+                    <li key={expense.id} className='py-1' id="expense-list">
                       {editId === expense.id ? (
                         <UpdateExpense
                           expense={expense}
@@ -88,6 +89,7 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                       ) : (
                         <>
                           <div
+                            id="list-item"
                             className='flex w-full cursor-pointer'
                             onClick={() => {
                               if (expense.id) {
@@ -95,15 +97,15 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
                               }
                             }}
                           >
-                            <span className='w-1/3 text-sm text-[#A0A0A0]'>
+                            <span id="expense-category" className='w-1/3 text-sm text-[#A0A0A0]'>
                               {expense.category.name}
                             </span>
-                            <span className='w-1/3 text-sm truncate text-white text-center'>
+                            <span id="expense-description" className='w-1/3 text-sm truncate text-white text-center'>
                               {expense.description.length > 20
                                 ? `${expense.description.substring(0, 20)}...`
                                 : expense.description}
                             </span>
-                            <span className='w-1/3 text-sm text-expense text-right'>
+                            <span id="expense-amount" className='w-1/3 text-sm text-expense text-right'>
                               {Number(expense.amount).toFixed(2)}
                             </span>
                           </div>

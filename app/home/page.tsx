@@ -10,6 +10,7 @@ import Navbar from '@/components/navbar'
 import DailyLedger from '@/components/dailyLedger'
 import CreateTransactionCard from '@/components/createTransactionCard'
 import Footer from '@/components/footer'
+import CreateUser from '@/components/createUser'
 
 const HomePage = () => {
   const { user, error, isLoading } = useUser()
@@ -76,11 +77,11 @@ const HomePage = () => {
   if (error) return <div>{error.message}</div>
 
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
+    <div id="home-page" className='flex flex-col min-h-screen bg-background'>
       <div className='flex-1 md:p-6 lg:p-12 pt-10'>
         <Navbar />
-        <div className='mt-10 mb-10 px-4'>
-          <DailyLedger userId={userId} />
+        <div className='mt-10 mb-10 px-4' id="daily-ledger" data-user-id={userId}>
+          <DailyLedger userId={userId}/>
         </div>
         <div className='flex justify-center'>
           <div className='fixed bottom-[15px] z-10 '>
@@ -90,6 +91,7 @@ const HomePage = () => {
               onSubmitIncome={handleCreateIncome}
             />
           </div>
+          <CreateUser/>
         </div>
         <Footer />
       </div>

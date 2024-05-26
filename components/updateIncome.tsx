@@ -101,8 +101,9 @@ function UpdateIncome({
           <label className="block mt-2">
             Amount
             <input
-              type="number"
-              name="amount"
+              id="update-amount"
+              type='number'
+              name='amount'
               value={updatedIncome.amount}
               onChange={handleInputChange}
               className="w-full p-2 pl-4 text-sm rounded text-gray-700"
@@ -115,6 +116,7 @@ function UpdateIncome({
           )}
           <div className="flex justify-between mt-4 text-sm pl-3">
             <button
+              id="update-button"
               date-testid="updateIncome-button"
               type="submit"
               className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-3 rounded"
