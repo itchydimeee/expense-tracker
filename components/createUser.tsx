@@ -12,7 +12,9 @@ function CreateUser() {
       const auth0Id = user?.sub
 
       try {
-        const response = await axios.get(`/api/users?userId=${auth0Id}`)
+        const response = await axios.get('/api/users', {
+          params: { auth0Id: auth0Id },
+        })
 
         if (response.data.error) {
           const createUserResponse = await axios.post('/api/users', {

@@ -5,9 +5,9 @@ import prisma from '@/lib/prisma'
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url)
-    const userId = url.searchParams.get('id')
+    const auth0Id = url.searchParams.get('auth0Id')
     const user = await prisma.users.findUnique({
-      where: { auth0Id: userId ?? '' },
+      where: { auth0Id: auth0Id ?? '' },
       include: { expenses: true, income: true },
     })
     if (!user) {
