@@ -10,10 +10,12 @@ const ExpenseStats = () => {
   const [data, setData] = useState<
     { title: string; value: number; color: string }[]
   >([])
+  const [loading, setLoading] = useState(false)
   const { user } = useUser()
 
   useEffect(() => {
     if (user) {
+      setLoading(true)
       const fetchUserIdAndExpenses = async () => {
         const response = await axios.get('/api/users', {
           params: {
@@ -65,10 +67,11 @@ const ExpenseStats = () => {
             title,
             value: Number(value),
             color,
-          }
-        })
-        setData(data.sort((a, b) => b.value - a.value))
-      }
+          };
+        });
+        setData(data.sort((a, b) => b.value - a.value));
+        setLoading(false)
+      };
       fetchUserIdAndExpenses()
     }
   }, [user])
@@ -79,15 +82,8 @@ const ExpenseStats = () => {
         Expense Statistics
       </h2>
       <div className='w-full max-w-xs mx-auto'>
-        {data.length > 0 ? (
-          <div id='pie-chart'>
-            <PieChart data={data} radius={40} lineWidth={30} animate />
-          </div>
-        ) : (
-          <div
-            id='loading-screen'
-            className='flex justify-center items-center h-screen'
-          >
+        {loading ? (
+          <div id="loading-screen" className='flex justify-center items-center h-screen'>
             <div
               className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
               role='status'
@@ -96,30 +92,43 @@ const ExpenseStats = () => {
               Loading Expense Statistics...
             </p>
           </div>
+        ) : (
+          data.length > 0 ? (
+            <div id="pie-chart">
+              <PieChart data={data} radius={40} lineWidth={30} animate />
+            </div>
+          ) : (
+            <div id="no-expenses" className='flex justify-center items-center h-screen'>
+              <p className='text-lg text-gray-600'>
+                No Expenses Made
+              </p>
+            </div>
+          )
         )}
-        <ul className='flex flex-wrap text-white text-xs justify-center'>
-          {data.map((item, index) => (
-            <li key={index} className='mr-2 mb-2'>
-              <span
-                id='stat-color'
-                style={{
-                  backgroundColor: item.color,
-                  width: '10px',
-                  height: '10px',
-                  display: 'inline-block',
-                  marginRight: '10px',
-                }}
-              />
-              <span id='stat-label'>
-                {item.title} - {item.value} (
-                {Math.round(
-                  (item.value / data.reduce((a, b) => a + b.value, 0)) * 100
-                )}
-                %)
-              </span>
-            </li>
-          ))}
-        </ul>
+        {data.length > 0 && (
+          <ul className='flex flex-wrap text-white text-xs justify-center'>
+            {data.map((item, index) => (
+              <li key={index} className='mr-2 mb-2'>
+                <span id="stat-color"
+                  style={{
+                    backgroundColor: item.color,
+                    width: '10px',
+                    height: '10px',
+                    display: 'inline-block',
+                    marginRight: '10px'
+                  }}
+                />
+                <span id="stat-label">
+                  {item.title} - {item.value} (
+                  {Math.round(
+                    (item.value / data.reduce((a, b) => a + b.value, 0)) * 100
+                  )}
+                  %)
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   )

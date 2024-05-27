@@ -36,7 +36,7 @@ describe('DeleteIncome', () => {
     await waitFor(() => {
       expect(axios.delete).toHaveBeenCalledTimes(1)
       expect(axios.delete).toHaveBeenCalledWith('/api/deleteIncome', {
-        data: { id: incomeId },
+        params: { incomeId: incomeId },
       })
       expect(onDelete).toHaveBeenCalledTimes(1)
     })

@@ -3,6 +3,7 @@ import 'selenium-webdriver/chrome'
 import 'chromedriver'
 import { getElementById, getElementByXPath } from '@/lib/selenium'
 import { beforeAll, afterAll, expect, describe, it } from '@jest/globals'
+import { getByText } from '@testing-library/react'
 
 const URL = 'http://localhost:3000'
 const AUTH0_USERNAME = 'SeleniumTest123@FlexiSpend.com'
@@ -140,7 +141,34 @@ describe('CRUD Expense Test and Expense Stats', () => {
     const homepageElement = await getElementById('home-page', driver)
     expect(await homepageElement.isDisplayed()).toBe(true)
   }, 30000)
+  it('renders the stat page without creating an expense', async () => {
+    await driver.wait(async () => {
+      const dailyLedgerElement = await getElementById('daily-ledger', driver)
+      return (
+        (await dailyLedgerElement.isDisplayed()) &&
+        (await dailyLedgerElement.getAttribute('data-user-id')) !== null
+      )
+    }, 10000)
+
+    const statPageButton = await getElementById('stat-page', driver)
+    statPageButton.click()
+
+    const statName = await getElementById('stat-name', driver)
+    expect(await statName.isDisplayed()).toBe(true)
+
+    const loadingScreen = await getElementById('loading-screen', driver)
+    expect(await loadingScreen.isDisplayed()).toBe(true)
+
+    await driver.wait(async () => {
+      const noExpenseMessage = await getElementById('no-expenses', driver)
+      return await noExpenseMessage.isDisplayed()
+    }, 10000)
+    const noExpenseMessage = await getElementById('no-expenses', driver)
+    expect(noExpenseMessage.isDisplayed()).toBeTruthy
+  }, 30000)
   it('creates expense', async () => {
+    const homePageButton = await getElementById('home-page', driver)
+    homePageButton.click()
     await driver.wait(async () => {
       const dailyLedgerElement = await getElementById('daily-ledger', driver)
       return (
@@ -293,7 +321,7 @@ describe('CRUD Expense Test and Expense Stats', () => {
 
     const updatedAmountElement = await getElementById('expense-amount', driver)
     expect(await updatedAmountElement.getText()).toBe('1000.00')
-  }, 30000)
+  }, 40000)
   it('delete created expenses', async () => {
     const expenseItemElement = await getElementById('list-item', driver)
     expect(await expenseItemElement.isDisplayed()).toBe(true)
@@ -318,7 +346,7 @@ describe('CRUD Expense Test and Expense Stats', () => {
     await logoutButton.click()
   }, 30000)
 })
-describe('CRUD Incomes Test', () => {
+describe('CRUD Income Test and Income Stats', () => {
   const description = 'Hatag ni mama'
   const amount = 1000
   it('renders the Home Page', async () => {
@@ -354,7 +382,37 @@ describe('CRUD Incomes Test', () => {
     const homepageElement = await getElementById('home-page', driver)
     expect(await homepageElement.isDisplayed()).toBe(true)
   }, 30000)
+  it('renders the stat page without creating an income', async () => {
+    await driver.wait(async () => {
+      const dailyLedgerElement = await getElementById('daily-ledger', driver)
+      return (
+        (await dailyLedgerElement.isDisplayed()) &&
+        (await dailyLedgerElement.getAttribute('data-user-id')) !== null
+      )
+    }, 10000)
+
+    const statPageButton = await getElementById('stat-page', driver)
+    statPageButton.click()
+
+    const incomeStatButton = await getElementById('income-stat-button', driver)
+    incomeStatButton.click()
+
+    const statName = await getElementById('stat-name', driver)
+    expect(await statName.isDisplayed()).toBe(true)
+
+    const loadingScreen = await getElementById('loading-screen', driver)
+    expect(await loadingScreen.isDisplayed()).toBe(true)
+
+    await driver.wait(async () => {
+      const noIncomeMessage = await getElementById('no-incomes', driver)
+      return await noIncomeMessage.isDisplayed()
+    }, 10000)
+    const noIncomeMessage = await getElementById('no-incomes', driver)
+    expect(noIncomeMessage.isDisplayed()).toBeTruthy
+  }, 30000)
   it('creates income', async () => {
+    const homePageButton = await getElementById('home-page', driver)
+    homePageButton.click()
     await driver.wait(async () => {
       const dailyLedgerElement = await getElementById('daily-ledger', driver)
       return (
@@ -511,7 +569,7 @@ describe('CRUD Incomes Test', () => {
 
     const updatedAmountElement = await getElementById('income-amount', driver)
     expect(await updatedAmountElement.getText()).toBe('2000.00')
-  }, 30000)
+  }, 40000)
   it('delete created incomes', async () => {
     const incomeItemElement = await getElementById('list-item', driver)
     expect(await incomeItemElement.isDisplayed()).toBe(true)
@@ -523,7 +581,7 @@ describe('CRUD Incomes Test', () => {
 
     expect(incomeItemElement).toBeFalsy
 
-    //logout before proceeding to other test
+    //logs out after all tests
     const profilePicButton = await getElementById('profile-pic', driver)
     await profilePicButton.click()
 
