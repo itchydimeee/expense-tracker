@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { PUT } from '@/app/api/updateExpenses/route'
+import { PUT } from '@/app/api/updateIncomes/route'
 import prisma from '@/lib/prisma'
 
 // Mock prisma
@@ -10,16 +10,16 @@ import prisma from '@/lib/prisma'
 jest.mock('../../lib/prisma', () => ({
   __esModule: true,
   default: {
-    expenses: {
+    income: {
       update: jest.fn(),
     },
   },
 }))
 
-describe('PUT /api/updateExpenses', () => {
-  const id = 'expense-id-1'
+describe('PUT /api/updateIncomes', () => {
+  const id = 'income-id-1'
   const categoryId = '1'
-  const description = 'updated expense description'
+  const description = 'updated income description'
   const amount = 20.99
   const date = new Date('2024-05-28')
 
@@ -35,7 +35,7 @@ describe('PUT /api/updateExpenses', () => {
     } as any
 
     // Mock the prisma client to return a value
-    ;(prisma.expenses.update as jest.Mock).mockResolvedValue({
+    ;(prisma.income.update as jest.Mock).mockResolvedValue({
       where: { id: id },
       data: {
         category: { connect: { id: categoryId } },
@@ -50,7 +50,7 @@ describe('PUT /api/updateExpenses', () => {
 
     // Check the response
     expect(response.status).toBe(200)
-    expect(prisma.expenses.update).toHaveBeenCalledTimes(1)
+    expect(prisma.income.update).toHaveBeenCalledTimes(1)
   })
 
   it('should return status 400 when expenseId is missing from request body', async () => {
@@ -64,7 +64,7 @@ describe('PUT /api/updateExpenses', () => {
       }),
     } as any
 
-    ;(prisma.expenses.update as jest.Mock).mockResolvedValue({
+    ;(prisma.income.update as jest.Mock).mockResolvedValue({
       where: { id: '' },
       data: {
         category: { connect: { id: categoryId } },
@@ -78,8 +78,8 @@ describe('PUT /api/updateExpenses', () => {
     const body = await response.json()
 
     expect(response.status).toBe(400)
-    expect(body.message).toEqual('expenseId is required')
-    expect(prisma.expenses.update).not.toHaveBeenCalled()
+    expect(body.message).toEqual('incomeId is required')
+    expect(prisma.income.update).not.toHaveBeenCalled()
   })
 
   it('should return status 500 when prisma query rejects', async () => {
@@ -94,14 +94,14 @@ describe('PUT /api/updateExpenses', () => {
     } as any
 
     // Mock the prisma client to reject the query
-    ;(prisma.expenses.update as jest.Mock).mockRejectedValue(
-      new Error('Failed to update expense')
+    ;(prisma.income.update as jest.Mock).mockRejectedValue(
+      new Error('Failed to update income')
     )
 
     const response = await PUT(requestObj)
     const body = await response.json()
 
     expect(response.status).toBe(500)
-    expect(body.error).toEqual('Failed to update expense')
+    expect(body.error).toEqual('Failed to update income')
   })
 })

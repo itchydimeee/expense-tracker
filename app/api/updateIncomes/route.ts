@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import prisma from '@/lib/prisma'
 
-const prisma = new PrismaClient()
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json()
+
+    if (!body.id) {
+      return NextResponse.json(
+        { message: 'incomeId is required' },
+        { status: 400 }
+      )
+    }
+
     const { id, categoryId, description, amount, date } = body
-    const updatedExpense = await prisma.income.update({
+
+    const updatedIncome = await prisma.income.update({
       where: { id: id },
       data: {
         category: { connect: { id: categoryId } },
@@ -15,9 +23,12 @@ export async function PUT(req: NextRequest) {
         date,
       },
     })
-    return NextResponse.json(updatedExpense)
+    return NextResponse.json(updatedIncome, { status: 200 })
   } catch (err) {
     console.log('error', err)
-    return NextResponse.json({ error: 'Failed to update expense' })
+    return NextResponse.json(
+      { error: 'Failed to update income' },
+      { status: 500 }
+    )
   }
 }
