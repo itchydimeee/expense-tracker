@@ -134,4 +134,48 @@ describe("CreateTransactionCard", () => {
       amount: 500.0,
     });
   });
+  it("displays error message when form is submitted with invalid data", async () => {
+    const { getByText } = render(
+      <CreateTransactionCard
+        userId={userId}
+        onSubmitExpense={onSubmitExpense}
+        onSubmitIncome={onSubmitIncome}
+      />
+    );
+
+    fireEvent.click(screen.getByTestId("create-button"));
+
+    const submitButton = getByText("Create Expense");
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() =>
+      expect(
+        getByText("Please fill in all necessary fields")
+      ).toBeInTheDocument()
+    );
+  });
+
+  it("displays error message when form is submitted with invalid data (Income)", async () => {
+    const { getByText } = render(
+      <CreateTransactionCard
+        userId={userId}
+        onSubmitExpense={onSubmitExpense}
+        onSubmitIncome={onSubmitIncome}
+      />
+    );
+
+    fireEvent.click(screen.getByTestId("create-button"));
+    fireEvent.click(screen.getByTestId("income-button"));
+
+    const submitButton = getByText("Create Income");
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() =>
+      expect(
+        getByText("Please fill in all necessary fields")
+      ).toBeInTheDocument()
+    );
+  });
 });

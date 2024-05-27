@@ -1,15 +1,13 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import Footer from "@/components/footer"; // Update the import path if necessary
+import Footer from "@/components/footer";
 import { usePathname } from "next/navigation";
 
-// Mock the usePathname hook from next/navigation
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-// Mock FontAwesomeIcon to prevent issues during testing
 jest.mock("@fortawesome/react-fontawesome", () => ({
   FontAwesomeIcon: jest.fn(() => <span>Icon</span>),
 }));

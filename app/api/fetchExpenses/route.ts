@@ -1,7 +1,5 @@
-// pages/api/expenses/[userId].js
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { error } from 'console'
 
 export async function GET(req: NextRequest) {
   try {

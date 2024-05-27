@@ -28,7 +28,16 @@
     "test:monthlySummaryCard": "jest --testPathPattern=monthlySummaryCard.test.tsx",
     "test:createExpenses": "jest --testPathPattern=createExpenses.test.ts",
     "test:createIncomes": "jest --testPathPattern=createIncomes.test.ts",
-    "test:fetchExpenses": "jest --testPathPattern=fetchExpenses.test.ts"
+    "test:fetchExpenses": "jest --testPathPattern=fetchExpenses.test.ts",
+    "test:fetchIncomes": "jest --testPathPattern=fetchIncomes.test.ts",
+    "test:apiDeleteExpenses": "jest --testPathPattern=apiDeleteExpenses.test.ts",
+    "test:apiDeleteIncome": "jest --testPathPattern=apiDeleteIncome.test.ts",
+    "test:apiUpdateExpenses": "jest --testPathPattern=apiUpdateExpenses.test.ts",
+    "test:apiUpdateIncomes": "jest --testPathPattern=apiUpdateIncomes.test.ts",
+    "test:apiFetchExpenseCategories": "jest --testPathPattern=apiFetchExpenseCategories.test.ts",
+    "test:apiFetchIncomeCategories": "jest --testPathPattern=apiFetchIncomeCategories.test.ts",
+    "test:apiFetchUsers": "jest --testPathPattern=apiFetchUsers.test.ts",
+    "test:apiCreateUsers": "jest --testPathPattern=apiCreateUsers.test.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",

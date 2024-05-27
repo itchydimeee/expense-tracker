@@ -1,14 +1,15 @@
-// pages/api/expenses/[userId].js
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from 'next/server'
+import prisma from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
   try {
-    const url = new URL(req.url)
-    const userId = url.searchParams.get('userId') ?? ''
-    const expenses = await prisma.income.findMany({
+    const userId = req.nextUrl.searchParams.get('userId') ?? ''
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 })
+    }
+
+    const incomes = await prisma.income.findMany({
       where: {
         userId: userId,
       },
@@ -17,12 +18,15 @@ export async function GET(req: NextRequest) {
         category: true,
       },
       orderBy: {
-        date: 'desc'
-      }
-    });
-    return NextResponse.json(expenses);
+        date: 'desc',
+      },
+    })
+    return NextResponse.json(incomes, { status: 200 })
   } catch (err) {
-    console.log('error', err);
-    return NextResponse.json({ error: 'Failed to fetch expenses' });
+    console.log('error', err)
+    return NextResponse.json(
+      { error: 'Failed to fetch incomes' },
+      { status: 404 }
+    )
   }
 }
