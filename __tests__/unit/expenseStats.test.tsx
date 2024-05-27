@@ -6,11 +6,9 @@ import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { act } from "react-dom/test-utils";
 
-// Mock the axios module
 jest.mock("axios");
 jest.mock("@auth0/nextjs-auth0/client");
 
-// Mock data
 const mockUser = {
   email: "testuser@example.com",
 };
@@ -21,10 +19,8 @@ const mockExpenses = [
   { category: { name: "Bills" }, amount: 30 },
 ];
 
-// Mock implementation of useUser
 (useUser as jest.Mock).mockReturnValue({ user: mockUser });
 
-// Mock implementation of axios
 (axios.get as jest.Mock).mockImplementation((url: string) => {
   if (url === "/api/fetchUser") {
     return Promise.resolve({ data: { id: "123" } });
@@ -34,7 +30,7 @@ const mockExpenses = [
 });
 
 describe("ExpenseStats", () => {
-  afterEach(cleanup); // Clean up after each test
+  afterEach(cleanup);
 
   it("renders loading state initially", () => {
     render(<ExpenseStats />);

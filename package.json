@@ -20,7 +20,10 @@
     "test:navbar": "jest --testPathPattern=navbar.test.tsx",
     "test:expenseStats": "jest --testPathPattern=expenseStats.test.tsx",
     "test:footer": "jest --testPathPattern=footer.test.tsx",
-    "test:expenseCategories": "jest --testPathPattern=expenseCategories.test.tsx"
+    "test:expenseCategories": "jest --testPathPattern=expenseCategories.test.tsx",
+    "test:incomeStats": "jest --testPathPattern=incomeStats.test.tsx",
+    "test:incomeCategories": "jest --testPathPattern=incomeCategories.test.tsx",
+    "test:monthlySummaryCard": "jest --testPathPattern=monthlySummaryCard.test.tsx"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
