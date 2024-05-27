@@ -75,17 +75,18 @@ const ExpenseStats = () => {
 
   return (
     <div className='p-2'>
-      <h2 className='text-white text-xl font-semibold'>Expense Statistics</h2>
+      <h2 className='text-white text-xl font-semibold' id="stat-name">Expense Statistics</h2>
       <div className='w-full max-w-xs mx-auto'>
         {data.length > 0 ? (
+          <div id="pie-chart">
           <PieChart data={data} radius={40} lineWidth={30} animate />
+        </div>
         ) : (
-          <div className='flex justify-center items-center h-screen'>
+          <div id="loading-screen" className='flex justify-center items-center h-screen'>
             <div
               className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
               role='status'
             >
-              <span className='sr-only'>Loading Expense Statistics...</span>
             </div>
             <p className='text-lg text-gray-600'>
               Loading Expense Statistics...
@@ -95,7 +96,7 @@ const ExpenseStats = () => {
         <ul className='flex flex-wrap text-white text-xs justify-center'>
           {data.map((item, index) => (
             <li key={index} className='mr-2 mb-2'>
-              <span
+              <span id="stat-color"
                 style={{
                   backgroundColor: item.color,
                   width: '10px',
@@ -104,7 +105,7 @@ const ExpenseStats = () => {
                   marginRight: '10px'
                 }}
               />
-              <span>
+              <span id="stat-label">
                 {item.title} - {item.value} (
                 {Math.round(
                   (item.value / data.reduce((a, b) => a + b.value, 0)) * 100

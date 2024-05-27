@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { POST } from '@/app/api/createExpenses/route'
+import { POST } from '@/app/api/createIncomes/route'
 import prisma from '@/lib/prisma'
 
 // Mock prisma
@@ -10,17 +10,17 @@ import prisma from '@/lib/prisma'
 jest.mock('../../lib/prisma', () => ({
   __esModule: true,
   default: {
-    expenses: {
+    income: {
       create: jest.fn(),
     },
   },
 }))
 
-describe('POST /api/createExpenses', () => {
+describe('POST /api/createIncomes', () => {
   const userId = 'clvoy81ge000018anon6tdud9'
   const date = new Date('2024-05-27')
   const categoryId = '1'
-  const description = 'test expense description'
+  const description = 'test income description'
   const amount = 10.99
 
   it('should return added data with status 201', async () => {
@@ -35,7 +35,7 @@ describe('POST /api/createExpenses', () => {
     } as any
 
     // Mock the prisma client to return a value
-    ;(prisma.expenses.create as jest.Mock).mockResolvedValue({
+    ;(prisma.income.create as jest.Mock).mockResolvedValue({
       userId: userId,
       date: date,
       categoryId: categoryId,
@@ -50,7 +50,7 @@ describe('POST /api/createExpenses', () => {
     // Check the response
     expect(response.status).toBe(201)
     expect(body.userId).toBe(userId)
-    expect(prisma.expenses.create).toHaveBeenCalledTimes(1)
+    expect(prisma.income.create).toHaveBeenCalledTimes(1)
   })
 
   it('should return status 400 when userId is missing from request body', async () => {
@@ -64,7 +64,7 @@ describe('POST /api/createExpenses', () => {
       }),
     } as any
 
-    ;(prisma.expenses.create as jest.Mock).mockResolvedValue({
+    ;(prisma.income.create as jest.Mock).mockResolvedValue({
       userId: '',
       date: date,
       categoryId: categoryId,
@@ -77,7 +77,7 @@ describe('POST /api/createExpenses', () => {
 
     expect(response.status).toBe(400)
     expect(body.message).toEqual(expect.any(String))
-    expect(prisma.expenses.create).not.toHaveBeenCalled()
+    expect(prisma.income.create).not.toHaveBeenCalled()
   })
 
   it('should return status 500 when prisma query rejects', async () => {
@@ -92,14 +92,14 @@ describe('POST /api/createExpenses', () => {
     } as any
 
     // Mock the prisma client to reject the query
-    ;(prisma.expenses.create as jest.Mock).mockRejectedValue(
-      new Error('Failed to create expense')
+    ;(prisma.income.create as jest.Mock).mockRejectedValue(
+      new Error('Failed to create income')
     )
 
     const response = await POST(requestObj)
     const body = await response.json()
 
     expect(response.status).toBe(500)
-    expect(body.error).toEqual('Failed to create expense')
+    expect(body.error).toEqual('Failed to create income')
   })
 })
