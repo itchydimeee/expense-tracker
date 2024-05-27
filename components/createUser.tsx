@@ -17,7 +17,7 @@ function CreateUser() {
         })
 
         if (response.data.error) {
-          const createUserResponse = await axios.post('/api/createUser', {
+          const createUserResponse = await axios.post('/api/users', {
             auth0Id,
             email: user?.email,
             username: user?.name,

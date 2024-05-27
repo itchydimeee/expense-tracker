@@ -15,16 +15,16 @@ const ExpenseStats = () => {
   useEffect(() => {
     if (user) {
       const fetchUserIdAndExpenses = async () => {
-        const response = await axios.get('/api/fetchUser', {
+        const response = await axios.get('/api/users', {
           params: {
-            email: user.email
-          }
+            auth0Id: user.sub,
+          },
         })
         const userId = response.data.id
         const responseExpenses = await axios.get('/api/fetchExpenses', {
           params: {
-            userId
-          }
+            userId,
+          },
         })
         const expenses = responseExpenses.data
         const expenseData: Map<string, number> = new Map<string, number>()
@@ -49,45 +49,49 @@ const ExpenseStats = () => {
         )
 
         const categoryColorMap: CategoryColorMap = {
-            Food: '#FFC107',
-            Transport: '#2196F3',
-            Bills: '#9C27B0',
-            Health: '#4CAF50',
-            Clothing: '#EE4B2B',
-            Education: '#34C759',
-            'Social Life': '#9400D3',
-            Others: '#2F4F7F',
-        };
+          Food: '#FFC107',
+          Transport: '#2196F3',
+          Bills: '#9C27B0',
+          Health: '#4CAF50',
+          Clothing: '#EE4B2B',
+          Education: '#34C759',
+          'Social Life': '#9400D3',
+          Others: '#2F4F7F',
+        }
 
         const data = Array.from(expenseData, ([title, value]) => {
-          const color = categoryColorMap[title] ?? '#CCCCCC';
+          const color = categoryColorMap[title] ?? '#CCCCCC'
           return {
             title,
             value: Number(value),
             color,
-          };
-        });
-        setData(data.sort((a, b) => b.value - a.value));
-      };
+          }
+        })
+        setData(data.sort((a, b) => b.value - a.value))
+      }
       fetchUserIdAndExpenses()
     }
   }, [user])
 
   return (
     <div className='p-2'>
-      <h2 className='text-white text-xl font-semibold' id="stat-name">Expense Statistics</h2>
+      <h2 className='text-white text-xl font-semibold' id='stat-name'>
+        Expense Statistics
+      </h2>
       <div className='w-full max-w-xs mx-auto'>
         {data.length > 0 ? (
-          <div id="pie-chart">
-          <PieChart data={data} radius={40} lineWidth={30} animate />
-        </div>
+          <div id='pie-chart'>
+            <PieChart data={data} radius={40} lineWidth={30} animate />
+          </div>
         ) : (
-          <div id="loading-screen" className='flex justify-center items-center h-screen'>
+          <div
+            id='loading-screen'
+            className='flex justify-center items-center h-screen'
+          >
             <div
               className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
               role='status'
-            >
-            </div>
+            ></div>
             <p className='text-lg text-gray-600'>
               Loading Expense Statistics...
             </p>
@@ -96,16 +100,17 @@ const ExpenseStats = () => {
         <ul className='flex flex-wrap text-white text-xs justify-center'>
           {data.map((item, index) => (
             <li key={index} className='mr-2 mb-2'>
-              <span id="stat-color"
+              <span
+                id='stat-color'
                 style={{
                   backgroundColor: item.color,
                   width: '10px',
                   height: '10px',
                   display: 'inline-block',
-                  marginRight: '10px'
+                  marginRight: '10px',
                 }}
               />
-              <span id="stat-label">
+              <span id='stat-label'>
                 {item.title} - {item.value} (
                 {Math.round(
                   (item.value / data.reduce((a, b) => a + b.value, 0)) * 100
