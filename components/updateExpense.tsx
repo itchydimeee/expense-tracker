@@ -80,7 +80,7 @@ function UpdateExpense({
         >
           <label className="block mt-2">Date</label>
           <input
-            data-testId="date-input"
+            data-testid="date-input"
             className="shadow appearance-none border rounded py-2 px-6 font-normal text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             type="date"
             pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
@@ -95,7 +95,7 @@ function UpdateExpense({
           <label className="block mt-2">
             Description
             <input
-              data-testId="description"
+              data-testid="description"
               type="text"
               name="description"
               value={updatedExpense.description}
@@ -107,7 +107,7 @@ function UpdateExpense({
             Amount
             <input
               id="update-amount"
-              data-testId="amount"
+              data-testid="amount"
               type="number"
               name="amount"
               value={updatedExpense.amount}

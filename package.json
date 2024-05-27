@@ -24,6 +24,7 @@
     "test:expenseCategories": "jest --testPathPattern=expenseCategories.test.tsx",
     "test:incomeStats": "jest --testPathPattern=incomeStats.test.tsx",
     "test:incomeCategories": "jest --testPathPattern=incomeCategories.test.tsx",
+    "test:dailySummaryCard": "jest --testPathPattern=dailySummaryCard.test.tsx",
     "test:monthlySummaryCard": "jest --testPathPattern=monthlySummaryCard.test.tsx",
     "test:createExpenses": "jest --testPathPattern=createExpenses.test.ts",
     "test:createIncomes": "jest --testPathPattern=createIncomes.test.ts",

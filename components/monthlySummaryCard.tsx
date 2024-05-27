@@ -38,28 +38,29 @@ const MonthlySummaryCard = ({
     <div className='max-w-md p-2 rounded-3xl bg-secondary'>
       <div className='text-lg text-center text-white mb-1 font-bold'>
         <button
+          data-testid="previous-button"
           className='mr-4 text-white text-bold'
           onClick={handlePreviousMonth}
         >
           <FontAwesomeIcon icon={faAngleLeft} />
         </button>
         {monthName} {currentYear}
-        <button className='ml-4 text-white text-bold' onClick={handleNextMonth}>
+        <button data-testid="next-button" className='ml-4 text-white text-bold' onClick={handleNextMonth}>
           <FontAwesomeIcon icon={faAngleRight} />
         </button>
       </div>
       <div className='border-t border-[#4D4D4D] mb-2'></div>
       <div className='flex justify-between mb-2 px-4 font-semibold text-center'>
-        <span className='text-sm text-income'>
-          <h1 className='text-white text-sm'> Income</h1>
+        <span className='text-sm text-income' data-testid="monthly-income">
+          <h1 className='text-white text-sm'>Income</h1>
           {(monthlyIncomeTotals[key] || 0).toFixed(2)}
         </span>
-        <span className='text-sm text-expense'>
-          <h1 className='text-white text-sm'> Expense</h1>
+        <span className='text-sm text-expense' data-testid="monthly-expense">
+          <h1 className='text-white text-sm'>Expense</h1>
           {(monthlyExpenseTotals[key] || 0).toFixed(2)}
         </span>
-        <span className='text-sm text-green-500'>
-          <h1 className='text-white text-sm'> Balance</h1>
+        <span className='text-sm text-green-500' data-testid="monthly-profit">
+          <h1 className='text-white text-sm'>Balance</h1>
           {(monthlyProfitTotals[key] || 0).toFixed(2)}
         </span>
       </div>
