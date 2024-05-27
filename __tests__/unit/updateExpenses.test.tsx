@@ -1,14 +1,13 @@
 import React from "react";
-import "@testing-library/jest-dom";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor, getByText } from "@testing-library/react";
 import UpdateExpense from "@/components/updateExpense";
+import axios from "axios";
+import { Expenses } from "@/lib/types";
 
-jest.mock("axios", () => ({
-  put: jest.fn(() => Promise.resolve({ data: {} })),
-}));
+jest.mock("axios");
 
 describe("UpdateExpense", () => {
-  const expense = {
+  const expense: Expenses = {
     id: "1",
     categoryId: "2",
     description: "Test description",
@@ -19,42 +18,69 @@ describe("UpdateExpense", () => {
       auth0Id: "authId123",
       username: "wala nagana",
       email: "misaky@gmail.com",
-      expenses: [],
     },
     date: new Date("2024-05-25"),
-    category: { id: "categoryId123", name: "Transport", expenses: [] },
-    type: "expenses" as "expenses",
+    category: { id: "categoryId123", name: "Transport" },
+    type: "expenses",
   };
 
+  const wrongExpense: Expenses = {
+    id: "1",
+    categoryId: "2",
+    description: "Test description",
+    amount: 0,
+    userId: "123",
+    user: {
+      id: "userId123",
+      auth0Id: "authId123",
+      username: "wala nagana",
+      email: "misaky@gmail.com",
+    },
+    date: new Date("2024-05-25"),
+    category: { id: "categoryId123", name: "Transport" },
+    type: "expenses",
+  };
   const cancelEdit = jest.fn();
 
-  it("submits the form with updated expense data", async () => {
-    const { getByLabelText, getByTestId } = render(
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("calls handleSubmit when the form is submitted", async () => {
+    (axios.put as jest.Mock).mockResolvedValueOnce({});
+
+    const { getByTestId } = render(
       <UpdateExpense expense={expense} cancelEdit={cancelEdit} />
     );
 
-    const dateInput = getByTestId("date-input");
-    const categoryInput = getByTestId("expense-category");
-    const descriptionInput = getByTestId("description");
-    const amountInput = getByTestId("amount");
     const updateButton = getByTestId("updateExpense-button");
-
-    fireEvent.change(dateInput, { target: { value: "2024-05-26" } });
-    fireEvent.change(categoryInput, { target: { value: "3" } });
-    fireEvent.change(descriptionInput, {
-      target: { value: "Updated description" },
-    });
-    fireEvent.change(amountInput, { target: { value: "20.99" } });
 
     fireEvent.click(updateButton);
 
-    // Wait for update to complete
     await waitFor(() => {
-      expect(cancelEdit).toHaveBeenCalled();
+      expect(axios.put).toHaveBeenCalledTimes(1);
+      expect(axios.put).toHaveBeenCalledWith("/api/updateExpenses", expense);
     });
   });
 
-  it("cancels the update and calls cancelEdit", () => {
+  it("handles update error gracefully", async () => {
+    (axios.put as jest.Mock).mockRejectedValueOnce(new Error("Update failed"));
+
+    const { getByTestId } = render(
+      <UpdateExpense expense={expense} cancelEdit={cancelEdit} />
+    );
+
+    const updateButton = getByTestId("updateExpense-button");
+
+    fireEvent.click(updateButton);
+
+    await waitFor(() => {
+      expect(axios.put).toHaveBeenCalledTimes(1);
+      expect(axios.put).toHaveBeenCalledWith("/api/updateExpenses", expense);
+    });
+  });
+
+  it("calls cancelEdit when the cancel button is clicked", () => {
     const { getByTestId } = render(
       <UpdateExpense expense={expense} cancelEdit={cancelEdit} />
     );
@@ -63,6 +89,41 @@ describe("UpdateExpense", () => {
 
     fireEvent.click(cancelButton);
 
-    expect(cancelEdit).toHaveBeenCalled();
+    expect(cancelEdit).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls handleSubmit when the form is submitted", async () => {
+    (axios.put as jest.Mock).mockResolvedValueOnce({});
+
+    const { getByTestId } = render(
+      <UpdateExpense expense={expense} cancelEdit={cancelEdit} />
+    );
+
+    const updateButton = getByTestId("updateExpense-button");
+
+    fireEvent.click(updateButton);
+
+    await waitFor(() => {
+      expect(axios.put).toHaveBeenCalledTimes(1);
+      expect(axios.put).toHaveBeenCalledWith("/api/updateExpenses", expense);
+    });
+  });
+
+  it("does not submit the form if the amount field is not filled out", async () => {
+    (axios.put as jest.Mock).mockResolvedValueOnce({});
+
+    const { getByTestId, getByText } = render(
+      <UpdateExpense expense={wrongExpense} cancelEdit={cancelEdit} />
+    );
+
+    const updateButton = getByTestId("updateExpense-button");
+
+    fireEvent.click(updateButton);
+
+    await waitFor(
+      () =>
+        expect(getByText("Please fill in all necessary fields"))
+          .toBeInTheDocument
+    );
   });
 });

@@ -1,60 +1,46 @@
 import React from "react";
-import "@testing-library/jest-dom";
-import { render, screen, waitFor } from "@testing-library/react";
-import ExpenseStats from "@/components/expenseStats";
-import axios from "axios";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  getByTestId,
+} from "@testing-library/react";
+import Navbar from "@/components/navbar";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { act } from "react-dom/test-utils";
 
-jest.mock("axios");
-jest.mock("@auth0/nextjs-auth0/client");
+jest.mock("@auth0/nextjs-auth0/client", () => ({
+  useUser: () => ({
+    user: { picture: "https://example.com/picture" },
+    error: null,
+    isLoading: false,
+  }),
+}));
 
-const mockedAxiosGet = axios.get as jest.MockedFunction<typeof axios.get>;
-
-const mockUser = {
-  email: "testuser@example.com",
-};
-
-const mockExpenses = [
-  { category: { name: "Food" }, amount: 50 },
-  { category: { name: "Transport" }, amount: 20 },
-  { category: { name: "Bills" }, amount: 30 },
-];
-
-(useUser as jest.Mock).mockReturnValue({ user: mockUser });
-
-mockedAxiosGet.mockImplementation(async (url: string) => {
-  if (url === "/api/fetchUser") {
-    return { data: { id: "123" } };
-  } else if (url === "/api/fetchExpenses") {
-    return { data: mockExpenses };
-  }
-});
-
-describe("ExpenseStats", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+describe("Navbar", () => {
+  it("renders logo image", () => {
+    const { getByAltText } = render(<Navbar />);
+    expect(getByAltText("logoImg")).toBeInTheDocument;
   });
 
-  it("renders loading state initially", async () => {
-    render(<ExpenseStats />);
-
-    expect(
-      screen.getAllByText("Loading Expense Statistics...").length
-    ).toBeGreaterThan(0);
+  it("renders profile picture when user is logged in", () => {
+    const { getByAltText } = render(<Navbar />);
+    expect(getByAltText("Profile picture")).toBeInTheDocument;
   });
 
-  it("renders expense statistics after data is fetched", async () => {
-    await act(async () => {
-      render(<ExpenseStats />);
-    });
+  it("renders logout button when user is logged in", () => {
+    const { getByText, getByTestId } = render(<Navbar />);
+    const profilePictureButton = getByTestId("profile-pic");
 
-    await waitFor(() =>
-      expect(screen.getByText("Expense Statistics")).toBeInTheDocument()
-    );
+    fireEvent.click(profilePictureButton);
+    expect(getByText("Logout")).toBeInTheDocument;
+  });
 
-    expect(screen.getByText("Food - 50 (50%)")).toBeInTheDocument();
-    expect(screen.getByText("Transport - 20 (20%)")).toBeInTheDocument();
-    expect(screen.getByText("Bills - 30 (30%)")).toBeInTheDocument();
+  it("closes menu on outside click", () => {
+    const { getByTestId, getByText } = render(<Navbar />);
+    const profilePic = getByTestId("profile-pic");
+    fireEvent.click(profilePic);
+    const outsideElement = document.createElement("div");
+    fireEvent.click(outsideElement);
+    expect(getByText("Logout")).not.toBeInTheDocument;
   });
 });
