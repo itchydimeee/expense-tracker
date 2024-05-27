@@ -47,12 +47,11 @@ const IncomeStats = () => {
         })
 
         const categoryColorMap: CategoryColorMap = {
-            Salary: '#8BC34A',
-            Business: '#64B5F6',
-            Allowance: '#9C27B0',
-            Others: '#00698F',
-            Bonus: '#FFC107'
-
+          Salary: '#8BC34A',
+          Business: '#64B5F6',
+          Allowance: '#9C27B0',
+          Others: '#00698F',
+          Bonus: '#FFC107'
         }
 
         const data = Array.from(incomeData, ([title, value]) => {
@@ -71,12 +70,14 @@ const IncomeStats = () => {
 
   return (
     <div className='p-2'>
-      <h2 className='text-white text-xl font-semibold'>Income Statistics</h2>
+      <h2 className='text-white text-xl font-semibold' id="stat-name">Income Statistics</h2>
       <div className='w-full max-w-xs mx-auto'>
         {data.length > 0 ? (
-          <PieChart data={data} radius={40} lineWidth={30} animate />
+          <div id='pie-chart'>
+            <PieChart data={data} radius={40} lineWidth={30} animate />
+          </div>
         ) : (
-          <div className='flex justify-center items-center h-screen'>
+          <div id="loading-screen" className='flex justify-center items-center h-screen'>
             <div
               className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
               role='status'
@@ -91,7 +92,7 @@ const IncomeStats = () => {
         <ul className='flex flex-wrap text-white text-xs justify-center mt-2'>
           {data.map((item, index) => (
             <li key={index} className='mr-2 mb-2'>
-              <span
+              <span id="stat-color"
                 style={{
                   backgroundColor: item.color,
                   width: '10px',
@@ -100,7 +101,7 @@ const IncomeStats = () => {
                   marginRight: '10px'
                 }}
               />
-              <span>
+              <span id="stat-label">
                 {item.title} - {item.value} (
                 {Math.round(
                   (item.value / data.reduce((a, b) => a + b.value, 0)) * 100

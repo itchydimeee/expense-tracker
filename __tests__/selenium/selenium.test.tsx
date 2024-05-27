@@ -206,7 +206,35 @@ describe('CRUD Expense Test and Expense Stats', () => {
     )
     expect(await expenseAmountElement.isDisplayed()).toBe(true)
   }, 30000)
+  it('renders the stat page with the created expense', async () => {
+    await driver.wait(async () => {
+      const dailyLedgerElement = await getElementById('daily-ledger', driver)
+      return (
+        (await dailyLedgerElement.isDisplayed()) &&
+        (await dailyLedgerElement.getAttribute('data-user-id')) !== null
+      )
+    }, 10000)
+
+    const statPageButton = await getElementById('stat-page', driver)
+    statPageButton.click()
+
+    const statName = await getElementById('stat-name', driver)
+    expect(await statName.isDisplayed()).toBe(true)
+
+    const loadingScreen = await getElementById('loading-screen', driver)
+    expect(await loadingScreen.isDisplayed()).toBe(true)
+
+    await driver.wait(async () => {
+      const pieChart = await getElementById('pie-chart', driver)
+      return await pieChart.isDisplayed()
+    }, 10000)
+    const pieChart = await getElementById('pie-chart', driver)
+    expect(pieChart.isDisplayed()).toBeTruthy
+  }, 30000)
   it('create expenses without amount input', async () => {
+    const homePageButton = await getElementById('home-page', driver)
+    homePageButton.click()
+
     await driver.wait(async () => {
       const dailyLedgerElement = await getElementById('daily-ledger', driver)
       return (
@@ -395,7 +423,39 @@ describe('CRUD Incomes Test', () => {
     )
     expect(await incomeAmountElement.isDisplayed()).toBe(true)
   }, 30000)
+  it('renders the stat page with the created income', async () => {
+    await driver.wait(async () => {
+      const dailyLedgerElement = await getElementById('daily-ledger', driver)
+      return (
+        (await dailyLedgerElement.isDisplayed()) &&
+        (await dailyLedgerElement.getAttribute('data-user-id')) !== null
+      )
+    }, 10000)
+
+    const statPageButton = await getElementById('stat-page', driver)
+    statPageButton.click()
+
+    const incomeStatButton = await getElementById('income-stat-button', driver)
+    incomeStatButton.click()
+
+    const statName = await getElementById('stat-name', driver)
+    expect(await statName.isDisplayed()).toBe(true)
+
+    const loadingScreen = await getElementById('loading-screen', driver)
+    expect(await loadingScreen.isDisplayed()).toBe(true)
+
+    await driver.wait(async () => {
+      const pieChart = await getElementById('pie-chart', driver)
+      return await pieChart.isDisplayed()
+    }, 10000)
+
+    const pieChart = await getElementById('pie-chart', driver)
+    expect(pieChart.isDisplayed()).toBeTruthy
+  }, 30000)
   it('create incomes without amount input', async () => {
+    const homePageButton = await getElementById('home-page', driver)
+    homePageButton.click()
+
     await driver.wait(async () => {
       const dailyLedgerElement = await getElementById('daily-ledger', driver)
       return (
