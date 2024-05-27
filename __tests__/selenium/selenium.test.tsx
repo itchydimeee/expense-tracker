@@ -581,7 +581,7 @@ describe('CRUD Income Test and Income Stats', () => {
 
     expect(incomeItemElement).toBeFalsy
 
-    //logout before proceeding to other test
+    //logs out after all tests
     const profilePicButton = await getElementById('profile-pic', driver)
     await profilePicButton.click()
 
