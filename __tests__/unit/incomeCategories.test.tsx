@@ -1,20 +1,20 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import ExpenseCategory from "@/components/expenseCategories";
+import IncomeCategory from "@/components/incomeCategories";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 
 jest.mock("axios");
 
 const mockedAxiosGet = axios.get as jest.MockedFunction<typeof axios.get>;
 
 const mockCategories = [
-  { id: "1", name: "Food" },
-  { id: "2", name: "Transport" },
+  { id: "1", name: "Salary" },
+  { id: "2", name: "Business" },
 ];
 
-describe("ExpenseCategory", () => {
+describe("IncomeCategory", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -23,15 +23,15 @@ describe("ExpenseCategory", () => {
     mockedAxiosGet.mockResolvedValueOnce({ data: mockCategories });
 
     await act(async () => {
-      render(<ExpenseCategory onChange={() => {}} value="" />);
+      render(<IncomeCategory onChange={() => {}} value="" />);
     });
 
-    expect(screen.getByTestId("expense-category")).toBeInTheDocument();
-    expect(screen.getByTestId("expense-category")).toHaveValue("");
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toHaveValue("");
 
     expect(screen.getByText("Select a category")).toBeInTheDocument();
-    expect(screen.getByText("Food")).toBeInTheDocument();
-    expect(screen.getByText("Transport")).toBeInTheDocument();
+    expect(screen.getByText("Salary")).toBeInTheDocument();
+    expect(screen.getByText("Business")).toBeInTheDocument();
   });
 
   it("calls onChange when a category is selected", async () => {
@@ -39,10 +39,10 @@ describe("ExpenseCategory", () => {
     const handleChange = jest.fn();
 
     await act(async () => {
-      render(<ExpenseCategory onChange={handleChange} value="" />);
+      render(<IncomeCategory onChange={handleChange} value="" />);
     });
 
-    const select = screen.getByTestId("expense-category");
+    const select = screen.getByRole("combobox");
     fireEvent.change(select, { target: { value: "1" } });
 
     expect(handleChange).toHaveBeenCalledTimes(1);
@@ -50,7 +50,7 @@ describe("ExpenseCategory", () => {
   });
 
   it("handles API error", async () => {
-    const errorMessage = "Failed to fetch expense categories";
+    const errorMessage = "Failed to fetch income categories";
     mockedAxiosGet.mockRejectedValueOnce(new Error(errorMessage));
 
     const consoleErrorSpy = jest
@@ -58,12 +58,12 @@ describe("ExpenseCategory", () => {
       .mockImplementation(() => {});
 
     await act(async () => {
-      render(<ExpenseCategory onChange={() => {}} value="" />);
+      render(<IncomeCategory onChange={() => {}} value="" />);
     });
 
     expect(screen.getByText("Select a category")).toBeInTheDocument();
-    expect(screen.queryByText("Food")).not.toBeInTheDocument();
-    expect(screen.queryByText("Transport")).not.toBeInTheDocument();
+    expect(screen.queryByText("Salary")).not.toBeInTheDocument();
+    expect(screen.queryByText("Business")).not.toBeInTheDocument();
     expect(consoleErrorSpy).toHaveBeenCalledWith(new Error(errorMessage));
 
     consoleErrorSpy.mockRestore();
