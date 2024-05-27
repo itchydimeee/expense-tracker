@@ -27,7 +27,7 @@ const ExpenseCategory: React.FC<ExpenseCategoryProps> = ({
 
   return (
     <select
-      data-testId="expense-category"
+      data-testid="expense-category"
       value={value}
       onChange={onChange}
       className="rounded text-black px-2 py-1 font-normal"
