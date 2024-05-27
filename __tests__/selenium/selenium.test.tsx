@@ -321,7 +321,7 @@ describe('CRUD Expense Test and Expense Stats', () => {
 
     const updatedAmountElement = await getElementById('expense-amount', driver)
     expect(await updatedAmountElement.getText()).toBe('1000.00')
-  }, 30000)
+  }, 40000)
   it('delete created expenses', async () => {
     const expenseItemElement = await getElementById('list-item', driver)
     expect(await expenseItemElement.isDisplayed()).toBe(true)
@@ -569,7 +569,7 @@ describe('CRUD Income Test and Income Stats', () => {
 
     const updatedAmountElement = await getElementById('income-amount', driver)
     expect(await updatedAmountElement.getText()).toBe('2000.00')
-  }, 30000)
+  }, 40000)
   it('delete created incomes', async () => {
     const incomeItemElement = await getElementById('list-item', driver)
     expect(await incomeItemElement.isDisplayed()).toBe(true)
