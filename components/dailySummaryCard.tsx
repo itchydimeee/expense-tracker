@@ -26,21 +26,21 @@ const DailySummaryCard: React.FC<DailySummaryCardProps> = ({
           })
           const dayOfMonth = dateObject.getDate()
           return (
-            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2 '>
+            <div key={date} className='mb-4 bg-secondary rounded-3xl p-2 d' data-testid="daily-summary-card">
               <div className='flex justify-between'>
                 <div className='flex px-2'>
-                  <h2 className='text-lg text-white font-bold px-1 '>
+                  <h2 className='text-lg text-white font-bold px-1' data-testid="day-of-month">
                     {dayOfMonth}
                   </h2>
-                  <h2 className='text-xs font-bold text-white px-1 py-1 bg-background rounded-md my-1'>
+                  <h2 className='text-xs font-bold text-white px-1 py-1 bg-background rounded-md my-1' data-testid="day-of-week">
                     {dayOfWeek}
                   </h2>
                 </div>
                 <div className='flex justify-end mr-2 pt-1'>
-                  <span className='text-sm text-income w-20 text-right font-semibold'>
+                  <span className='text-sm text-income w-20 text-right font-semibold' data-testid="income-total">
                     {(incomeTotals[date] || 0).toFixed(2)}
                   </span>
-                  <span className='text-sm text-expense w-20 text-right font-semibold'>
+                  <span className='text-sm text-expense w-20 text-right font-semibold' data-testid="expense-total">
                     {(expenseTotals[date] || 0).toFixed(2)}
                   </span>
                 </div>
