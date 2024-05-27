@@ -34,7 +34,8 @@
     "test:apiUpdateExpenses": "jest --testPathPattern=apiUpdateExpenses.test.ts",
     "test:apiUpdateIncomes": "jest --testPathPattern=apiUpdateIncomes.test.ts",
     "test:apiFetchExpenseCategories": "jest --testPathPattern=apiFetchExpenseCategories.test.ts",
-    "test:apiFetchIncomeCategories": "jest --testPathPattern=apiFetchIncomeCategories.test.ts"
+    "test:apiFetchIncomeCategories": "jest --testPathPattern=apiFetchIncomeCategories.test.ts",
+    "test:apiFetchUser": "jest --testPathPattern=apiFetchUser.test.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
