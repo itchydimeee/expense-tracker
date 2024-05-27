@@ -1,14 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from 'next/server'
+import prisma from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const categories = await prisma.expenseCategories.findMany();
-    return NextResponse.json(categories);
+    const categories = await prisma.expenseCategories.findMany()
+    return NextResponse.json(categories, { status: 200 })
   } catch (err) {
-    console.log('error', err);
-    return NextResponse.json({ error: 'Failed to fetch categories' });
+    console.log('error', err)
+    return NextResponse.json(
+      { error: 'Failed to fetch categories' },
+      { status: 500 }
+    )
   }
 }
