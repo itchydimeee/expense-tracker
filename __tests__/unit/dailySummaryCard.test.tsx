@@ -8,69 +8,77 @@ describe('DailySummaryCard', () => {
   const incomes: { [date: string]: Incomes[] } = {
     '2024-05-25': [
       {
-          id: '1',
-          user: {
-              id: 'user-1', username: 'User 1', email: 'user1@example.com',
-              auth0Id: 'user-1',
-              expenses: []
-          },
-          userId: '1',
-          date: new Date('2024-05-25'),
-          categoryId: '1',
-          category: {
-              name: 'Income Category 1',
-              expenses: []
-          },
-          description: 'Income description 1',
-          amount: 100,
-          type: 'income'
+        id: '1',
+        user: {
+          id: 'user-1',
+          username: 'User 1',
+          email: 'user1@example.com',
+          auth0Id: 'user-1',
+          expenses: []
+        },
+        userId: '1',
+        date: new Date('2024-05-25'),
+        categoryId: '1',
+        category: {
+          name: 'Income Category 1',
+          expenses: []
+        },
+        description: 'Income description 1',
+        amount: 100,
+        type: 'income'
       },
       {
-          id: '2',
-          user: {
-              id: 'user-1', username: 'User 1', email: 'user1@example.com',
-              auth0Id: 'user-1',
-              expenses: []
-          },
-          userId: '1',
-          date: new Date('2024-05-25'),
-          categoryId: '2',
-          category: {
-              name: 'Income Category 2',
-              expenses: []
-          },
-          description: 'Income description 2',
-          amount: 200,
-          type: 'income'
-      },
+        id: '2',
+        user: {
+          id: 'user-1',
+          username: 'User 1',
+          email: 'user1@example.com',
+          auth0Id: 'user-1',
+          expenses: []
+        },
+        userId: '1',
+        date: new Date('2024-05-25'),
+        categoryId: '2',
+        category: {
+          name: 'Income Category 2',
+          expenses: []
+        },
+        description: 'Income description truncate sample',
+        amount: 200,
+        type: 'income'
+      }
     ],
     '2024-05-26': [
       {
-          id: '3',
-          user: {
-              id: 'user-1', username: 'User 1', email: 'user1@example.com',
-              auth0Id: 'user-1',
-              expenses: []
-          },
-          userId: '1',
-          date: new Date('2024-05-25'),
-          categoryId: '3',
-          category: {
-              name: 'Income Category 3',
-              expenses: []
-          },
-          description: 'Income description 3',
-          amount: 300,
-          type: 'income'
-      },
-    ],
+        id: '3',
+        user: {
+          id: 'user-1',
+          username: 'User 1',
+          email: 'user1@example.com',
+          auth0Id: 'user-1',
+          expenses: []
+        },
+        userId: '1',
+        date: new Date('2024-05-25'),
+        categoryId: '3',
+        category: {
+          name: 'Income Category 3',
+          expenses: []
+        },
+        description: 'Income description 3',
+        amount: 300,
+        type: 'income'
+      }
+    ]
   }
   const expenses: { [date: string]: Expenses[] } = {
     '2024-05-25': [
       {
         id: '1',
         user: {
-          id: 'user-1', username: 'User 1', email: 'user1@example.com',
+          id: 'user-1',
+          username: 'User 1',
+          email: 'user1@example.com',
           auth0Id: 'user-1',
           expenses: []
         },
@@ -81,14 +89,16 @@ describe('DailySummaryCard', () => {
           name: 'Expense Category 1',
           expenses: []
         },
-        description: 'Expense description 1',
+        description: 'Expense 1',
         amount: 50,
         type: 'expenses'
       },
       {
         id: '2',
         user: {
-          id: 'user-1', username: 'User 1', email: 'user1@example.com',
+          id: 'user-1',
+          username: 'User 1',
+          email: 'user1@example.com',
           auth0Id: 'user-1',
           expenses: []
         },
@@ -99,16 +109,18 @@ describe('DailySummaryCard', () => {
           name: 'Expense Category 2',
           expenses: []
         },
-        description: 'Expense description 2',
+        description: 'Expense 2',
         amount: 75,
         type: 'expenses'
-      },
+      }
     ],
     '2024-05-26': [
       {
         id: '3',
         user: {
-          id: 'user-1', username: 'User 1', email: 'user1@example.com',
+          id: 'user-1',
+          username: 'User 1',
+          email: 'user1@example.com',
           auth0Id: 'user-1',
           expenses: []
         },
@@ -122,16 +134,16 @@ describe('DailySummaryCard', () => {
         description: 'Expense description 3',
         amount: 100,
         type: 'expenses'
-      },
-    ],
+      }
+    ]
   }
   const incomeTotals = {
     '2024-05-25': 300,
-    '2024-05-26': 300,
+    '2024-05-26': 300
   }
   const expenseTotals = {
     '2024-05-25': 125,
-    '2024-05-26': 100,
+    '2024-05-26': 100
   }
 
   afterEach(() => {
@@ -148,13 +160,13 @@ describe('DailySummaryCard', () => {
         expenseTotals={expenseTotals}
       />
     )
-  
-    expect(screen.getAllByTestId("daily-summary-card")).toHaveLength(2)
+
+    expect(screen.getAllByTestId('daily-summary-card')).toHaveLength(2)
     expect(screen.getAllByTestId('day-of-month')).toHaveLength(2)
     expect(screen.getAllByTestId('day-of-week')).toHaveLength(2)
     expect(screen.getAllByTestId('income-total')).toHaveLength(2)
     expect(screen.getAllByTestId('expense-total')).toHaveLength(2)
-  
+
     expect(getByText('25')).toBeTruthy
     expect(getByText('Sat')).toBeTruthy
     expect(getByText('26')).toBeTruthy
@@ -176,6 +188,18 @@ describe('DailySummaryCard', () => {
 
     expect(getByText('Update Income')).toBeTruthy
   })
+  it('renders incomes with more than 20 characters', () => {
+    const { getByText } = render(
+      <DailySummaryCard
+        filteredDates={filteredDates}
+        incomes={incomes}
+        expenses={expenses}
+        incomeTotals={incomeTotals}
+        expenseTotals={expenseTotals}
+      />
+    )
+    expect(getByText('Income description t...')).toBeTruthy
+  })
 
   it('renders UpdateExpense component when expense item is clicked', () => {
     const { getByText } = render(
@@ -187,10 +211,20 @@ describe('DailySummaryCard', () => {
         expenseTotals={expenseTotals}
       />
     )
-
-    const expenseItem = getByText('Expense description 1')
+    const expenseItem = getByText('Expense 1')
     fireEvent.click(expenseItem)
-
     expect(getByText('Update Expense')).toBeTruthy
+  })
+  it('renders expenses with more than 20 characters', () => {
+    const { getByText } = render(
+      <DailySummaryCard
+        filteredDates={filteredDates}
+        incomes={incomes}
+        expenses={expenses}
+        incomeTotals={incomeTotals}
+        expenseTotals={expenseTotals}
+      />
+    )
+    expect(getByText('Expense description ...')).toBeTruthy
   })
 })
