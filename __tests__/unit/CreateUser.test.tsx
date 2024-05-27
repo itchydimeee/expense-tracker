@@ -76,6 +76,9 @@ describe("CreateUser component", () => {
   });
 
   it("verifies user creation if user was successfully created", async () => {
+    const createUserUrl = "/api/users";
+    const postUserUrl = "/api/createUser";
+
     (axios.get as jest.Mock).mockResolvedValueOnce({ data: { error: true } });
     (axios.post as jest.Mock).mockResolvedValueOnce({
       data: { success: true },
@@ -84,10 +87,10 @@ describe("CreateUser component", () => {
     render(<CreateUser />);
 
     await waitFor(() => {
-      expect(axios.get).toHaveBeenCalledWith(
-        `/api/createUser?userId=${mockUser.sub}`
-      );
-      expect(axios.post).toHaveBeenCalledWith("/api/createUser", {
+      expect(axios.get).toHaveBeenCalledWith(createUserUrl, {
+        params: { auth0Id: mockUser.sub },
+      });
+      expect(axios.post).toHaveBeenCalledWith(postUserUrl, {
         auth0Id: mockUser.sub,
         email: mockUser.email,
         username: mockUser.name,

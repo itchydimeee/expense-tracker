@@ -1,9 +1,8 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ExpenseCategory from "@/components/expenseCategories";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 
 jest.mock("axios");
 
@@ -22,7 +21,7 @@ describe("ExpenseCategory", () => {
   it("renders with default option and categories", async () => {
     mockedAxiosGet.mockResolvedValueOnce({ data: mockCategories });
 
-    await act(async () => {
+    await React.act(async () => {
       render(<ExpenseCategory onChange={() => {}} value="" />);
     });
 
@@ -38,7 +37,7 @@ describe("ExpenseCategory", () => {
     mockedAxiosGet.mockResolvedValueOnce({ data: mockCategories });
     const handleChange = jest.fn();
 
-    await act(async () => {
+    await React.act(async () => {
       render(<ExpenseCategory onChange={handleChange} value="" />);
     });
 
@@ -49,6 +48,22 @@ describe("ExpenseCategory", () => {
     expect(handleChange).toHaveBeenCalledWith(expect.any(Object));
   });
 
+  it("calls onChange when a category is clicked", async () => {
+    mockedAxiosGet.mockResolvedValueOnce({ data: mockCategories });
+    const handleChange = jest.fn();
+
+    await React.act(async () => {
+      render(<ExpenseCategory onChange={handleChange} value="" />);
+    });
+
+    const select = screen.getByTestId("expense-category");
+    const option = screen.getByText("Food");
+    fireEvent.click(option);
+    fireEvent.change(select, { target: { value: "1" } });
+
+    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(handleChange).toHaveBeenCalledWith(expect.any(Object));
+  });
   it("handles API error", async () => {
     const errorMessage = "Failed to fetch expense categories";
     mockedAxiosGet.mockRejectedValueOnce(new Error(errorMessage));
@@ -57,7 +72,7 @@ describe("ExpenseCategory", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    await act(async () => {
+    await React.act(async () => {
       render(<ExpenseCategory onChange={() => {}} value="" />);
     });
 

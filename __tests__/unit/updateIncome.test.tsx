@@ -18,10 +18,26 @@ describe("UpdateIncome", () => {
       auth0Id: "authId123",
       username: "hot dog",
       email: "misaky@gmail.com",
-      incomes: [],
     },
     date: new Date("2024-05-25"),
-    category: { id: "categoryId123", name: "Salary", incomes: [] },
+    category: { id: "categoryId123", name: "Salary" },
+    type: "income",
+  };
+
+  const Wrongincome: Incomes = {
+    id: "1",
+    categoryId: "2",
+    description: "Test description",
+    amount: 0,
+    userId: "123",
+    user: {
+      id: "userId123",
+      auth0Id: "authId123",
+      username: "hot dog",
+      email: "misaky@gmail.com",
+    },
+    date: new Date("2024-05-25"),
+    category: { id: "categoryId123", name: "Salary" },
     type: "income",
   };
   const cancelEdit = jest.fn();
@@ -74,5 +90,23 @@ describe("UpdateIncome", () => {
     fireEvent.click(cancelButton);
 
     expect(cancelEdit).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not submit the form if the amount field is not filled out", async () => {
+    (axios.put as jest.Mock).mockResolvedValueOnce({});
+
+    const { getByTestId, getByText } = render(
+      <UpdateIncome income={Wrongincome} cancelEdit={cancelEdit} />
+    );
+
+    const updateButton = getByTestId("updateIncome-button");
+
+    fireEvent.click(updateButton);
+
+    await waitFor(
+      () =>
+        expect(getByText("Please fill in all necessary fields"))
+          .toBeInTheDocument
+    );
   });
 });
