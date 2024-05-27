@@ -27,6 +27,7 @@ const StatsPage = () => {
             Expenses
           </button>
           <button
+            id="income-stat-button"
             className={`text-white px-2 py-1 m-2 rounded-xl ${
               activeType === 'income' ? 'bg-orange-500' : ''
             }`}
