@@ -21,9 +21,9 @@ const HomePage = () => {
     const fetchUserId = async () => {
       if (isLoggedIn) {
         try {
-          const fetchUser = await axios.get('/api/fetchUser', {
+          const fetchUser = await axios.get('/api/users', {
             params: {
-              email: user.email,
+              auth0Id: user.sub,
             },
           })
           const userId = fetchUser.data.id
@@ -34,7 +34,7 @@ const HomePage = () => {
     fetchUserId()
   }, [isLoggedIn, user])
 
-  // console.log('UserID: ', userId)
+  console.log('UserID: ', userId)
 
   const handleCreateExpense = async (expense: Expense) => {
     console.log('Creating Expense: ', expense)
@@ -77,11 +77,15 @@ const HomePage = () => {
   if (error) return <div>{error.message}</div>
 
   return (
-    <div id="home-page" className='flex flex-col min-h-screen bg-background'>
+    <div id='home-page' className='flex flex-col min-h-screen bg-background'>
       <div className='flex-1 md:p-6 lg:p-12 pt-10'>
         <Navbar />
-        <div className='mt-10 mb-10 px-4' id="daily-ledger" data-user-id={userId}>
-          <DailyLedger userId={userId}/>
+        <div
+          className='mt-10 mb-10 px-4'
+          id='daily-ledger'
+          data-user-id={userId}
+        >
+          <DailyLedger userId={userId} />
         </div>
         <div className='flex justify-center'>
           <div className='fixed bottom-[15px] z-10 '>
@@ -91,7 +95,7 @@ const HomePage = () => {
               onSubmitIncome={handleCreateIncome}
             />
           </div>
-          <CreateUser/>
+          <CreateUser />
         </div>
         <Footer />
       </div>
