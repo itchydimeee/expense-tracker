@@ -27,7 +27,8 @@
     "test:monthlySummaryCard": "jest --testPathPattern=monthlySummaryCard.test.tsx",
     "test:createExpenses": "jest --testPathPattern=createExpenses.test.ts",
     "test:createIncomes": "jest --testPathPattern=createIncomes.test.ts",
-    "test:fetchExpenses": "jest --testPathPattern=fetchExpenses.test.ts"
+    "test:fetchExpenses": "jest --testPathPattern=fetchExpenses.test.ts",
+    "test:fetchIncomes": "jest --testPathPattern=fetchIncomes.test.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
