@@ -28,7 +28,8 @@
     "test:createExpenses": "jest --testPathPattern=createExpenses.test.ts",
     "test:createIncomes": "jest --testPathPattern=createIncomes.test.ts",
     "test:fetchExpenses": "jest --testPathPattern=fetchExpenses.test.ts",
-    "test:fetchIncomes": "jest --testPathPattern=fetchIncomes.test.ts"
+    "test:fetchIncomes": "jest --testPathPattern=fetchIncomes.test.ts",
+    "test:apiDeleteExpenses": "jest --testPathPattern=apiDeleteExpenses.test.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
